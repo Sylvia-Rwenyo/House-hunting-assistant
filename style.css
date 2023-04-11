@@ -1,0 +1,1227 @@
+*{
+    src: url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+}
+.homePage , .contacts{
+    background: url("./images/living-room.jpg") no-repeat;
+    background-color: grey;
+    background-blend-mode: multiply;
+    background-position: center;
+    background-size: cover;
+    color: white;
+    height: 100%;
+    width: 100%;
+}
+.homePage .header{
+    padding:1em;
+    width: 7.5%;
+}
+.homePage .CTA{
+    height: 60%;
+    margin-top: 5%;
+    width: 50%;
+    margin-left: 50%;
+}
+.homePage .CTA h5{
+    font-size: 1.25em;
+}
+.homePage .CTA h1{
+    font-size: 4em;
+    width: 80%;
+}
+.homePage .buttons button, .homePage form button, .addUnit a button{
+    width: 6em;
+    height: 2.5em;
+    /* border-radius: 5px; */
+    border: none;
+    margin-right: 5%;
+    font-size: 1em;
+}
+.homePage .buttons .logIn, .homePage form button{
+    background-color: #83a46f;
+    color: white;
+}
+.homePage .buttons .signUp{
+    background-color: #e7e1dd;
+    color: #a69a8b;
+}
+
+.homePage .mainCTA, .homePage .mainCTA2{
+    font-size: 2em;
+    border-left: 5px solid white;
+    margin-left: 25%;
+    margin-top: 2.5%;
+}
+.homePage .mainCTA h4, .homePage .mainCTA2 h4{
+    margin-left: 2.5%;
+}
+
+.registerForm{
+    margin-top: 2.5%;
+    width: 100%;
+    background-color: #ede9e2;
+    opacity: 0.8;
+    color: black;
+    height: 70%;
+    border-radius: 5px;
+    padding: 1em;
+}
+.homePage form{
+    height: 70%;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    margin-left: 20%;
+}
+.homePage form input[type="text"], .loginPswd{
+    padding:1.5em;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid black;
+    width: 85%;
+    margin-left: 5%;
+    margin-right: 5%;
+    text-align: center;
+}
+.loginPswd input[type="text"], .loginPswd input[type="password"]{
+    padding:1.5em;
+    background: transparent;
+    border: none;
+    border-bottom: none;
+    width: 85%;
+    margin-left: 5%;
+    margin-right: 5%;
+    text-align: center;
+    height: fit-content;
+}
+.loginPswd{
+    display: flex;
+    flex-direction: row;
+    padding:0;
+    width: 90%;
+    margin-bottom: 3em;
+}
+
+.homePage form .category{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 1em;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top: 2%;
+}
+.homePage form .category input{
+    margin-left: 40%;
+    margin-top: 0.25em;
+    color: black;
+}
+.homePage form button{
+    border-radius: 0;
+    margin-top: 5%;
+    margin-left: 40%;
+    width: 10em;
+}
+.homePage .mainCTA2{
+    margin-left: 20%;
+}
+
+.addUnit, .Listings, .profileBody{
+    background-color: #ede9e2;
+    color: black;
+    padding: 2.5%;
+}
+.addUnit .header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* margin-left: 40%; */
+}
+.addUnit .header h1{
+    font-size: 2em;
+    word-spacing: 0.5em;
+    margin-top: 0;
+}
+.addUnit .header span, .Listings .header span, .profileBody .header span{
+    font-size: 2em;
+}
+.addUnitForm{
+    height: 70%;
+    width: 90%;
+    margin-left: 5%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+.addUnit form{
+    height:45%;
+    margin-right: 5% ;
+    width:100%;
+    padding: 1em;
+}
+.addUnit .search form input{
+    margin: 0;
+    padding: 0;
+    border: none;
+    height: 100%;
+    width: 93.5%;
+}
+.addUnit .search form{
+    padding: 0;
+    height: 100%;
+}
+.addUnitForm .card{
+    width:100%;
+    height:fit-content;
+    background-color: #323232;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+
+#virtualTour{
+    display: flex;
+    flex-direction: row;
+    border-bottom: 2px solid white;
+    width: 84%;
+    margin-left: 7%;
+    margin-right: 7%;
+}
+#virtualTour input{
+    width: 70%;
+    border: none;
+}
+#virtualTour label{
+    width: 30%;
+    margin-block-start: 1em;
+    margin-block-end: 0;
+}
+.addUnit .card h4{
+    font-size: 1.25em;
+    text-align: center;
+}
+
+#password{
+    margin-bottom: 3em;
+}
+.Listings .header, .profileBody .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; 
+    color: #323232;
+}
+.Listings .header h1, .profileBody .header h1{
+    font-size: 2.5em;
+    margin: 0;
+    /* word-spacing: 0.5em; */
+}
+.search{
+    width: 30%;
+    height: 2em;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 5px;
+    margin-right: 10%;
+    display: flex;
+    flex-direction: row;
+}
+.search form{
+width: 90%;
+}
+.search input{
+    width: 92%;
+    height: 90%;
+    background: transparent;
+    border: none;
+}
+.search form button{
+    width:4%;
+    height: 2.5em;
+    background: transparent;
+    border: none;
+}
+#pay{
+    background-color: black;
+    color: white;
+    border-radius: 50%;
+    height: 1.5em;
+    width: 1.5em;
+    padding: 0.5em;
+    padding-top: 0.75em;
+}
+ .filterSection #openFilters2{
+    width:95%;
+    height: fit-content;
+    margin-right: 5%;
+    background: transparent;
+    border: none;
+    margin-top:20%;
+    padding: 0.25em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    font-size: 1.15em;
+    align-items: center;
+    /* margin-right: 0; */
+
+}
+ #openFilters{
+   font-size: 1.15em;
+   position: sticky; 
+   margin-top: 30%;
+}
+.filterSection #openFilters2{
+    display: none;
+}
+.Listings .list, .profileBody .list{
+    display: flex;
+   flex-direction: row;
+    width: 80%;
+    margin-left: 2.5%;
+    height: 90vh;
+    margin-top: 2.5%;
+    justify-content: space-between;
+}
+.Listings .list .card, .profileBody .list .card{
+    height: 75vh;
+    width: 30%;
+    background-color: white;
+}
+.Listings .list .card img, .profileBody .list .card img{
+    width: 100%;
+    height: 70%;
+}
+.Listings .list .card .slidesContainer{
+    width: 100%;
+    height: 60%;
+}
+.Listings .list .slidesContainer .slide img{
+    width: 100%;
+    height: 100%;
+}
+
+.Listings .list .card .details, .profileBody .list .card .details{
+    height: 30%;
+    padding: 0.5em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.Listings .list .card .details div, .profileBody .list .card .details div{
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    margin-left: 0.25em;
+}
+.Listings .list .card .details div p, .profileBody .list .card .details div p{
+    font-size: 0.90em;
+    padding: 0.25em;
+    margin: 0;
+    border-left: 1px solid black;
+}
+.Listings .list .card .details div .first, .profileBody .list .card .details div .first{
+    border: none;
+}
+.Listings .list .card p, .profileBody .list .card p{
+    font-size: 0.90em;
+    padding: 0.25em;
+    margin: 0.5em;
+}
+.Listings .list .card h5,.Listings .list .card h6, .profileBody .list .card h5{
+    margin: 0.5em;
+    margin-left:0.25em ;
+    font-size: 1.10em;
+}
+.Listings .list .card span i, .profileBody .list .card span i{
+    size: 1.1em;
+    color: black;
+    margin: 0.5em;
+    margin-top: 0.85em;
+    margin-left: 0.95em;
+}
+.menu{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    background-color: #ede9e2;
+    color: #323232;
+    font-size: 1.1em;
+    position: fixed;
+    margin-left: 80%;
+    width: 30%;
+}
+#menu{
+    display: none;
+}
+.menu a{
+    text-decoration: none;
+    color: #323232;
+    padding: 1em;
+}
+.menu ul{
+    list-style-type: none;
+    margin-right: 10%;
+    padding: 0;
+    padding-left: 10%;
+    margin-top: 0;
+
+}
+.header .menu span{
+    font-size: 1em;
+    margin-left: 40%;
+    margin-top: 10%;
+}
+.active{
+ font-weight: 600;
+}
+#moreTools, #theTools{
+    display: none;
+}
+#theTools{
+    margin-left: 20%;
+}
+li{
+    display: flex;
+    flex-direction: row;
+}
+.filterSection{
+    width: fit-content;
+}
+.filters{
+    background-color: #ede9e2;
+    color: #323232;
+    /* font-size:0.75em; */
+    /* position: fixed; */
+    margin-top: 4%;
+    width: 92.5%;
+    height: 30%;
+    padding: 0.5em;
+    margin-right: 7.5%;
+    border-top: 2px solid black;
+    /* border-bottom: 2px solid black; */
+}
+.filters div{
+    width: 8em;
+    margin-right: 2%;
+    margin-bottom: 0.75em;
+    border: 1px solid black;
+    height: fit-content;
+    border-radius: 5px;
+    /* margin-top: 1em; */
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-between; */
+    padding: 0.25em;
+}
+.filters div input{
+    border: none;
+    background: transparent;
+    width: fit-content;
+    height: 70%;
+    width: 20%;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: 0.5em;
+    margin-right: 0;
+}
+.filters div label{
+    margin-top: 0.5em;
+}
+#filters, #closeFilters{
+    display: none;
+}
+.message{
+    display: flex;
+    flex-direction: row;
+    width:65%;
+    height: 75vh;
+    border: 2px solid black;
+}
+
+.singleMessages a{
+    text-decoration: none;
+    color: #000000;
+}
+
+.message .singleMessage{
+    /* width: 100%; */
+    border: 1px solid black;
+    padding: 0.75em;
+    height: 10%;
+}
+.message .singleMessage .intro{
+    display: flex;
+    flex-direction: row;
+    height: 1.5em;
+    font-size: 1.15em;
+    margin: 0;
+    margin-top: 0.75em;
+}
+.message .singleMessage .intro div{
+    font-size: 0.75em;
+    margin: 0;
+    margin-left: 1em;
+    color: #c89364;
+}
+.message .singleMessage .intro h5, .message .singleMessage p{
+    margin-block-start: 0;
+    margin-block-end: 0;
+
+}
+.message .chat{
+    width: 60%;
+    height: 100%;
+    border: 1px solid black;
+}
+.message .chat .top{
+    width: 100%;
+    height: 15%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.message .chat .top div{
+    text-align: center;
+    margin-left: 40%;
+}
+.message .chat .top i{
+    margin-right: 10%;
+    margin-top: 1.25em;
+    font-size: 1.15em;
+}
+.message .chat div h4, .message .chat div p{
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+
+}
+.message .chat .chatBubble1{
+    margin-left: 30%;
+    margin-right: 5%;
+    width: 60%;
+    padding: 0.5em;
+    background-color: #a69a8b;
+    margin-bottom: 1em;
+    border-bottom-right-radius: 5px;
+    max-height: 50%;
+}
+
+.message .chat .chatBubble2{
+    margin-left: 5%;
+    width: 60%;
+    padding: 0.5em;
+    background-color: white;
+    margin-bottom: 1em;
+    border-bottom-left-radius: 5px;
+    max-height: 50%;
+
+}
+.message .chat .bubbles{
+    height: 90%;
+    overflow: scroll;
+}
+.message .chat .typingArea{
+    height: 7.5%;
+    border: 1px solid #000000;
+    border-bottom: none;
+    border-right: none;
+    border-left: none;
+}
+.message .chat .typingArea input{
+    height: 100%;
+    background: transparent;
+    width: 75%;
+    padding-left: 5%;
+    border: none;
+}
+.message .chat .typingArea button{
+    height: 100%;
+    background: transparent;
+    border: none;
+    width: 15%;
+    /* border-left: 2px solid black; */
+
+}
+.paymentArea{
+    width: 65%;
+    height: 63vh;
+    border: 2px solid black;
+    padding: 5%;
+    margin-left: 5%;
+}
+.paymentForm{
+    width: 70%;
+    margin-left: 15%;
+}
+.paymentForm input{
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid black;
+    padding: 1.75em;
+    background: transparent;
+}
+.paymentArea span{
+    float: right;
+}
+.paymentForm div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 2em;
+}
+.paymentForm div input{
+    border: none;
+    width: 30%;
+    background-color: #83a46f;
+    color: #000000;
+    padding: 1em;
+}
+.paymentForm div button{
+    width: 25%;
+    background-color: #c89364;
+    color: #000000;
+    border: none;
+    border-radius: 5px;
+    float: right;
+}
+/* #paymentArea{
+    display: none;
+} */
+/* #pay{
+    display:none;
+} */
+.testimonialsBody{
+    background-color: #a69a8b;
+    color: white;
+}
+.testimonialsBody .header {
+    /* margin-left: 90%; */
+    color: white;
+    padding: 1em
+}
+.testimonialsBody #menuBars{
+    font-size: 2em;
+    float: right;
+}
+.testimonials{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    /* margin-top: 5%; */
+}
+.testimonials .title{
+    width: 40%;
+    font-size: 2em;
+    margin-left: 5%;
+    margin-top: 10%;
+}
+
+.testimonials .title h1{
+    width: 80%;
+}
+.testimonials .content{
+    width: 45%;
+    height: 100%;
+    margin-right: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.testimonials .content .part{
+    width: 90%;
+    margin-bottom: 10%;
+}
+.testimonials .content h6{
+    font-size: 1.15em;
+    margin-block-end: 0.2em;
+    margin-block-start: 0.2em;
+}
+.testimonials .content .part p{
+    margin-block-end: 0.4em;
+    margin-block-start: 0.2em;
+    font-size: 1.15em;
+
+}
+
+.contacts .header {
+    display: flex;
+    flex-direction: row;
+    color: white;
+    margin: none;
+    padding:1em;
+    width: 100%;
+}
+.contacts .header h6{
+    width: 7.5%;
+    margin-right: 80%;
+}
+.contacts .header #menuBars{
+    font-size: 2em;
+    margin-top: 0.75em;
+}
+.contacts .mainSection{
+    display: flex;
+    flex-direction: row;
+}
+.contacts .mainSection .title{
+    width: 40%;
+    font-size: 2em;
+    margin-left: 20%;
+    margin-top: 5%;
+}
+.contacts .mainSection .contactInfo{
+    display: flex;
+    flex-direction: column;
+    margin-top: 10%;
+    font-size: 1.5em;
+    width: 65%;
+}
+.contactInfo  p{
+    margin-block-end: 0.4em;
+    margin-block-start: 0.4em;
+}
+.contactInfo .location{
+    margin-bottom: 2em;
+}
+.contactInfo .links a{
+    text-decoration: none;
+    width: 100%;
+    color: white;
+}
+.contactInfo .links p{
+    font-size: 0.8em;
+}
+.contacts .buttons{
+    font-size: 1.5em;
+    margin-top: 2em;
+}
+.contacts .listHome{
+    width: 8em;
+    border: 2px solid white;
+    color: white;
+    background: transparent;
+    margin-right: 6em;
+    height: 3em;
+}
+.contacts .buyHome{
+    width: 8em;
+    border: none;
+    color: white;
+    background-color:#83a46f;
+    height: 3em;
+}
+.profileBody header{
+    height: 10%;
+}
+.profileBody .intro{
+    width: 80%;
+    margin-left: 10%;
+    padding-left: 10%;
+    margin-top: 5%;
+    display: flex;
+    flex-direction: row;
+    height: 10%;
+}
+.profileBody .intro img{
+    height: 4em;
+    width: 4em;
+}
+.profileBody .intro h4{
+    font-size: 1.25em;
+    margin-left: 5%;
+    margin-block-end: 0;
+    margin-block-start: 0.25em;
+}
+.profileBody .intro div{
+    display: flex;
+    flex-direction: row;
+    margin-left: 30%;
+}
+.profileBody #pay{
+    display: block;
+}
+.profileBody .intro div span{
+    margin-top: 40%;
+    font-size: 2em;
+    margin-right: 10%;
+}
+.profileBody .contactInfo{
+    width: 80%;
+    margin-left: 10%;
+    padding-left: 10%;
+    display: flex;
+    flex-direction: row;
+    font-size: 1.2em;
+}
+.profileBody .contactInfo p{
+    margin-right: 5%;
+}
+
+.profileBody .contactInfo a{
+    text-decoration: none;
+    color: black;
+}
+.profileBody .contactInfo div input{ 
+    border: none;
+    background: transparent;
+    margin-block-end: 0.4em;
+    margin-block-start: 0.4em;
+    font-size: 0.9em;
+    width: fit-content;
+}
+.profileBody .rating input{
+    border: none;
+    background: transparent;
+    font-size :1.2em;
+}
+#editingProfile .contactInfo{
+    justify-content: space-between;
+}
+.profileBody .details a{
+    text-decoration: none;
+    color: black;
+    margin-top: 5%;
+}
+.profileBody .uploads{
+    margin-top: 5%;
+    margin-left: 10%;
+}
+.profileBody .header{
+    color: black;
+}
+.profileBody .message, .profileBody #paymentArea{
+    margin-top: 5%;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+.profileBody #paymentArea div{
+    width: 80%;
+    margin-left: 10%;
+}
+.profileBody #paymentArea div h4{
+    text-align: center;
+    font-size: 1.5em;
+ 
+}
+.profileBody #paymentArea div table{
+    /* border:none; */
+    width: 80%;
+    margin-left: 10%;
+    border-collapse: collapse;
+}
+.profileBody #paymentArea div table tr,.profileBody #paymentArea div table td,.profileBody #paymentArea div table th{
+    border: 2px solid black;
+    border-collapse: collapse;
+    text-align: center;
+    padding: 0.25em;
+    font-size: 1.05em;
+}
+.profileBody .intro .rating{
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    margin-left: 0;
+    height: 4em;
+    font-size: 1.25em;
+   
+}
+.profileBody .rating div{
+    margin-left: 5%;
+}
+.profileBody .toolArticles{
+    width: 80%;
+    margin-left: 10%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 5%;
+    font-size: 1.15em;
+}
+.profileBody .toolArticles .card{
+    border-bottom: 2px solid black;
+    padding-right: 5%;
+    padding-left: 5%;
+    margin-bottom: 5%;
+    height: fit-content;
+}
+.profileBody .toolArticles .card span{
+    float: right;
+    font-size: 1.5em;
+}
+#closeCard{
+    display: none;
+}
+.addUnitForm form button{
+    width: 6em;
+    height: 2em;
+    background-color: #c89364;
+    float: right;
+    margin-left: 40%;
+    margin-top: 5%;
+    border: none;
+    margin-right: 5%;
+    font-size: 1em;
+}
+.addUnit, .Listings{
+    background-color: #ede9e2;
+    color: black;
+    padding: 2.5%;
+}
+
+.addUnit .header h1{
+    font-size: 2em;
+    word-spacing: 0.5em;
+    margin-top: 0;
+}
+.addUnit .header span, .Listings .header span{
+    font-size: 2em;
+}
+.addUnitForm{
+    height: 70%;
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 5%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.addUnit form{
+    margin-right: 5% ;
+    width: 45%;
+    padding: 1em;
+    font-size: 1.15em;
+}
+.addUnit form input, .addUnit form select{
+    padding: 1.5em;
+    height: 14.25%;
+    background: #323232;
+    border: none;
+    border-bottom: 2px solid white;
+    width: 80%;
+    margin-left: 7%;
+    margin-right: 7%;
+    color: white;
+}
+.addUnit form select{
+    width: 84%;
+}
+#others{
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    border-bottom: 2px solid white;
+    margin-left: 7%;
+    margin-right: 7%;
+    font-size: 0.75em;
+    font-weight: 100;
+    color:rgba(255, 255, 255, 0.3);
+    height: 14.25%;
+    padding: 1.5em;
+}
+#others span{
+    /* width:30%; */
+    display: flex;
+    flex-direction: row;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    margin-right: 5%;
+    padding: 0.25em;
+    padding-right: 0;
+    padding-left: 0;
+
+}
+#others span input{
+padding: 0;
+width: 1em;
+height: 1em;
+}
+.addUnit .search form input{
+    background: white;
+    color: #000000;
+}
+
+.addUnitForm #mainAddForm .category{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-left: 7%;
+    margin-right: 7%;
+    height: 14.25%;
+    /* font-size: 1.25em; */
+}
+.addUnitForm input[type='radio']{
+    height: 50%;
+}
+.addUnitForm .card{
+    width:100%;
+    height:100%;
+    background-color: #323232;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.addUnit form input[type='file']{
+    border: 2px soid white;
+}
+.addUnit .card h4{
+    font-size: 1.25em;
+    text-align: center;
+}
+#password{
+    margin-bottom: 3em;
+}
+.mainListing{
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    width: 100%;
+}
+#closeCard{
+    position: fixed;
+    margin-left: 67.5%;
+    bottom: 5%;
+}
+#creditCard{
+    display: none;
+}
+.profileBody #pay{
+    height: 2em;
+    width: 3em;
+    font-size: 1em;
+    padding: 0.5em;
+    text-align: center;
+    padding-top: 1em;
+    /* color: black;
+    background-color: transparent; */
+    margin-top: 30%;
+}
+#editingProfile div span{
+    margin-top: 0;
+    font-size: 0.75em;
+    display: flex;
+    flex-direction: row;
+}
+#editingProfile div span p{
+    /* padding-bottom: 1em; */
+    margin-block-start: 0.5em;
+    margin-block-end: 1em;
+}
+#editingProfile{
+    display: none;
+}
+#editProfileSection a{
+    text-decoration: none;
+    color: #000000;
+}
+#profilePhoto{
+    display: none;
+}
+#editProfileSection .profile{
+    box-shadow: 0 0 0 2px  #323232;
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 0;
+    margin-bottom:2.5%;
+    
+}
+.deleteAccount, .logOut{
+    padding: 1em;
+    box-shadow: 5px #323232;
+}
+.logOut .intro ,.deleteAccount .intro{
+    font-size: 1.5em;
+    height: fit-content;
+}
+.deleteAccount div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between ;
+}
+.deleteAccount h5, .logOut h5{
+    margin-block-start: 0.25em;
+    margin-block-end: 0.25em;
+}
+.deleteAccount div .btn{
+    width: 7em;
+    height: 2em;
+    padding: 0.25em;
+}
+.deleteAccount div p{
+    margin-block-start: 0.25em;
+    margin-block-end: 0.25em;
+    text-align: center;
+}
+.deleteAccount div .delete{
+    background-color: #323232;
+    color: white;
+    
+}
+.logOut:hover, .deleteAccount h5:hover{
+    color:#c89364;
+}
+.deleteAccount div .cancel{
+    background-color: #c89364;
+    color: #323232;
+    margin-right: 40%;
+}
+.uploadsHeader{
+    display:flex;
+    flex-direction: row;
+    margin-block-start: 0.25em;
+    margin-block-end: 0.25em;
+    font-size: 2em;
+    margin-right: 50%;
+    margin-left: 10%;
+    text-align: center;
+}
+.uploadsHeader a{
+    text-decoration: none;
+    color: black;
+    margin-left: 5%;
+}
+ /* .slide{
+    display: none;
+} */
+
+.prev, .next{
+    cursor: pointer;
+    /* position: absolute; */
+    top: 50%;
+    width: auto;
+    margin-top: -22px;
+    padding: 16px;
+    color: black;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+    margin-left: 20%;
+}
+.next{
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+.prev:hover, .next:hover{
+    background-color: rgba(0, 0, 0, 0.8);
+}
+.fade{
+    animation-name: fade;
+    animation-duration: 1.5s;
+}
+@keyframes fade{
+from {opacity: .4}
+to{opacity: 1}
+}
+.cardBtns{
+    background-color: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 80vh;
+}
+.cardBtns .btn{
+    width: 7em;
+    height: 3em;
+    border-radius: none;
+    border: none;
+}
+.cardBtns .upload{
+    background-color: #83a46f;
+    color: black;
+    padding: 0.5em;
+}
+.cardBtns .edit{
+    background-color: #a69a8b;
+    color: black;
+    padding: 0.5em;
+}
+.cardBtns .delete{
+    background-color: #c89364;
+    color: black;
+    padding: 0.5em;
+}
+.Listings .preview{
+    justify-content: space-evenly;
+}
+.Listings .preview .card{
+    width: 50%;
+}
+.singleMessages{
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    overflow: scroll;
+}
+.loginPswd #password{
+    margin-bottom: 0;
+}
+#secondSlide{
+    display: none;
+}
+.listingsChat{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.listingsChat .list{
+    width: 30%;
+}
+.listingsChat .list .card{
+    width: 100%;
+}
+.listingsChat .message{
+    width: 60%;
+    margin-top: 2.5%;
+}
+#payPrompt{
+    display: flex;
+    flex-direction: row;
+    margin-left: 15%;
+    margin-right: 15%;
+    justify-content: space-around;
+    margin-bottom: 5%;
+}
+#payPrompt input[type="radio"]:checked:after{
+    background-color: #c89364;
+}
+#rate{
+    display: none;
+}
+.chat a{
+    text-decoration: none;
+    color: black;
+}
+.tourCard{
+    width: 100%;
+    height: 70%;
+}
+.tourCard img{
+    width: 100%;
+    height: 100%;
+}
+.profileBody .list .card img{
+    width: 100%;
+    height: 100%; 
+}
+#editProfileSection #completeProfile{
+    width: 70%;
+    margin-top: 5%;
+}
+#editProfileSection .profile{
+    padding: 5%;
+}
+#editProfileSection .profile .intro, #editProfileSection .profile .contactInfo{
+    margin-left: 0;
+    margin-top: 0;
+}
+.editBtn{
+    background-color: #83a46f;
+    color: black;
+    width: 6em;
+    height: 2.5em;
+    /* border-radius: 5px; */
+    border: none;
+    margin-right: 5%;
+    font-size: 1em;
+}
