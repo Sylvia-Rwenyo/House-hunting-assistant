@@ -5,6 +5,7 @@
         if($_SESSION["loggedIN"] == false){
             header('location:index.php');
         }else{
+            $id;
     ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -45,8 +46,12 @@
         </div> 
         <?php 
             // get user info
-            $id = $_SESSION['id'];
-            $records = mysqli_query($conn,"SELECT * FROM  registration where id='$id'");
+            if(isset($_GET)){
+                $id=$_GET['id'];
+                }else{
+                $id = $_SESSION['id'];
+                }  
+                $records = mysqli_query($conn,"SELECT * FROM  registration where id='$id'");
             if (mysqli_num_rows($records) > 0) {
             $i=0;
             while($result = mysqli_fetch_array($records)) {
@@ -84,7 +89,11 @@
             </div>
                 <?php 
             // get user info
+            if(isset($_GET)){
+            $id=$_GET['id'];
+            }else{
             $id = $_SESSION['id'];
+            }
             $records = mysqli_query($conn,"SELECT * FROM  registration where id='$id' ");
             if (mysqli_num_rows($records) > 0) {
             $i=0;

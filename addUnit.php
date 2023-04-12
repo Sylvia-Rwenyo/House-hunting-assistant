@@ -34,12 +34,12 @@
     </div>
     </div>
     <div class="addUnitForm">
-        <form class="card" id="mainAddform" method="post" enctype="multipart/form-data" action="processing.php">
             <?php
             include_once 'conn.php';
             session_start();
             if(empty($_GET)){
             ?>
+                <form class="card" id="mainAddform" method="post" enctype="multipart/form-data" action="processing.php">
                     <select name="category">
                         <option disabled selected>category</option>
                         <option value="forSale">For sale</option>
@@ -59,9 +59,13 @@
                     <label>Upload Virtual Tour</label>  
                     <input type="file" placeholder="" name="virtualTour[]" multiple accept=".jpg, .jpeg, .mp4, .png "/>
                 </div>
+                <button class="btn lg logIn" type="submit" name="preview">Preview</button>
+            </form>
                 <?php
             }else if($_GET['action'] == 'edit'){
                 ?>
+            <form class="card" id="mainAddform" method="post" enctype="multipart/form-data" action="processing.php">
+
                  <select name="category" value="<?php echo $_SESSION['category']?>">
                         <option disabled selected>category</option>
                         <option value="forSale">For sale</option>
@@ -89,6 +93,8 @@
                         echo $_SESSION['virtualTour'][$i] . ' ';
                     }?>" multiple accept=".jpg, .jpeg, .mp4, .png "/>
                 </div>
+                <button class="btn lg logIn" type="submit" name="preview">Preview</button>
+            </form>
             <?php
              }else if($_GET['action'] == 'editUpload'){
                 $uploadID = $_GET['id'];
@@ -97,6 +103,7 @@
                 $i=0;
                 while($result = mysqli_fetch_array($records)) {
             ?>
+        <form class="card" id="mainAddform" method="post" enctype="multipart/form-data" action="processing.php">
              <select name="category" value="<?php echo $result['category']?>">
                     <option disabled selected>category</option>
                     <option value="forSale">For sale</option>
@@ -120,19 +127,19 @@
                 </div>
               <div id="virtualTour">
                 <label>Upload Virtual Tour</label>  
-                <input type="text" placeholder="" id="prevTour" name="virtualTour[]" value="<?php
+                <input type="hidden"  name="uploadID" value="<?php echo $result['id'] ?>"/>
+                <input type="file" placeholder="" id="prevTour" name="virtualTour[]" value="<?php
                 $tour = explode('*', $result['virtualTour']);
                 for($i =0; $i < count($tour); $i++){
                     echo $tour[$i] . ' ';
                 }?>" multiple accept=".jpg, .jpeg, .mp4, .png "/>
             </div>
+            <button class="btn lg logIn" type="submit" name="preview">Preview</button>
+            </form>
         <?php
         $i++;
         }}}
         ?>
-           
-                <button class="btn lg logIn" type="submit" name="preview">Preview</button>
-            </form>
         </div>
 </body>
 </html>

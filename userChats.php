@@ -42,6 +42,7 @@
     </div>
     </div> 
                 <?php 
+                $subjectUnit;
                     // get user info
                     $mail = $_SESSION['email'];
                     $_SESSION['userID'] = 0;
@@ -54,7 +55,7 @@
                 ?>
         <div class="profile">
             <div class="intro">
-                <img src="<?php if($result['profilePhoto'] == 0){
+                <img src="<?php if($result['profilePhoto'] == ''){
                     echo 'Images/user.png';} else{ echo'Uploads/' . $result['profilePhoto'];}?>" alt="profile photo"/>
                 <div class="rating">
                 <h4><?php echo $result['name']?></h4>
@@ -92,11 +93,11 @@
             $sentTo = $results['receipientID'];
             $from = $results['senderID'];
 
-            $getDetails = mysqli_query($conn,"SELECT * FROM  registration where (id='$sentTo' || '$from') && id!='$userID' ");
+            $getDetails = mysqli_query($conn,"SELECT * FROM  registration where (id='$sentTo' || id='$from') && id!='$userID' ");
             if (mysqli_num_rows($getDetails) > 0) {
               $i=0;
               while($record = mysqli_fetch_array($getDetails)) {
-                $to = 'listingChat.php?action=chat&with='. $record['id']. '&id=';
+                $to = 'userChats.php?action=chat&with='. $record['id']. '&id=';
               ?>
             <div class="singleMessage">
                 <a href="userChats.php?action=chat&with=<?php echo $record['id']?>&id=?>">
@@ -117,7 +118,7 @@
                 $k=0;
                 while($found = mysqli_fetch_array($msg)) {
                 ?>
-                <p><?php echo  substr($found['message'], 0, 25) . '...';?></p>
+                <p><?php if(strlen($found['message']) > 40){ echo  substr($found['message'], 0, 40) . '...';}else{ echo $found['message'];}?></p>
                 <?php
                 $k++; }}
                 ?>
@@ -125,7 +126,7 @@
               </a>  
             <?php 
                 $i++; }}
-                $j++; }}
+                $j++; }}else{ echo 'Go to <a href="listing.php">Active listings</a> to chat with house seekers';}
                 ?> 
         </div> 
         <div class="chat" id="chat">
@@ -158,6 +159,7 @@
             if (mysqli_num_rows($messages) > 0) {
             $i=0;
             while($row = mysqli_fetch_array($messages)) {
+                $subjectUnit = $row['subjectUnit'];
             ?>
              <div class="<?php if($row['senderID']==$userID){ echo 'chatBubble1'; } else if($row['receipientID']==$userID){ echo 'chatBubble2'; }?>">
                 <p><?php
@@ -174,10 +176,11 @@
             $i++; }}
             ?>
         </div>
-        <form class="typingArea" method="POST" action="">
-                        <input type="text" name="message" placeholder="type here ..."/>
+        <form class="typingArea" method="POST" action="userChats.php">
+                        <textarea type="text" name="message" placeholder="type here ..."></textarea>
                         <input type="hidden" name="senderID" value="<?php echo  $userID?>" />
-                        <input type="hidden" name="receipientID" value="<?php echo  $uploaderID?>" />
+                        <input type="hidden" name="receipientID" value="<?php echo  $with?>" />
+                        <input type="hidden" name="subjectUnit" value="<?php echo  $subjectUnit?>" />
                         <button type="submit" name="send"><FaRegPaperPlane/></button>
         </form>
         <?php
@@ -261,7 +264,7 @@ if(isset($_POST['send'])){
 
     //if sql query is executed...
     if (mysqli_query($conn, $sql)) {
-        //    header("Location: listing.php"); 
+        echo '<script> window.location.href = "'. $to.'"; </script>';
            } else {	
                //show error
        echo "Error: " . $sql . "

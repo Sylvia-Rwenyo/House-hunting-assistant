@@ -38,7 +38,15 @@
     <?php 
             include_once 'conn.php';
             session_start();
-            $id = $_SESSION['inView'];
+            $subjectUnit;
+            if(!empty($_GET) && isset($_GET['inView'])){
+            $id = $_GET['inView'];
+            }else if(!empty($_GET) && isset($_GET['id'])){
+                $id = $_GET['id']; 
+            }
+            else{
+            $id=$subjectUnit;
+            }
             $mail = $_SESSION['email'];
             $_SESSION['id'] = 0;
             $records = mysqli_query($conn,"SELECT * FROM  registration where emailAddress='$mail' ");
@@ -115,7 +123,7 @@
             $sentTo = $results['receipientID'];
             $from = $results['senderID'];
 
-              $getDetails = mysqli_query($conn,"SELECT * FROM  registration where (id='$sentTo' || '$from') && id!='$userID' && id ='$uploaderID' ");
+            $getDetails = mysqli_query($conn,"SELECT * FROM  registration where (id='$sentTo' || id='$from') && id!='$userID' ");
               if (mysqli_num_rows($getDetails) > 0) {
               $i=0;
               while($record = mysqli_fetch_array($getDetails)) {
@@ -140,7 +148,7 @@
                 $k=0;
                 while($found = mysqli_fetch_array($msg)) {
                 ?>
-                <p><?php echo  substr($found['message'], 0, 25) . '...';?></p>
+                <p><?php if(strlen($found['message']) > 25){ echo  substr($found['message'], 0, 25) . '...';}else{ echo $found['message'];}?></p>
                 <?php
                 $k++; }}
                 ?>
@@ -181,23 +189,26 @@
             if (mysqli_num_rows($messages) > 0) {
             $i=0;
             while($row = mysqli_fetch_array($messages)) {
+                $subjectUnit = $row['subjectUnit'];
             ?>
              <div class="<?php if($row['senderID']==$userID){ echo 'chatBubble1'; } else if($row['receipientID']==$userID){ echo 'chatBubble2'; }?>">
                 <p><?php
                 $length = 35;
                 if(strlen($row['message']) < $length){ echo $row['message'];} else{
                     for($k = 0; $k < strlen($row['message']) ; $k+=$length){
-                    echo substr($row['message'], $k, ($k+$length)) . '<br>';
+                    echo substr($row['message'], $k+1, ($k+$length)) . '<br>';
                     }
                 }
                     ?>
                 </p>
+                <span><?php echo substr($row['time'],12)?></span>
             </div>
             <?php
             $i++; }}?>
         </div>
         <form class="typingArea" method="POST" action="">
-                        <input type="text" name="message" placeholder="type here ..."/>
+                        <textarea type="text" name="message" placeholder="type here ..."></textarea>
+                        <input type="hidden" name="subjectUnit" value="<?php echo  $id?>" />
                         <input type="hidden" name="senderID" value="<?php echo  $userID?>" />
                         <input type="hidden" name="receipientID" value="<?php echo  $uploaderID?>" />
                         <button type="submit" name="send"><FaRegPaperPlane/></button>
@@ -220,11 +231,12 @@ if(isset($_POST['send'])){
     $receipientID = $_POST['receipientID'];
      date_default_timezone_set("Africa/Nairobi");
      $time = date("Y-m-d h:i:sa");
-    $sql = "INSERT INTO messages (message,senderID, receipientID, time)
-    VALUES ('$message','$senderID','$receipientID', '$time')";
+    $sql = "INSERT INTO messages (message,senderID, receipientID, time, subjectUnit)
+    VALUES ('$message','$senderID','$receipientID', '$time', '$subjectUnit')";
 
     //if sql query is executed...
     if (mysqli_query($conn, $sql)) {
+        $to= 'listingChat.php?action=chat&with='.$receipientID.'&inView='. $subjectUnit;
         echo '<script> window.location.href = "'. $to.'"; </script>';
            } else {	
                //show error

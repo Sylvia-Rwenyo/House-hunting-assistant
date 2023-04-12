@@ -49,7 +49,6 @@
         <div class="details">
                 <div>
                     <h5><?php echo $_SESSION['bedroomNo']?> bedroom house</h5>
-                    <a href="">edit<span id='edit'><i class="fa-solid fa-pencil"></i></span></a>
                 </div>
                 <div>
                     <p class="first">For <?php if($_SESSION["category"] == "forSale"){echo 'sale at Ksh';}

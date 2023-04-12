@@ -176,6 +176,38 @@ if(isset($_GET['action'])){
      header('location:preview.php');
 
 }
+if(isset($_POST['editUpload']))
+{	 
+    session_start();
+    $files = array_filter($_FILES['virtualTour']['name']);
+    $_SESSION['virtualTour'];
+    //count the no of uploaded files
+    $fileCount = count($_FILES['virtualTour']['name']);
+    for($i=0; $i < $fileCount; $i++){
+        //obtain temp file
+        $tmpFilePath = $_FILES['virtualTour']['tmp_name'][$i];
+        //make sure a file is present
+        if($tmpFilePath != ""){
+            //set up new file path
+            $newFilePath = "Uploads/".$_FILES['virtualTour']['name'][$i];
+            $_SESSION['virtualTour'][] = $_FILES['virtualTour']['name'][$i];
+            //upload file to temp dir
+            move_uploaded_file($tmpFilePath, $newFilePath);
+        }
+    }
+
+    $_SESSION["category"] = $_POST['category'];
+	$_SESSION["cost"] = $_POST['cost'];
+    $_SESSION["size"] = $_POST['size'];
+    $_SESSION["bedroomNo"] = $_POST['bedroomNo'];
+    $_SESSION["location"]= $_POST['location'];
+     for($i=0; $i < count($_POST['others']); $i++){
+    $_SESSION['others'][] = $_POST['others'][$i];
+     }
+    
+     header('location:preview.php');
+
+}
 if(isset($_GET['action'])){
     // log out if the user selects "Log Out" on the menu bar
         if($_GET['action']== "logOut"){
@@ -225,7 +257,7 @@ if(isset($_GET['action'])){
                 unset($_SESSION["location"]);
                 unset($_SESSION["virtualTour"]);
                 unset($_SESSION["others"]);
-                header("Location: addUnit.php"); 
+                header("Location: userProfile.php"); 
                     } else {	
                         //show error
                 echo "Error: " . $sql . " " . mysqli_error($conn);

@@ -274,8 +274,8 @@ width: 90%;
     display: none;
 }
 .Listings .list, .profileBody .list{
-    display: flex;
-   flex-direction: row;
+    display: grid;
+   grid-template-columns: auto auto auto;
     width: 80%;
     margin-left: 2.5%;
     height: 90vh;
@@ -284,8 +284,9 @@ width: 90%;
 }
 .Listings .list .card, .profileBody .list .card{
     height: 75vh;
-    width: 30%;
+    width: 90%;
     background-color: white;
+    margin-top: 5vh;
 }
 .Listings .list .card img, .profileBody .list .card img{
     width: 100%;
@@ -520,14 +521,14 @@ li{
     overflow: scroll;
 }
 .message .chat .typingArea{
-    height: 7.5%;
+    height: 10%;
     border: 1px solid #000000;
     border-bottom: none;
     border-right: none;
     border-left: none;
 }
-.message .chat .typingArea input{
-    height: 100%;
+.message .chat .typingArea textarea{
+    height: 95%;
     background: transparent;
     width: 75%;
     padding-left: 5%;

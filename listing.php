@@ -89,8 +89,8 @@
         <div class="details">
                 <div>
                     <h5><?php echo $result['bedroomNo']?> bedroom house</h5>
-                    <a href="listingChat.php?with=<?php echo $userID; $_SESSION['inView'] = $result['id']; ?>">
-                        <span id="card<?php echo $result['id']?>"><i class="fa-solid fa-message"></i></span>
+                    <a href="listingChat.php?with=<?php echo $userID; $_SESSION['inView'] = $result['id']; ?>&inView=<?php echo  $_SESSION['inView']?>">
+                       chat <span id="card<?php echo $result['id']?>"><i class="fa-solid fa-message"></i></span>
                     </a>
                     <!-- <span id='pay' onClick="pay()">Pay</span> -->
                 </div>

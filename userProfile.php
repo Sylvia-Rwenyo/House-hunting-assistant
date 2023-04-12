@@ -5,6 +5,7 @@
     if($_SESSION["loggedIN"] == false){
         header('location:index.php');
     }else{
+        $id;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -98,7 +99,7 @@
                     ?>
                 </div>
                 <div>
-                <p><a href="listingChat.php?with=<?php echo $profileID; $i++;}}?>" style="text-decoration: none; color: black;"><i class="fa-solid fa-message"></i></a></p>
+                <p><a href="listingChat.php?with=<?php echo $profileID; $i++;}}?>" style="text-decoration: none; color: black;">chat<i class="fa-solid fa-message"></i></a></p>
 
                 </div>
             </div>
@@ -181,7 +182,7 @@ $i++;}}?>
                 ?>
         <div class="profile">
             <div class="intro">
-                <img src="<?php if($result['profilePhoto'] == 0){
+                <img src="<?php if($result['profilePhoto'] == ''){
                     echo 'Images/user.png';} else{ echo'Uploads/' . $result['profilePhoto'];}?>" alt="profile photo"/>
                 <div class="rating">
                 <h4><?php echo $result['name']?></h4>
@@ -195,7 +196,7 @@ $i++;}}?>
                     
                 </div>
                 <div>
-                <a href="userChats.php" style="text-decoration: none; color: black;"><span id="msg"><i class="fa-solid fa-message"></i></span></a>
+                <a href="userChats.php" style="text-decoration: none; color: black;"><span id="msg">chat<i class="fa-solid fa-message"></i></span></a>
                     <!-- <span id='pay' onClick="pay()">Pay</span> -->
                 </div>
             </div>
@@ -206,26 +207,94 @@ $i++;}}?>
                     <i class="fa-solid fa-phone"></i>&nbsp;&nbsp;&nbsp;
                     <?php if($result['phoneNumber'] == 0){
                      echo 'Add phone Number in settings';} else{ echo $result['phoneNumber'];}?></a></p>
-                <p><a href="profile.php?id=<?php echo $result['id']; $i++;}}?>"><i class="fa-solid fa-gears"></i>&nbsp;&nbsp;&nbsp;</a></p>
+                <p><a href="profile.php?id=<?php $id= $result['id']; echo $id ; $i++;}}?>">edit<i class="fa-solid fa-gears"></i>&nbsp;&nbsp;&nbsp;</a></p>
             </div>
         </div>
             <div class="uploads" id="uploads">
             <?php
                 if($_SESSION['userCategory'] == 'looking'){
-                ?>
+            ?>
                 <h4 class="uploadsHeader">History</h4>
+             <?php
+                    $user = $_SESSION['userID'];
+                    $messagedWith = mysqli_query($conn,"SELECT * FROM  messages where  senderID ='$user'  GROUP BY  subjectUnit");
+                    if (mysqli_num_rows($messagedWith) > 0) {
+                        $i=0;
+                        ?>
+                        <div class="list" id="list">
+                            <?php
+                        while($result = mysqli_fetch_array($messagedWith)) {
+                            $subject = $result['subjectUnit'];
+                            $history = mysqli_query($conn,"SELECT * FROM  units where  id ='$subject'");
+                            if (mysqli_num_rows($history) > 0) {
+                                $i=0;
+                                while($result = mysqli_fetch_array($history)) {
+                                   ?>
+                              <div class="card" id="card<?php echo $result['id']?>">
+                               <?php
+                               $tour = explode('*', $result['virtualTour']);
+                               ?>
+                               <div class="tourCard" id="firstSlide">
+                                   <img src="Uploads/<?php echo $tour[0]?>" class="previewImg " alt="living room"/>
+                                   <a class="prev" onclick ="showImgs()" >&#10094;</a>
+                                   <a class="next" onclick ="showImgs()" >&#10095;</a>     
+                               </div>
+                               <div class="tourCard" id="secondSlide">
+                               <?php
+                               // if(isset($_GET['action'])){if ($_GET['action'] == 'showSlides'){
+                               for($j=0; $j < count($tour); $j++){
+                                   ?>
+                                   <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg  slide fade" alt="living room"/>
+                                   <?php
+                               // }
+                           // }
+                       }
+                               ?>
+                                <a class="prev" onclick ="plusSlides(-1)" >&#10094;</a>
+                                   <a class="next" onclick ="plusSlides(1)" >&#10095;</a>     
+                       </div>
+                              
+                       <div class="details">
+                               <div>
+                                   <h5><?php echo $result['bedroomNo']?> bedroom house</h5>
+                               </div>
+                               <div>
+                                   <p class="first">For <?php if($result["category"] == "forSale"){echo 'sale at Ksh';}
+                                                   else if($result["category"] == "rental"){echo 'rent at Ksh';} echo $result['cost'];?></p>
+                                   <p>At <?php echo $result['location']?></p>
+                                   <p><?php echo $result['size']?> sqft</p>
+                               </div>
+                               <div>
+                               <?php
+                               $others =explode('*', $result['others']);
+                                   for($j=0; $j <count($others); $j++){
+                               ?> 
+                               <p><?php echo $others[$j];?></p>
+                               <?php
+                               };
+                               ?>
+                               </div>
+                       </div>
+                       </div>
+                       <?php
+                       $i++;}}}
+                       ?>
+                </div>
+                <?php
+                }else{
+                        ?>
             <div class="list" id="list">
             <h4>Your hunt history is empty</h4>
         </div>
         <?php
+                       }
         }else if($_SESSION['userCategory']  == 'showing'){
-         $id = $_SESSION['id'];
          $userID = 0;
         ?>
-        <h4 class="uploadsHeader">Uploads<a href="addUnit.php"><i class="fa-solid fa-circle-plus"></i></a></h4>
+        <h4 class="uploadsHeader">Uploads<a href="addUnit.php">add<i class="fa-solid fa-circle-plus"></i></a></h4>
              <div class="list" id="list">
                 <?php
-                 $records = mysqli_query($conn,"SELECT * FROM  units");
+                 $records = mysqli_query($conn,"SELECT * FROM  units where userID='$id'");
          if (mysqli_num_rows($records) > 0) {
          $i=0;
          while($result = mysqli_fetch_array($records)) {
@@ -257,7 +326,7 @@ $i++;}}?>
 <div class="details">
         <div>
             <h5><?php echo $result['bedroomNo']?> bedroom house</h5>
-            <a href="addUnit.php?action=editUpload&id=<?php echo $result['id']?>" style="text-decoration: none; color: black;"><span id='edit'><i class="fa-solid fa-pencil"></i></span></a>
+            <a href="addUnit.php?action=editUpload&id=<?php echo $result['id']?>" style="text-decoration: none; color: black;"><span id='edit'>edit<i class="fa-solid fa-pencil"></i></span></a>
         </div>
         <div>
             <p class="first">For <?php if($result["category"] == "forSale"){echo 'sale at Ksh';}
