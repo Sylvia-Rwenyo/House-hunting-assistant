@@ -18,17 +18,17 @@
     <script src="https://kit.fontawesome.com/2751fbc624.js" crossorigin="anonymous"></script>
     <script src="script.js" async></script>
     <link rel="stylesheet" href="style.css">
-    <title>Your profile</title>
+    <title>Your chats</title>
 </head>
 <body class="profileBody">
     <div class="header">
-        <h1>Profile</h1>
-    <div class="search">
-        <form>
+        <h1>Your Chats</h1>
+    <!-- <div class="search"> -->
+        <!-- <form>
             <input name="keyword" type="text"/>
             <button type="submit"><i class="fa-solid fa-search"></i></button>
-        </form>
-         </div> 
+        </form> -->
+         <!-- </div>  -->
         <span class="menuBar" id="menuBars" onClick="showMenu()"><i class="fa-solid fa-bars"></i></span>
         <div class="menu" id="menu">
             <span class="menuBar" id="menuBar" onClick="closeMenu()"><i class="fa-solid fa-x"></i></span>
@@ -51,36 +51,9 @@
                     $i=0;
                     while($result = mysqli_fetch_array($records)) {
                         $_SESSION['userID'] = $result['id'];
-
+                        $i++;
+                    }}
                 ?>
-        <div class="profile">
-            <div class="intro">
-                <img src="<?php if($result['profilePhoto'] == ''){
-                    echo 'Images/user.png';} else{ echo'Uploads/' . $result['profilePhoto'];}?>" alt="profile photo"/>
-                <div class="rating">
-                <h4><?php echo $result['name']?></h4>
-                    <div>
-                    <i class="fa-solid fa-star"></i>                   
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                </div>
-                <div>
-                <!-- <span onClick="showMessages1()" id="msg"><i class="fa-solid fa-message"></i></span> -->
-                    <!-- <span id='pay' onClick="pay()">Pay</span> -->
-                </div>
-            </div>
-            <div class="contactInfo">
-                <p><a href='mailto:<?php echo $result['emailAddress']?>'><i class="fa-solid fa-envelope"></i>&nbsp;&nbsp;&nbsp;<?php echo $result['emailAddress']?></a></p>
-                <p><a href='tel:<?php if($result['phoneNumber'] == 0){
-                    echo '';} else{ echo $result['phoneNumber'];}?>'>
-                    <i class="fa-solid fa-phone"></i>&nbsp;&nbsp;&nbsp;
-                    <?php if($result['phoneNumber'] == 0){
-                     echo 'Add phone Number in settings';} else{ echo $result['phoneNumber'];}?></a></p>
-                <p><a href="profile.php?id=<?php echo $result['id']; $i++;}}?>"><i class="fa-solid fa-gears"></i>&nbsp;&nbsp;&nbsp;</a></p>
-            </div>
             
             <div class="message" id="message">
         <div class="singleMessages">
@@ -176,7 +149,7 @@
             $i++; }}
             ?>
         </div>
-        <form class="typingArea" method="POST" action="userChats.php">
+        <form class="typingArea" method="POST" action="processing.php">
                         <textarea type="text" name="message" placeholder="type here ..."></textarea>
                         <input type="hidden" name="senderID" value="<?php echo  $userID?>" />
                         <input type="hidden" name="receipientID" value="<?php echo  $with?>" />
@@ -252,25 +225,3 @@ function showSlides(n){
     document.getElementById('secondSlide').style.display = "block";
 }
 </script>
-<?php
-if(isset($_POST['send'])){
-    $message = $_POST['message'];
-    $senderID = $_POST['senderID'];
-    $receipientID = $_POST['receipientID'];
-     date_default_timezone_set("Africa/Nairobi");
-     $time = date("Y-m-d h:i:sa");
-    $sql = "INSERT INTO messages (message,senderID, receipientID, time)
-    VALUES ('$message','$senderID','$receipientID', '$time')";
-
-    //if sql query is executed...
-    if (mysqli_query($conn, $sql)) {
-        echo '<script> window.location.href = "'. $to.'"; </script>';
-           } else {	
-               //show error
-       echo "Error: " . $sql . "
-" . mysqli_error($conn);
-    }
-    //close connection
-    mysqli_close($conn);
-}
-?>

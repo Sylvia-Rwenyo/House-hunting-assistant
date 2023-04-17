@@ -70,14 +70,16 @@
                 ?>
                 <div class="tourCard" id="firstSlide">
                     <img src="Uploads/<?php echo $tour[0]?>" class="previewImg " alt="living room"/>
-                    <a class="prev" onclick ="showImgs()" >&#10094;</a>
-                    <a class="next" onclick ="showImgs()" >&#10095;</a>     
+                    <?php if(count($tour) > 1){?>
+            <a class="prev" onclick ="showImgs(<?php echo $result['id']?>)" >&#10094;</a>
+            <a class="next" onclick ="showImgs(<?php echo $result['id']?>)" >&#10095;</a>   
+            <?php } ?>     
                 </div>
                 <div class="tourCard" id="secondSlide">
                 <?php
                 for($j=0; $j < count($tour); $j++){
                     ?>
-                    <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg  slide fade" alt="living room"/>
+                    <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg  slide fade" id="slide<?php echo $j?>" alt="living room"/>
                     <?php
         }
                 ?>
@@ -201,17 +203,17 @@
                 }
                     ?>
                 </p>
-                <span><?php echo substr($row['time'],12)?></span>
+                <span><?php echo substr($row['time'],11)?></span>
             </div>
             <?php
             $i++; }}?>
         </div>
-        <form class="typingArea" method="POST" action="">
+        <form class="typingArea" id="typingArea" method="POST" action="processing.php">
                         <textarea type="text" name="message" placeholder="type here ..."></textarea>
                         <input type="hidden" name="subjectUnit" value="<?php echo  $id?>" />
                         <input type="hidden" name="senderID" value="<?php echo  $userID?>" />
-                        <input type="hidden" name="receipientID" value="<?php echo  $uploaderID?>" />
-                        <button type="submit" name="send"><FaRegPaperPlane/></button>
+                        <input type="hidden" name="receipientID" value="<?php echo  $with?>" />
+                        <button type="submit" id="sendMsg" name="send"><FaRegPaperPlane/></button>
         </form>
         <?php
                      }
@@ -224,30 +226,23 @@
 </div>
 </body>
 </html>
-<?php
-if(isset($_POST['send'])){
-    $message = $_POST['message'];
-    $senderID = $_POST['senderID'];
-    $receipientID = $_POST['receipientID'];
-     date_default_timezone_set("Africa/Nairobi");
-     $time = date("Y-m-d h:i:sa");
-    $sql = "INSERT INTO messages (message,senderID, receipientID, time, subjectUnit)
-    VALUES ('$message','$senderID','$receipientID', '$time', '$subjectUnit')";
-
-    //if sql query is executed...
-    if (mysqli_query($conn, $sql)) {
-        $to= 'listingChat.php?action=chat&with='.$receipientID.'&inView='. $subjectUnit;
-        echo '<script> window.location.href = "'. $to.'"; </script>';
-           } else {	
-               //show error
-       echo "Error: " . $sql . "
-" . mysqli_error($conn);
-    }
-    //close connection
-    mysqli_close($conn);
-}
-?>
 <script>
+    // const msgForm = document.getElementById('typingArea');
+    // const submitMsg = document.getElementById('sendMsg');
+    //    submitMsg.onclick = () =>{
+    //    const xhttp = new XMLHttpRequest();
+    // //    xhttp.onload = function(){
+    // //    }
+    // xhttp.open("POST", "processing.php", true);
+    // // xhttp.onreadystatechange = function(){
+    // //     if(this.readyState == 4 && this.status == 200){
+
+    // //     }
+    // // }
+
+    // let msgData = new FormData(msgForm);
+    // xhttp.send();
+    // }
 let slideIndex = 1;
 showSlides(slideIndex);
 

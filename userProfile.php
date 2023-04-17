@@ -17,7 +17,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/2751fbc624.js" crossorigin="anonymous"></script>
-    <script src="script.js" async></script>
+    <script src="script.js" ></script>
     <link rel="stylesheet" href="style.css">
     <title>Your profile</title>
 </head>
@@ -54,7 +54,7 @@
         ?>
         <div class="profile">
             <div class="intro">
-                <img src="<?php if($row['profilePhoto'] == 0){
+                <img src="<?php if($row['profilePhoto'] == ''){
                     echo 'Images/user.png';} else{ echo'Uploads/' . $row['profilePhoto'];}?>" alt="profile photo"/>
                 <div class="rating">
                 <h4><?php echo $row['name']?></h4>
@@ -99,7 +99,7 @@
                     ?>
                 </div>
                 <div>
-                <p><a href="listingChat.php?with=<?php echo $profileID; $i++;}}?>" style="text-decoration: none; color: black;">chat<i class="fa-solid fa-message"></i></a></p>
+                <p><a href="userChats.php?action=chat&with=<?php echo $profileID; $i++;}}?>" style="text-decoration: none; color: black;">chat<i class="fa-solid fa-message"></i></a></p>
 
                 </div>
             </div>
@@ -121,17 +121,19 @@
         <?php
         $tour = explode('*', $result['virtualTour']);
         ?>
-        <div class="tourCard" id="firstSlide">
+        <div class="tourCard firstSlide" id="firstSlide<?php echo $result['id']?>">
             <img src="Uploads/<?php echo $tour[0]?>" class="previewImg " alt="living room"/>
-            <a class="prev" onclick ="showImgs()" >&#10094;</a>
-            <a class="next" onclick ="showImgs()" >&#10095;</a>     
+            <?php if(count($tour) > 1){?>
+            <a class="prev" onclick ="showImgs(<?php echo $result['id']?>)" >&#10094;</a>
+            <a class="next" onclick ="showImgs(<?php echo $result['id']?>)" >&#10095;</a>   
+            <?php } ?>      
         </div>
-        <div class="tourCard" id="secondSlide">
+        <div class="tourCard secondSlide" id="secondSlide<?php echo $result['id']?>">
         <?php
         // if(isset($_GET['action'])){if ($_GET['action'] == 'showSlides'){
         for($j=0; $j < count($tour); $j++){
             ?>
-            <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg  slide fade" alt="living room"/>
+            <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg  slide fade" id="slide<?php echo $j?>" alt="living room"/>
             <?php
         // }
     // }
@@ -196,7 +198,7 @@ $i++;}}?>
                     
                 </div>
                 <div>
-                <a href="userChats.php" style="text-decoration: none; color: black;"><span id="msg">chat<i class="fa-solid fa-message"></i></span></a>
+                <a href="userChats.php" style="text-decoration: none; color: black;"><span id="msg"><i class="fa-solid fa-message"></i></span></a>
                     <!-- <span id='pay' onClick="pay()">Pay</span> -->
                 </div>
             </div>
@@ -234,17 +236,19 @@ $i++;}}?>
                                <?php
                                $tour = explode('*', $result['virtualTour']);
                                ?>
-                               <div class="tourCard" id="firstSlide">
+                               <div class="tourCard firstSlide" id="firstSlide<?php echo $result['id']?>">
                                    <img src="Uploads/<?php echo $tour[0]?>" class="previewImg " alt="living room"/>
-                                   <a class="prev" onclick ="showImgs()" >&#10094;</a>
-                                   <a class="next" onclick ="showImgs()" >&#10095;</a>     
+                                   <?php if(count($tour) > 1){?>
+            <a class="prev" onclick ="showImgs(<?php echo $result['id']?>)" >&#10094;</a>
+            <a class="next" onclick ="showImgs(<?php echo $result['id']?>)" >&#10095;</a>   
+            <?php } ?>      
                                </div>
-                               <div class="tourCard" id="secondSlide">
+                               <div class="tourCard secondSlide" id="secondSlide<?php echo $result['id']?>">
                                <?php
                                // if(isset($_GET['action'])){if ($_GET['action'] == 'showSlides'){
                                for($j=0; $j < count($tour); $j++){
                                    ?>
-                                   <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg  slide fade" alt="living room"/>
+                                   <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg  slide fade" id="slide<?php echo $j?>"  alt="living room"/>
                                    <?php
                                // }
                            // }
@@ -303,17 +307,19 @@ $i++;}}?>
         <?php
         $tour = explode('*', $result['virtualTour']);
         ?>
-        <div class="tourCard" id="firstSlide">
+        <div class="tourCard firstSlide" id="firstSlide<?php echo $result['id']?>">
             <img src="Uploads/<?php echo $tour[0]?>" class="previewImg " alt="living room"/>
-            <a class="prev" onclick ="showImgs()" >&#10094;</a>
-            <a class="next" onclick ="showImgs()" >&#10095;</a>     
+            <?php if(count($tour) > 1){?>
+            <a class="prev" onclick ="showImgs(<?php echo $result['id']?>)" >&#10094;</a>
+            <a class="next" onclick ="showImgs(<?php echo $result['id']?>)" >&#10095;</a>   
+            <?php } ?>     
         </div>
-        <div class="tourCard" id="secondSlide">
+        <div class="tourCard secondSlide" id="secondSlide<?php echo $result['id']?>">
         <?php
         // if(isset($_GET['action'])){if ($_GET['action'] == 'showSlides'){
         for($j=0; $j < count($tour); $j++){
             ?>
-            <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg  slide fade" alt="living room"/>
+            <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg  slide fade" id="slide<?php echo $j?>"  alt="living room"/>
             <?php
         // }
     // }
@@ -390,31 +396,7 @@ $i++;}}}?>
 }}
 ?>
 <script>
-       let slideIndex = 1;
-showSlides(slideIndex);
 
-function plusSlides(n){
-    showSlides(slideIndex += n)
-}
-function currentSlide(n){
-    showSlides(slideIndex = n)
-}
-function showSlides(n){
-    let i;
-    let slides = document.getElementsByClassName('slide');
-    if( n > slides.length){
-        slideIndex = 1
-    }
-    if(n < 1){slideIndex = slides.length}
-    for (i = 0; i< slides.length; i++){
-        slides[i].style.display = "none";
-    }
-    slides[slideIndex - 1].style.display = "block";
-} 
-    function showImgs(){
-    document.getElementById('firstSlide').style.display = "none";
-    document.getElementById('secondSlide').style.display = "block";
-}
 
 let ratingForm = document.getElementById('ratingForm');
 document.getElementById('star1').onclick = () => {

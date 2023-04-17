@@ -163,6 +163,11 @@ if(isset($_GET['action'])){
             move_uploaded_file($tmpFilePath, $newFilePath);
         }
     }
+// }else{
+//     for($i=0; $i < count($tourFiles); $i++){
+//         $_SESSION['virtualTour'][] =$tourFiles[$i];
+//          }
+// }
 
     $_SESSION["category"] = $_POST['category'];
 	$_SESSION["cost"] = $_POST['cost'];
@@ -172,6 +177,7 @@ if(isset($_GET['action'])){
      for($i=0; $i < count($_POST['others']); $i++){
     $_SESSION['others'][] = $_POST['others'][$i];
      }
+    //  echo  $_SESSION['virtualTour'][0];
     
      header('location:preview.php');
 
@@ -266,6 +272,28 @@ if(isset($_GET['action'])){
             mysqli_close($conn);
 
         }
+        }
+        if(isset($_POST['send'])){
+            $message = $_POST['message'];
+            $senderID = $_POST['senderID'];
+            $receipientID = $_POST['receipientID'];
+            $subjectUnit = $_POST['subjectUnit'];
+             date_default_timezone_set("Africa/Nairobi");
+             $time = date("Y-m-d h:i:sa");
+            $sql = "INSERT INTO messages (message,senderID, receipientID, time, subjectUnit)
+            VALUES ('$message','$senderID','$receipientID', '$time', '$subjectUnit')";
+        
+            //if sql query is executed...
+            if (mysqli_query($conn, $sql)) {
+                $to= 'listingChat.php?action=chat&with='.$receipientID.'&inView='. $subjectUnit;
+                echo '<script> window.location.href = "'. $to.'"; </script>';
+                   } else {	
+                       //show error
+               echo "Error: " . $sql . "
+        " . mysqli_error($conn);
+            }
+            //close connection
+            mysqli_close($conn);
         }
 
 ?>

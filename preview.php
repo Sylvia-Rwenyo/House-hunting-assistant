@@ -12,7 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/2751fbc624.js" crossorigin="anonymous"></script>
-    <script src="script.js" async></script>
+    <script src="script.js" ></script>
     <link rel="stylesheet" href="style.css">
     <title>New Unit Preview</title>
 </head>
@@ -26,24 +26,29 @@
  
     <div class="list preview" id="list">
     <div class="card" id="card1">
-                <div class="tourCard" id="firstSlide">
+                <div class="tourCard firstSlide" id="firstSlide0">
                     <img src="Uploads/<?php echo $_SESSION['virtualTour'][0]?>" class="previewImg " alt="living room"/>
-                    <a class="prev" onclick ="showImgs()" >&#10094;</a>
-                    <a class="next" onclick ="showImgs()" >&#10095;</a>     
+                    <?php if(count($_SESSION['virtualTour']) > 1){?>
+                    <a class="prev" onclick ="showImgs(0)" >&#10094;</a>
+                    <a class="next" onclick ="showImgs(0)" >&#10095;</a>     
+                    <?php } ?>
                 </div>
-                <div class="tourCard" id="secondSlide">
+                <div class="tourCard secondSlide" id="secondSlide0">
                 <?php
                 // if(isset($_GET['action'])){if ($_GET['action'] == 'showSlides'){
-                for($j=0; $j < count($_SESSION['virtualTour']); $j++){
+                for($j = 0; $j < count($_SESSION['virtualTour']); $j++){
+                   
                     ?>
-                    <img src="Uploads/<?php echo $_SESSION['virtualTour'][$j]?>" class="previewImg  slide fade" alt="living room"/>
+                    <img src="Uploads/<?php echo$_SESSION['virtualTour'][$j]?>" class="previewImg  slide slide0 fade" id="slide<?php echo $j?>"  alt="living room"/>
                     <?php
                 // }
             // }
         }
                 ?>
+                <div>
                  <a class="prev" onclick ="plusSlides(-1)" >&#10094;</a>
-                    <a class="next" onclick ="plusSlides(1)" >&#10095;</a>     
+                    <a class="next" onclick ="plusSlides(1)" >&#10095;</a> 
+    </div>    
         </div>
                
         <div class="details">
@@ -90,31 +95,5 @@
     }};
     
 ?>
-<script>
-    let slideIndex = 1;
-showSlides(slideIndex);
 
-function plusSlides(n){
-    showSlides(slideIndex += n)
-}
-function currentSlide(n){
-    showSlides(slideIndex = n)
-}
-function showSlides(n){
-    let i;
-    let slides = document.getElementsByClassName('slide');
-    if( n > slides.length){
-        slideIndex = 1
-    }
-    if(n < 1){slideIndex = slides.length}
-    for (i = 0; i< slides.length; i++){
-        slides[i].style.display = "none";
-    }
-    slides[slideIndex - 1].style.display = "block";
 
-}
-function showImgs(){
-    document.getElementById('firstSlide').style.display = "none";
-    document.getElementById('secondSlide').style.display = "block";
-}
-</script>

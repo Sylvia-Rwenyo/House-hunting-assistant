@@ -290,8 +290,9 @@ width: 90%;
 }
 .Listings .list .card img, .profileBody .list .card img{
     width: 100%;
-    height: 70%;
+    height: 100%;
 }
+
 .Listings .list .card .slidesContainer{
     width: 100%;
     height: 60%;
@@ -302,13 +303,14 @@ width: 90%;
 }
 
 .Listings .list .card .details, .profileBody .list .card .details{
+    margin-top: 5%;
     height: 30%;
     padding: 0.5em;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
 }
-.Listings .list .card .details div, .profileBody .list .card .details div{
+.Listings .list .card .details div, .profileBody .list .card .details div, .singleCard  div{
     display: flex;
     flex-direction: row;
     margin: 0;
@@ -528,7 +530,7 @@ li{
     border-left: none;
 }
 .message .chat .typingArea textarea{
-    height: 95%;
+    height: 93.5%;
     background: transparent;
     width: 75%;
     padding-left: 5%;
@@ -548,6 +550,7 @@ li{
     border: 2px solid black;
     padding: 5%;
     margin-left: 5%;
+    margin-top: 5%;
 }
 .paymentForm{
     width: 70%;
@@ -777,7 +780,7 @@ li{
 #editingProfile .contactInfo{
     justify-content: space-between;
 }
-.profileBody .details a{
+.profileBody .details a, .cards a{
     text-decoration: none;
     color: black;
     margin-top: 5%;
@@ -1080,9 +1083,9 @@ height: 1em;
     color: black;
     margin-left: 5%;
 }
- /* .slide{
+ .slide{
     display: none;
-} */
+}
 
 .prev, .next{
     cursor: pointer;
@@ -1097,7 +1100,6 @@ height: 1em;
     transition: 0.6s ease;
     border-radius: 0 3px 3px 0;
     user-select: none;
-    margin-left: 20%;
 }
 .next{
     right: 0;
@@ -1146,7 +1148,7 @@ to{opacity: 1}
     justify-content: space-evenly;
 }
 .Listings .preview .card{
-    width: 50%;
+    width: 70%;
 }
 .singleMessages{
     display: flex;
@@ -1157,7 +1159,7 @@ to{opacity: 1}
 .loginPswd #password{
     margin-bottom: 0;
 }
-#secondSlide{
+#secondSlide, .secondSlide{
     display: none;
 }
 .listingsChat{
@@ -1195,7 +1197,7 @@ to{opacity: 1}
 }
 .tourCard{
     width: 100%;
-    height: 70%;
+    height: 60%;
 }
 .tourCard img{
     width: 100%;
@@ -1225,4 +1227,84 @@ to{opacity: 1}
     border: none;
     margin-right: 5%;
     font-size: 1em;
+}
+.uploads .list .tourCard{
+height: 60%;
+}
+.uploads .details{
+    margin-top: 5%;
+}
+.cards{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    width: 85%;
+    margin-left: 7.5%;
+    background-color: white;
+    padding-right: 2.5%;
+    padding-left: 2.5%;
+    padding-top: 1.5%;
+    padding-bottom: 1.5%;
+    margin-top: 5%;
+    align-content: space-evenly;
+    row-gap: 3%;
+}
+.cards .singleCard{
+    width: 90%;
+    padding: 1em;
+    height: 50vh;
+}
+.cards .singleCard:hover{
+   box-shadow: 0 2px 4px  0 darkgray;
+}
+.cards .singleCard img{
+    height: 60%;
+    width: 100%;
+}
+.cards .singleCard p{
+    margin-left: 2.5%;
+}
+.cards .singleCard .category, .listing-details .category{
+    color: #62A039;
+}
+.like-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    height: 1em;
+    width: fit-content;
+    border: none;
+    border-radius: 5px;
+    margin-top:1em;
+}
+.like-btn:hover{
+    box-shadow: 0 2px 4px  0 #62A039;
+}
+.singleCard div{
+    justify-content: space-between;
+    height: 2em;
+}
+.tourArea{
+    width: 70%;
+    margin-left: 15%;
+    height: 50vh;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+.tourArea img{
+    width: 100%;
+    height: 100%;
+}
+.tourArea div{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding-top:2.5%;
+}
+.listing-details{
+margin-left: 15%;
+}
+.listings-details .detail{
+    margin-top: 5%;
 }

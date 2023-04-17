@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/2751fbc624.js" crossorigin="anonymous"></script>
-    <script src="script.js" async></script>
+    <script src="script.js" ></script>
     <link rel="stylesheet" href="style.css">
     <title>Upload Unit</title>
 </head>
@@ -104,10 +104,20 @@
                 while($result = mysqli_fetch_array($records)) {
             ?>
         <form class="card" id="mainAddform" method="post" enctype="multipart/form-data" action="processing.php">
-             <select name="category" value="<?php echo $result['category']?>">
+             <select name="category" >
                     <option disabled selected>category</option>
-                    <option value="forSale">For sale</option>
+                    <?php if($result['category'] == "forSale"){
+                        ?>
+                    <option value="forSale" selected>For sale</option>
                     <option value="rental" >For renting</option>
+                    <?php
+                    }else if($result['category'] == "rental"){
+                        ?>
+                    <option value="forSale" >For sale</option>
+                    <option value="rental" selected>For renting</option>
+                        <?php
+                    }
+                    ?>
                 </select>
                 <input type="hidden" value='<?php echo $_SESSION['userID']?>'   name="userID"/>
                 <input type="text" placeholder="Cost"   name="cost" value="<?php echo $result['cost']?>" />
@@ -120,7 +130,7 @@
                     $others = explode('*', $result['others']);
                     for($i = 0; $i <count($others); $i++){
                     ?>
-                    <span><?php echo $others[$i]?><input type="checkbox" name="others[]" value="<?php echo $result['others'][$i]?>"/></span>
+                    <span><?php echo $others[$i]?><input type="checkbox" name="others[]" value="<?php echo $result['others'][$i]?>" checked/></span>
                     <?php
                     }
                     ?>
@@ -128,13 +138,13 @@
               <div id="virtualTour">
                 <label>Upload Virtual Tour</label>  
                 <input type="hidden"  name="uploadID" value="<?php echo $result['id'] ?>"/>
-                <input type="file" placeholder="" id="prevTour" name="virtualTour[]" value="<?php
+                <input type="text" placeholder="" id="prevTour2" name="virtualTour[]" value="<?php
                 $tour = explode('*', $result['virtualTour']);
                 for($i =0; $i < count($tour); $i++){
-                    echo $tour[$i] . ' ';
+                    echo $tour[$i] .' ';
                 }?>" multiple accept=".jpg, .jpeg, .mp4, .png "/>
             </div>
-            <button class="btn lg logIn" type="submit" name="preview">Preview</button>
+            <button class="btn lg logIn" type="submit" id="editPreview" name="preview">Preview</button>
             </form>
         <?php
         $i++;
@@ -148,4 +158,7 @@
 prevTour.onclick = () =>{
     prevTour.type = 'file';
 }
+// document.getElementById('editPreview').onclick = () =>{
+//     prevTour.type = 'file';
+// }
 </script>

@@ -1,3 +1,7 @@
+<?php
+include_once 'conn.php';
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/2751fbc624.js" crossorigin="anonymous"></script>
-    <script src="script.js" ></script>
+    <script src="script.js"  ></script>
     <link rel="stylesheet" href="style.css">
     <title>Active Listings</title>
 </head>
@@ -38,83 +42,71 @@
             <div id="openFilters" onClick="filters()"><i class="fa-solid fa-filter"></i></div>
             <div id="openFilters2" onClick="closeFilters()"><span>Sort</span><i class="fa-solid fa-angle-up"></i></div>
                 <div class="filters" id="filters">
-                    <div>
-                        <label>Bedrooms</label>
-                        <input name="bedrooms" type="number"/>
-                    </div>
-                    <div>
-                        <label>Bathrooms</label>
-                        <input name="bathrooms" type="number"/>
-                    </div>
-                    <div>
-                        <label>Parking space</label>
-                    </div>
+                        <div>
+                            <label>Bedrooms</label>
+                            <input name="bedrooms" id="filterBedrooms" type="number" oninput="filterBedrooms()"/>
+                        </div>
+                        <div>
+                            <label>Bathrooms</label>
+                            <input name="bathrooms" id="filterBathrooms" type="number"  oninput="filterBathrooms()"/>
+                        </div>
+                        <div>
+                            <label>Size in sqft</label>
+                            <input name="size" id="filterSize" type="number"  oninput="filterSize()"/>
+                        </div>
+                        <div id="parkingSpace">
+                            <label>Parking space</label>
+                            <input name="filterParkingSpace" id="filterParkingSpace"  type="hidden"  onclick="filterParkingSpace()"/>
+                        </div>
+                        <div  id="playground">
+                            <label>Playground</label>
+                            <input name="filterPlayground"  id="filterPlayground" type="hidden"  onclick="filterPlayground()"/>
+                        </div>
                 </div> 
         </div>
-    <div class="list" id="list">
-    <?php 
-            include_once 'conn.php';
-            session_start();
-            $userID = 0;
-            $records = mysqli_query($conn,"SELECT * FROM  units");
-            if (mysqli_num_rows($records) > 0) {
+    <div class="cards">
+        <?php
+         $userID = 0;
+            // $records;
+            // if(empty($_GET)){
+           $records = mysqli_query($conn,"SELECT * FROM  units");
+            // }else if($_GET['filter'] == true && $_GET['filter'] !== ""){
+            //     $records = mysqli_query($conn,"SELECT * FROM  units where '$filter' == '$val'");
+                if (mysqli_num_rows($records) > 0) {
             $i=0;
             while($result = mysqli_fetch_array($records)) {
                 $userID = $result['userID'];
-        ?>
-        <div class="card" id="card<?php echo $result['id']?>">
-                <?php
                 $tour = explode('*', $result['virtualTour']);
+
                 ?>
-                <div class="tourCard" id="firstSlide">
-                    <img src="Uploads/<?php echo $tour[0]?>" class="previewImg " alt="living room"/>
-                    <a class="prev" onclick ="showImgs()" >&#10094;</a>
-                    <a class="next" onclick ="showImgs()" >&#10095;</a>     
-                </div>
-                <div class="tourCard" id="secondSlide">
-                <?php
-                // if(isset($_GET['action'])){if ($_GET['action'] == 'showSlides'){
-                for($j=0; $j < count($tour); $j++){
-                    ?>
-                    <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg  slide fade" alt="living room"/>
+            <div class="singleCard" id="singleCard<?php echo $result['id']?>" onclick="showDetails(<?php echo $result['id']?>)">
+                <img src="Uploads/<?php echo $tour[0]?>" class="previewImg " alt=""/>
+                <div>
                     <?php
-                // }
-            // }
-        }
-                ?>
-                 <a class="prev" onclick ="plusSlides(-1)" >&#10094;</a>
-                    <a class="next" onclick ="plusSlides(1)" >&#10095;</a>     
-        </div>
-               
-        <div class="details">
-                <div>
-                    <h5><?php echo $result['bedroomNo']?> bedroom house</h5>
-                    <a href="listingChat.php?with=<?php echo $userID; $_SESSION['inView'] = $result['id']; ?>&inView=<?php echo  $_SESSION['inView']?>">
-                       chat <span id="card<?php echo $result['id']?>"><i class="fa-solid fa-message"></i></span>
-                    </a>
-                    <!-- <span id='pay' onClick="pay()">Pay</span> -->
+                    if($result['category'] == 'forSale'){
+                    ?>
+                    <p class="category">For sale</p>
+                    <?php
+                    }elseif($result['category'] == 'rental'){
+                    ?>
+                        <p class="category">Rental</p>
+                        <?php
+                        }
+                        ?>
+                       <a href="listing.php?likes=<?php echo $result['likes']?>&id=<?php echo $result['id']?>&by=<?php echo $_SESSION['id']?>"><button class="like-btn"><i class="fa fa-heart"></i><span><?php echo $result['likes']?></span> </button></a>
                 </div>
-                <div>
-                    <p class="first">For <?php if($result["category"] == "forSale"){echo 'sale at Ksh';}
-                                    else if($result["category"] == "rental"){echo 'rent at Ksh';} echo $result['cost'];?></p>
-                    <p>At <?php echo $result['location']?></p>
-                    <p><?php echo $result['size']?> sqft</p>
-                </div>
-                <div>
-                <?php
-                $others =explode('*', $result['others']);
-                    for($j=0; $j <count($others); $j++){
-                ?> 
-                <p><?php echo $others[$j];?></p>
-                <?php
-                };
-                ?>
-                </div>
-        </div>
-        </div>
-        <?php
-        $i++;}}
-        ?>
+                    <div>
+                        <p><?php echo $result['bedroomNo']?> bedroom house</p>
+                        <a href="listingChat.php?with=<?php echo $userID; $_SESSION['inView'] = $result['id']; ?>&inView=<?php echo  $_SESSION['inView']?>"><span id="card<?php echo $result['id']?>"><i class="fa-solid fa-message"></i></span>
+                        </a>
+                    </div>
+                    <p>Ksh <?php echo $result['cost']?></p>
+                    <p><i class="fa fa-location-dot"></i> <?php echo $result['location']?></p>
+            </div>
+            <?php
+            $i++;
+            }}
+            ?>
     </div>
 </div>
 </div>
@@ -141,37 +133,71 @@ if(isset($_POST['send'])){
     //close connection
     mysqli_close($conn);
 }
+if(isset($_GET['likes'])){
+        $by = $_GET['by'];
+        $id = $_GET['id'];
+        $sql=mysqli_query($conn,"SELECT likedBy FROM units where id='$id'");
+        $row  = mysqli_fetch_array($sql);
+        //if sql query is executed...
+        if(is_array($row))
+        {
+        $likedBy = explode('*', $row['likedBy']);
+        if(in_array($by, $likedBy)){
+            $likes = $_GET['likes'] - 1;
+            $likedBy =str_replace($row['likedBy'], '*'.$by, '');
+            $sql2 = "UPDATE units SET likes ='$likes', likedBy='$likedBy' where id = '$id'";
+    
+        //if sql query is executed...
+        if (mysqli_query($conn, $sql2)) {
+              echo '<script> window.location.href = "listing.php"</script>'; 
+               } else {	
+                   //show error
+           echo "Error: " . $sql2 . "
+    " . mysqli_error($conn);
+        }
+        //close connection
+        mysqli_close($conn);
+
+        }else{
+            $likes = $_GET['likes'] + 1;
+            $sql2 = "UPDATE units SET likes ='$likes', likedBy=concat(likedBy,'*','$by') where id = '$id'";
+    
+        //if sql query is executed...
+        if (mysqli_query($conn, $sql2)) {
+            echo '<script> window.location.href = "listing.php"</script>'; 
+        } else {	
+                   //show error
+           echo "Error: " . $sql2 . "
+    " . mysqli_error($conn);
+        }
+        //close connection
+        mysqli_close($conn);
+        }
+        }
+        
+    }
+
 ?>
 <script>
-let slideIndex = 1;
-showSlides(slideIndex);
-
-function plusSlides(n){
-    showSlides(slideIndex += n)
+    const filters = () =>{
+    document.getElementById('filters').style.display = 'block';
+    document.getElementById('openFilters').style.display = 'none';
+    document.getElementById('openFilters2').style.display = 'block';
 }
-function currentSlide(n){
-    showSlides(slideIndex = n)
+const closeFilters = () =>{
+    document.getElementById('filters').style.display = 'none';
+    document.getElementById('openFilters').style.display = 'block';
+    document.getElementById('openFilters2').style.display = 'none';
 }
-function showSlides(n){
-    let i;
-    let slides = document.getElementsByClassName('slide');
-    if( n > slides.length){
-        slideIndex = 1
-    }
-    if(n < 1){slideIndex = slides.length}
-    for (i = 0; i< slides.length; i++){
-        slides[i].style.display = "none";
-    }
-    slides[slideIndex - 1].style.display = "block";
+const showMenu = () =>{
+    document.getElementById('menuBars').style.display = 'none';
+    document.getElementById('menu').style.display = 'block';
 }
-
-const pay = () =>{
-    document.getElementById('paymentArea').style.display = 'block';
-    document.getElementById('message').style.display = 'none';
-    document.getElementById('creditCard').style.display = 'block';
+const closeMenu = () =>{
+    document.getElementById('menuBars').style.display = 'block';
+    document.getElementById('menu').style.display = 'none';
 }
-function showImgs(){
-    document.getElementById('firstSlide').style.display = "none";
-    document.getElementById('secondSlide').style.display = "block";
+const showDetails = (id) =>{
+    window.location.href = "listing-details.php?id=" + id;
 }
 </script>

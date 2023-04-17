@@ -110,28 +110,65 @@ function saleForm(){
     document.getElementById('registrationPrompt').style.display = "none"
 
 }
-function showImgs(){
-    document.getElementById('firstSlide').style.display = "none";
-    document.getElementById('secondSlide').style.display = "block";
-}
-// let slideIndex = 1;
-// showSlides(slideIndex);
 
-// function plusSlides(n){
-//     showSlides(slideIndex += n)
-// }
-// function currentSlide(n){
-//     showSlides(slideIndex = n)
-// }
-// function showSlides(n){
-//     let i;
-//     let slides = document.getElementsByClassName('slide');
-//     if( n > slides.length){
-//         slideIndex = 1
-//     }
-//     if(n < 1){slideIndex = slides.length}
-//     for (i = 0; i< slides.length; i++){
-//         slides[i].style.display = "none";
-//     }
-//     slides[slideIndex - 1].style.display = "block";
-// }
+
+function showImgs(tourCard){
+    console.log(tourCard);
+    
+    let firstSlide = document.getElementsByClassName('firstSlide');
+    for( i = 0; i < firstSlide.length; i++){
+    firstSlide[i].style.display = "block";
+    }
+    document.getElementById('firstSlide' +tourCard).style.display = "none";
+    let allSlides = document.getElementsByClassName('secondSlide');
+    for( i = 0; i < allSlides.length; i++){
+    allSlides[i].style.display = "none";
+    }
+    document.getElementById('secondSlide'+ tourCard).style.display = "block";
+    document.getElementById('slide1').style.display = 'block';
+    // window.location.href = "listing.php"
+}
+var slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function showSlides(n) {
+  var i;
+  var x = document.getElementsByClassName("slide");
+  if (n > x.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = x.length} ;
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+  x[slideIndex-1].style.display = "block";
+}
+
+let filterBedrooms = document.getElementById('filterBedrooms');
+let filterBathrooms = document.getElementById('filterBathrooms');
+let filterSize = document.getElementById('filterSize');
+let filterParkingSpace = document.getElementById('filterParkingSpace');
+let filterPlayground = document.getElementById('filterPlayground');
+
+ function filterBedrooms(){
+    let number = filterBedrooms.value;
+    window.location.href = "listing.php?action=filter&bedrooms=" + number;
+}
+function filterBathrooms(){
+    let number = filterBathrooms.value;
+    window.location.href = "listing.php?action=filter&bathrooms=" + number;
+}
+function filterSize(){
+    let number = filterSize.value;
+    window.location.href = "listing.php?action=filter&size=" + number;
+}
+function filterParkingSpace(){
+    let availability = 1;
+    window.location.href = "listing.php?action=filter&parkingSpace=" + availability;
+}
+function filterPlayground (){
+    let availability = 1;
+    window.location.href = "listing.php?action=filter&playground=" + availability;
+}

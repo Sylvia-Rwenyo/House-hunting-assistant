@@ -55,14 +55,16 @@
                 ?>
                 <div class="tourCard" id="firstSlide">
                     <img src="Uploads/<?php echo $tour[0]?>" class="previewImg " alt="living room"/>
-                    <a class="prev" onclick ="showImgs()" >&#10094;</a>
-                    <a class="next" onclick ="showImgs()" >&#10095;</a>     
+                    <?php if(count($tour) > 1){?>
+            <a class="prev" onclick ="showImgs(<?php echo $result['id']?>)" >&#10094;</a>
+            <a class="next" onclick ="showImgs(<?php echo $result['id']?>)" >&#10095;</a>   
+            <?php } ?>   
                 </div>
                 <div class="tourCard" id="secondSlide">
                 <?php
                 for($j=0; $j < count($tour); $j++){
                     ?>
-                    <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg  slide fade" alt="living room"/>
+                    <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg  slide fade" id="slide<?php echo $j?>"  alt="living room"/>
                     <?php
         }
                 ?>
@@ -73,7 +75,7 @@
         <div class="details">
                 <div>
                     <h5><?php echo $result['bedroomNo']?> bedroom house</h5>
-                   <a href="paymentSection.php"><span id='pay'>Pay</span></a>
+                   <!-- <a href="paymentSection.php"><span id='pay'>Pay</span></a> -->
                 </div>
                 <div>
                     <p class="first">For <?php if($result["category"] == "forSale"){echo 'sale at Ksh';}
@@ -98,7 +100,6 @@
         ?>
     </div>
     <div class="paymentArea" id="paymentArea">
-    <span onClick="closePaymentSection()"><i class="fa-solid fa-x"></i></span>
         <div id="payPrompt">
         <div>
             <label>Credit Card</label>
@@ -135,6 +136,14 @@
 </body>
 </html>
 <script>
+    const showMenu = () =>{
+    document.getElementById('menuBars').style.display = 'none';
+    document.getElementById('menu').style.display = 'block';
+}
+const closeMenu = () =>{
+    document.getElementById('menuBars').style.display = 'block';
+    document.getElementById('menu').style.display = 'none';
+}
 let slideIndex = 1;
 showSlides(slideIndex);
 
