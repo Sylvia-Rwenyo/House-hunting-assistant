@@ -56,6 +56,7 @@
             $i=0;
             while($result = mysqli_fetch_array($records)) {
                 $_SESSION['id'] = $result['id'];
+                $_SESSION['credits'] = $result["credits"];
                 $i++;
             }}
 
@@ -80,7 +81,7 @@
                     echo '<style> #payPrompt1{display:none;}</style>';
                         date_default_timezone_set("Africa/Nairobi");
                         $time = date("Y-m-d h:i:s");
-                        $credited = mysqli_query($conn," SELECT * FROM  creditPasses where unitID='$id' && userID='$userID' ");
+                        $credited = mysqli_query($conn," SELECT * FROM  creditPasses where unitID='$id' && userID='$userID' && expired=0 ");
                         if (mysqli_num_rows($credited) < 1) {
                             $expired = false;
                         $sqlY = mysqli_query($conn," INSERT INTO creditPasses (unitID, userID, time, expired) VALUES ('$id','$userID', '$time', '$expired')" );

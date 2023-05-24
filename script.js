@@ -180,3 +180,9 @@ amount.oninput = () =>{
     document.getElementById('bill').innerHTML = "Purchasing " + credits + " credits" ;
     console.log(document.getElementById('bill').value = "Bill of Ksh" + amount.value);
 }
+
+window.onload = () => {
+    document.addEventListener("contextmenu", function(e) {
+        e.preventDefault();
+    });
+}

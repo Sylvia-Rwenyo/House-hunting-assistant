@@ -323,7 +323,7 @@ if(isset($_GET['action'])){
                 $_SESSION['credits'] = $totalCredits;
                 $sqlz = "UPDATE registration SET credits='$totalCredits' where id = '$userID' ";
                 if (mysqli_query($conn, $sqlz)){
-                echo '<script> window.location.href ="'. $from .'&id='. $id.'"; </script>';
+                echo '<script> window.location.href ="'. $from .'&id='. $id.'&inView='. $id.'"; </script>';
                 }
             }else {	
                 //show error
@@ -342,11 +342,43 @@ if(isset($_GET['action'])){
             mysqli_close($conn);
         }
 
-        $viewedUnits = array();
-//     if($_SESSION['credits']  > 0){
-// $_SESSION['credits'] -=1;
-// $updatedCredits = $_SESSION['credits'];
-// $user_id = $_SESSION['id'];
-// $sqlY = mysqli_query($conn,"UPDATE registration SET credits ='$updatedCredits' where id = '$user_id'" );
-//     }
+        $time = date_create(date("Y-m-d h:i:sa"));
+        $sqlQ=mysqli_query($conn,"SELECT * FROM creditpasses where expired=0");
+        $row  = mysqli_fetch_array($sqlQ);
+        //if sql query is executed...
+        if(is_array($row)){
+            
+           $priorTime =  date_create($row['time']);
+        //    echo $priorTime;
+        //    echo $time;
+         $diff = date_diff($time, $priorTime);
+          $timed =  $diff->format("%i");
+          echo $timed;
+          echo $row["id"];
+          if($timed > 4 ){
+            $id = $row["id"];
+            $expiryTime = date("Y-m-d h:i:sa");
+            $sqlz = "UPDATE creditpasses SET expired = 1, expiryDate='$expiryTime' where id = '$id' ";
+            if (!mysqli_query($conn, $sqlz)){
+            //show error
+            echo "Error: " . $sql . "
+            " . mysqli_error($conn);
+            }else{
+                $userID = $row["userID"];
+                $sqlY=mysqli_query($conn,"SELECT * FROM registration where id='$userID'");
+                $row  = mysqli_fetch_array($sqlY);
+            //if sql query is executed...
+            if(is_array($row)){
+                $setCredits = $row['credits']- 1;
+                $_SESSION['credits'] = $setCredits;
+                $sqlx = "UPDATE registration SET credits='$setCredits' where id = '$userID' ";
+                if (!mysqli_query($conn, $sqlx)){
+                    //show error
+                    echo "Error: " . $sql . "
+                    " . mysqli_error($conn);     
+                           }
+            }
+        }
+          }}
+        
 ?>

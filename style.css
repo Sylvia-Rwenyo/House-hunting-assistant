@@ -550,7 +550,7 @@ li{
     border: 2px solid black;
     padding: 5%;
     margin-left: 5%;
-    margin-top: 5%;
+    margin-top: 2%;
 }
 .paymentForm{
     width: 70%;
@@ -1365,4 +1365,9 @@ margin-left: 15%;
 .payArea{
     display: flex;
     flex-direction: column;
+}
+.creditMsg{
+    width:60%;
+    margin-left: 5%;
+   margin-top: 2%;
 }
