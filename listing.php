@@ -20,7 +20,7 @@ session_start();
     <div class="header">
         <h1>Active Listings</h1>
         <div class="search">
-        <form>
+        <form id="searchForm" action="processing.php">
             <input name="keyword" type="text"/>
             <button type="submit"><i class="fa-solid fa-search"></i></button>
         </form>
@@ -44,7 +44,7 @@ session_start();
                 <div class="filters" id="filters">
                         <div>
                             <label>Bedrooms</label>
-                            <input name="bedrooms" id="filterBedrooms" type="number" oninput="filterBedrooms()"/>
+                            <input name="bedrooms" id="filterBedrooms" type="number" oninput="filterBedroom()"/>
                         </div>
                         <div>
                             <label>Bathrooms</label>
@@ -64,12 +64,17 @@ session_start();
                         </div>
                 </div> 
         </div>
-    <div class="cards">
+        <?php
+        if(!empty($_GET)){
+            if(isset($_GET['action']) == 'filter'){
+            ?>
+            <h4>From you filter search</h4>
+                <div class="cards">
         <?php
          $userID = 0;
             // $records;
             // if(empty($_GET)){
-           $records = mysqli_query($conn,"SELECT * FROM  units");
+           $records = mysqli_query($conn,"SELECT * FROM  units order by likes DESC");
             // }else if($_GET['filter'] == true && $_GET['filter'] !== ""){
             //     $records = mysqli_query($conn,"SELECT * FROM  units where '$filter' == '$val'");
                 if (mysqli_num_rows($records) > 0) {
@@ -93,12 +98,104 @@ session_start();
                         <?php
                         }
                         ?>
-                       <a href="listing.php?likes=<?php echo $result['likes']?>&id=<?php echo $result['id']?>&by=<?php echo $_SESSION['id']?>"><button class="like-btn"><i class="fa fa-heart"></i><span><?php echo $result['likes']?></span> </button></a>
+                    <a href="listing.php?likes=<?php echo $result['likes']?>&id=<?php echo $result['id']?>&by=<?php echo $_SESSION['id']?>">
+                        <button class="like-btn">
+                            <i class="fa fa-heart" <?php
+                                                        $unitID=$result['id'];
+                                                        $by = $_SESSION['id'];
+                                                        $stmt=mysqli_query($conn,"SELECT likedBy FROM units where id='$unitID'");
+                                                        $row  = mysqli_fetch_array($stmt);
+                                                        //if sql query is executed...
+                                                        if(is_array($row))
+                                                        {
+                                                        $likedBy = explode('*', $row['likedBy']);
+                                                        if(in_array($by, $likedBy)){
+                                                            echo 'style="color: #c89364"';
+                                                        }
+                                                    }
+                                                        ?>>
+                            </i>
+                            <span><?php echo $result['likes']?></span>
+                        </button>
+                    </a>
                 </div>
                     <div>
                         <p><?php echo $result['bedroomNo']?> bedroom house</p>
-                        <a href="listingChat.php?with=<?php echo $userID; $_SESSION['inView'] = $result['id']; ?>&inView=<?php echo  $_SESSION['inView']?>"><span id="card<?php echo $result['id']?>"><i class="fa-solid fa-message"></i></span>
-                        </a>
+                    <a href="listingChat.php?with=<?php echo $userID; $_SESSION['inView'] = $result['id']; ?>&inView=<?php echo  $_SESSION['inView']?>">
+                        <span id="card<?php echo $result['id']?>">
+                            <i class="fa-solid fa-message"></i>
+                        </span>
+                    </a>
+                    </div>
+                    <p>Ksh <?php echo $result['cost']?></p>
+                    <p><i class="fa fa-location-dot"></i> <?php echo $result['location']?></p>
+            </div>
+            <?php
+            $i++;
+            }}
+            ?>
+    </div>
+            <?php
+            }
+        }
+        ?>
+    <div class="cards">
+        <?php
+         $userID = 0;
+            // $records;
+            // if(empty($_GET)){
+           $records = mysqli_query($conn,"SELECT * FROM  units order by likes DESC");
+            // }else if($_GET['filter'] == true && $_GET['filter'] !== ""){
+            //     $records = mysqli_query($conn,"SELECT * FROM  units where '$filter' == '$val'");
+                if (mysqli_num_rows($records) > 0) {
+            $i=0;
+            while($result = mysqli_fetch_array($records)) {
+                $userID = $result['userID'];
+                $tour = explode('*', $result['virtualTour']);
+
+                ?>
+            <div class="singleCard" id="singleCard<?php echo $result['id']?>" onclick="showDetails(<?php echo $result['id']?>)">
+                <img src="Uploads/<?php echo $tour[0]?>" class="previewImg " alt=""/>
+                <div>
+                    <?php
+                    if($result['category'] == 'forSale'){
+                    ?>
+                    <p class="category">For sale</p>
+                    <?php
+                    }elseif($result['category'] == 'rental'){
+                    ?>
+                        <p class="category">Rental</p>
+                        <?php
+                        }
+                        ?>
+                    <a href="listing.php?likes=<?php echo $result['likes']?>&id=<?php echo $result['id']?>&by=<?php echo $_SESSION['id']?>">
+                        <button class="like-btn">
+                            <i class="fa fa-heart" <?php
+                                                        $unitID=$result['id'];
+                                                        $by = $_SESSION['id'];
+                                                        $stmt=mysqli_query($conn,"SELECT likedBy FROM units where id='$unitID'");
+                                                        $row  = mysqli_fetch_array($stmt);
+                                                        //if sql query is executed...
+                                                        if(is_array($row))
+                                                        {
+                                                        $likedBy = explode('*', $row['likedBy']);
+                                                        if(in_array($by, $likedBy)){
+                                                            echo 'style="color: #c89364"';
+                                                        }
+                                                    }
+                                                        ?>>
+                            </i>
+                            <span><?php echo $result['likes']?></span>
+                        </button>
+                    </a>
+                </div>
+                    <div>
+                        <p><?php echo $result['bedroomNo']?> bedroom house</p>
+                    <a href="listingChat.php?with=<?php echo $userID; $_SESSION['inView'] = $result['id']; ?>&inView=<?php echo  $_SESSION['inView']?>">
+                        <span id="card<?php echo $result['id']?>">
+                            <i class="fa-solid fa-message"></i>
+                        </span>
+                    </a>
                     </div>
                     <p>Ksh <?php echo $result['cost']?></p>
                     <p><i class="fa fa-location-dot"></i> <?php echo $result['location']?></p>
@@ -149,6 +246,11 @@ if(isset($_GET['likes'])){
     
         //if sql query is executed...
         if (mysqli_query($conn, $sql2)) {
+            echo '<style type="text/css">
+            .fa-heart {
+                color: black;
+            }
+            </style>';
               echo '<script> window.location.href = "listing.php"</script>'; 
                } else {	
                    //show error
@@ -164,6 +266,11 @@ if(isset($_GET['likes'])){
     
         //if sql query is executed...
         if (mysqli_query($conn, $sql2)) {
+            echo '<style type="text/css">
+            .fa-heart {
+                color: #c89364;
+            }
+            </style>';
             echo '<script> window.location.href = "listing.php"</script>'; 
         } else {	
                    //show error
@@ -200,4 +307,5 @@ const closeMenu = () =>{
 const showDetails = (id) =>{
     window.location.href = "listing-details.php?id=" + id;
 }
+
 </script>

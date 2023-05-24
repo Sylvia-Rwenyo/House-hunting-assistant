@@ -146,13 +146,13 @@ function showSlides(n) {
   x[slideIndex-1].style.display = "block";
 }
 
-let filterBedrooms = document.getElementById('filterBedrooms');
 let filterBathrooms = document.getElementById('filterBathrooms');
 let filterSize = document.getElementById('filterSize');
 let filterParkingSpace = document.getElementById('filterParkingSpace');
 let filterPlayground = document.getElementById('filterPlayground');
+let filterBedrooms = document.getElementById('filterBedrooms');
 
- function filterBedrooms(){
+function filterBedroom(){
     let number = filterBedrooms.value;
     window.location.href = "listing.php?action=filter&bedrooms=" + number;
 }
@@ -172,3 +172,9 @@ function filterPlayground (){
     let availability = 1;
     window.location.href = "listing.php?action=filter&playground=" + availability;
 }
+
+// let searchForm = document.getElementById('searchForm');
+
+// searchForm.onsubmit = () =>{
+
+// }

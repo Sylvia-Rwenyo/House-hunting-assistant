@@ -1275,10 +1275,13 @@ height: 60%;
     width: fit-content;
     border: none;
     border-radius: 5px;
-    margin-top:1em;
+    /* margin-top:1em; */
 }
 .like-btn:hover{
     box-shadow: 0 2px 4px  0 #62A039;
+}
+.like-btn i{
+    margin-right: 0.5em;
 }
 .singleCard div{
     justify-content: space-between;
