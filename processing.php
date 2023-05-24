@@ -121,6 +121,7 @@ if(isset($_POST['logIn']))
         $_SESSION["username"]=$row['name'];
         $_SESSION["id"]=$row['id'];
         $_SESSION['category']=$row['category'];
+        $_SESSION['credits']=$row['credits'];
         $_SESSION["loggedIN"] = true;
         $loginStatus = $_SESSION["loggedIN"];
 
@@ -295,5 +296,57 @@ if(isset($_GET['action'])){
             //close connection
             mysqli_close($conn);
         }
+        if(isset($_POST['pay'])){
+            session_start();
+            $id = $_POST['id'];
+            $userID = $_POST['userID'];
+            $phoneNo = $_POST['phoneNumber'];
+            $amount = $_POST['amount'];
+            $password = $_POST['password'];
+            $credits = $_POST['amount']/ 50;
+            $from = $_POST['from'];
+            date_default_timezone_set("Africa/Nairobi");
+            $time = date("Y-m-d h:i:sa");
+            $sqlQ=mysqli_query($conn,"SELECT * FROM registration where id='$userID'");
+            $row  = mysqli_fetch_array($sqlQ);
+            //if sql query is executed...
+            if(is_array($row))
+            {
+                $setCredits = $row['credits'];
+                if($password == $row['password']){
+            $sql = "INSERT INTO credits (phoneNumber, amount, credits, time, userID)
+            VALUES ('$phoneNo','$amount','$credits', '$time', '$userID')";
+        
+            //if sql query is executed...
+            if (mysqli_query($conn, $sql)) {
+                $totalCredits = $setCredits +$credits;
+                $_SESSION['credits'] = $totalCredits;
+                $sqlz = "UPDATE registration SET credits='$totalCredits' where id = '$userID' ";
+                if (mysqli_query($conn, $sqlz)){
+                echo '<script> window.location.href ="'. $from .'&id='. $id.'"; </script>';
+                }
+            }else {	
+                //show error
+               echo "Error: " . $sql . "
+        " . mysqli_error($conn);
+            }
+            }
+        }
+            
+            //if sql query is executed...
+            if (!$sqlQ) {
+               echo "Error: " . $sqlQ . "
+        " . mysqli_error($conn);
+            }
+            //close connection
+            mysqli_close($conn);
+        }
 
+        $viewedUnits = array();
+//     if($_SESSION['credits']  > 0){
+// $_SESSION['credits'] -=1;
+// $updatedCredits = $_SESSION['credits'];
+// $user_id = $_SESSION['id'];
+// $sqlY = mysqli_query($conn,"UPDATE registration SET credits ='$updatedCredits' where id = '$user_id'" );
+//     }
 ?>

@@ -40,14 +40,13 @@ session_start();
          $userID = 0;
         $id = $_GET['id'];
            $records = mysqli_query($conn,"SELECT * FROM  units where id='$id'");
-            // }else if($_GET['filter'] == true && $_GET['filter'] !== ""){
-            //     $records = mysqli_query($conn,"SELECT * FROM  units where '$filter' == '$val'");
-                if (mysqli_num_rows($records) > 0) {
-            $i=0;
-            while($result = mysqli_fetch_array($records)) {
+     
+            if (mysqli_num_rows($records) > 0) {
+                $i=0;
+                while($result = mysqli_fetch_array($records)) {
                 $userID = $result['userID'];
                 $tour = explode('*', $result['virtualTour']);
-                ?>
+    ?>
     <div class="tourArea">
         <?php
         for($j=0; $j < count($tour); $j++){
@@ -75,17 +74,40 @@ session_start();
                         ?>
     </div>
     <div class='listing-details details' >
+        <div class="detailsSection">
+            <div>
         <p><?php echo $result['bedroomNo']?> bedroom house</p>
-        <a href="listingChat.php?with=<?php echo $userID; $_SESSION['inView'] = $result['id']; ?>&inView=<?php echo  $_SESSION['inView']?>"><span id="card<?php echo $result['id']?>"><i class="fa-solid fa-message"></i></span>
+        <a href="listingChat.php?with=<?php echo $userID; $_SESSION['inView'] = $result['id']; ?>&inView=<?php echo  $_SESSION['inView']?>">Chat<span id="card<?php echo $result['id']?>"><i class="fa-solid fa-message"></i></span>
         </a>
-  
+                    </div>
     <p>Ksh <?php echo $result['cost']?></p>
-    <p><i class="fa fa-location-dot"></i> <?php echo $result['location']?></p>
+    <?php
+        if($_SESSION['credits'] < 1){
+            ?>
+    <p onClick="showOverlay()"><i class="fa fa-location-dot"></i> <?php echo $result['location']?></p>
+    <?php
+        }else{
+    ?>
+    <p ><i class="fa fa-location-dot"></i> <?php echo $result['location']?></p>
             <?php
+        }
             $i++;
             }}
             ?>
-              </div>
+        </div>
+        <div class="detailsSection">
+            <p>This is a paragraph.</p>
+            <p>This is a another paragraph.</p>
+            <p>This is a the last paragraph.</p>
+        </div>
+
+        <div class="payPrompt"  id="payPrompt2">
+            <div>
+                <p>To continue, top up your credits</p>
+                <a href="paymentSection.php?userID=<?php echo $_SESSION['id']?>&id=<?php echo $_GET['id']?>&from=listing-details.php?&id=<?php echo $_GET['id']?>">here</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 <?php
@@ -153,6 +175,7 @@ if(isset($_GET['likes'])){
         
     }
 
+
 ?>
 <script>
     const filters = () =>{
@@ -197,4 +220,7 @@ function showSlides(n){
     }
     slides[slideIndex - 1].style.display = "block";
 } 
+function showOverlay(){
+    document.getElementById("payPrompt2").style.display = "block";
+         }
 </script>

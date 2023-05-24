@@ -10,7 +10,7 @@
     <script src="https://kit.fontawesome.com/2751fbc624.js" crossorigin="anonymous"></script>
     <script src="script.js" ></script>
     <link rel="stylesheet" href="style.css">
-    <title>Chat with</title>
+    <title>Credits Top up</title>
 </head>
 <body class="Listings">
     <div class="header">
@@ -33,72 +33,25 @@
         </div>
     </div>
     </div>
-    <div class="listingsChat">
+    <div class="listingsChat payArea">
    
-    <div class="list" id="list">
+    <!-- <div class="list" id="list"> -->
     <?php 
             include_once 'conn.php';
             session_start();
             $id = $_GET['id'];
             $userID = $_SESSION['id'];
-            $to = '';
-            $uploaderID = 0;
-            $records = mysqli_query($conn,"SELECT * FROM  units where id =  '$id'");
-            if (mysqli_num_rows($records) > 0) {
-            $i=0;
-            while($result = mysqli_fetch_array($records)) {
-                $uploaderID = $result['userID'];
+            // $to = '';
+            // $uploaderID = 0;
+            // $records = mysqli_query($conn,"SELECT * FROM  units where id =  '$id'");
+            // if (mysqli_num_rows($records) > 0) {
+            // $i=0;
+            // while($result = mysqli_fetch_array($records)) {
+            //     $uploaderID = $result['userID'];
         ?>
-        <div class="card" id="card<?php echo $result['id']?>">
-                <?php
-                $tour = explode('*', $result['virtualTour']);
-                ?>
-                <div class="tourCard" id="firstSlide">
-                    <img src="Uploads/<?php echo $tour[0]?>" class="previewImg " alt="living room"/>
-                    <?php if(count($tour) > 1){?>
-            <a class="prev" onclick ="showImgs(<?php echo $result['id']?>)" >&#10094;</a>
-            <a class="next" onclick ="showImgs(<?php echo $result['id']?>)" >&#10095;</a>   
-            <?php } ?>   
-                </div>
-                <div class="tourCard" id="secondSlide">
-                <?php
-                for($j=0; $j < count($tour); $j++){
-                    ?>
-                    <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg  slide fade" id="slide<?php echo $j?>"  alt="living room"/>
-                    <?php
-        }
-                ?>
-                 <a class="prev" onclick ="plusSlides(-1)" >&#10094;</a>
-                    <a class="next" onclick ="plusSlides(1)" >&#10095;</a>     
+        <div class="creditMsg">
+            <p>Each credit is worth Ksh 50. You can use your credits to communicate directly with home owners and care takers as well as view the unit's location. Each credit once in use expires after 24hours.</p>
         </div>
-               
-        <div class="details">
-                <div>
-                    <h5><?php echo $result['bedroomNo']?> bedroom house</h5>
-                   <!-- <a href="paymentSection.php"><span id='pay'>Pay</span></a> -->
-                </div>
-                <div>
-                    <p class="first">For <?php if($result["category"] == "forSale"){echo 'sale at Ksh';}
-                                    else if($result["category"] == "rental"){echo 'rent at Ksh';} echo $result['cost'];?></p>
-                    <p>At <?php echo $result['location']?></p>
-                    <p><?php echo $result['size']?> sqft</p>
-                </div>
-                <div>
-                <?php
-                $others =explode('*', $result['others']);
-                    for($j=0; $j <count($others); $j++){
-                ?> 
-                <p><?php echo $others[$j];?></p>
-                <?php
-                };
-                ?>
-                </div>
-        </div>
-        </div>
-        <?php
-        $i++;}}
-        ?>
-    </div>
     <div class="paymentArea" id="paymentArea">
         <div id="payPrompt">
         <div>
@@ -116,17 +69,24 @@
             <input type="number" placeholder="CVC" name="" />
             <input type="passcode" placeholder='pass code' name="" />
             <div>
-                <input type="text" name='bill' id='bill1' value="Bill of Ksh 100" />
-                <button type="submit" name="pay">Done</button>
+                <!-- <input type="text" name='bill' id='bill1' value="Bill of Ksh 100" /> -->
+                <button type="submit" id="bill" name="pay">Done</button>
             </div>
         </form>
-        <form class="paymentForm" id="mpesa">
+        <form class="paymentForm" id="mpesa" method="POST" action="processing.php">
             <input type="number" placeholder="phone number" name="phoneNumber"/>
-            <input type="number" placeholder="amount" name="amount" />
+            <input type="number" placeholder="amount" name="amount" id="amount" />
             <input type="password" placeholder='password' name="password" />
+            <?php if(isset($_GET)){ ?>
+            <input type="hidden" name="id" value="<?php echo $_GET['id']?>"/>
+            <input type="hidden" name="userID" value="<?php echo $_GET['userID']?>"/>
+            <input type="hidden" name="from" value="<?php echo $_GET['from']?>"/>
+            <?php
+            }
+            ?>
             <div>
-                <input type="text" name='bill' id='bill' value="Bill of Ksh 100" />
-                <button type="submit" name="pay">Done</button>
+                  <!-- <input type="text" name='bill' id='bill1' value="Bill of Ksh 100" /> -->
+                  <button type="submit" id="bill" name="pay">Done</button>
             </div>
         </form>
         
@@ -191,5 +151,11 @@ payMethodM.oninput = () =>{
     selectCreditCard.style.display = 'none';
     selectMpesa.style.display = 'block';
 }
-
+let amount = document.getElementById('amount');
+amount.oninput = () =>{
+    console.log(amount.value);
+    let credits = amount.value/50;
+    document.getElementById('bill').innerHTML = "Purchasing " + credits + " credits" ;
+    console.log(document.getElementById('bill').value = "Bill of Ksh" + amount.value);
+}
 </script>

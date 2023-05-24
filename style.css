@@ -126,7 +126,7 @@
 }
 
 .addUnit, .Listings, .profileBody{
-    background-color: #ede9e2;
+    background-color: rgb(237, 233, 227);
     color: black;
     padding: 2.5%;
 }
@@ -572,7 +572,7 @@ li{
     justify-content: space-between;
     margin-top: 2em;
 }
-.paymentForm div input{
+.paymentForm div button{
     border: none;
     width: 30%;
     background-color: #83a46f;
@@ -581,10 +581,11 @@ li{
 }
 .paymentForm div button{
     width: 25%;
-    background-color: #c89364;
+    /* background-color: #c89364; */
     color: #000000;
     border: none;
     border-radius: 5px;
+    margin-left: 80%;
     float: right;
 }
 /* #paymentArea{
@@ -1310,4 +1311,58 @@ margin-left: 15%;
 }
 .listings-details .detail{
     margin-top: 5%;
+}
+.payPrompt{
+    position: fixed; /* Sit on top of the page content */
+  display: none; 
+  /* Hidden by default */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.9); /* Black background with opacity */
+  color: #ede9e2;
+  z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer; /* Add a pointer on hover */
+}
+.payPrompt div{
+    margin: 20%;
+    font-size: 1.5em;
+    text-align: center;
+}
+.payPrompt a{
+    text-decoration: none;
+    color: #ede9e2;
+    text-decoration: underline;
+
+}
+.detailsSection div{
+    display: flex;
+    flex-direction: row;
+    height: 2.25em;
+}
+.detailsSection div a{
+    margin-left: 2.5%;
+    padding-top: 1.5%;
+    text-decoration: none;
+    color: #000000;
+}
+.allCards{
+    display: flex;
+    flex-direction: column;
+}
+.searchTitle{
+    margin-left: 7.5%;
+    font-size: 1.25em;
+    margin-block-start: 1.33em;
+    margin-block-end:0.25em;
+}
+#searchResults{
+    margin-top: 1%;
+}
+.payArea{
+    display: flex;
+    flex-direction: column;
 }

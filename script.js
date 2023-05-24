@@ -173,8 +173,10 @@ function filterPlayground (){
     window.location.href = "listing.php?action=filter&playground=" + availability;
 }
 
-// let searchForm = document.getElementById('searchForm');
-
-// searchForm.onsubmit = () =>{
-
-// }
+let amount = document.getElementById('amount');
+amount.oninput = () =>{
+    console.log(amount.value);
+    let credits = amount.value/50;
+    document.getElementById('bill').innerHTML = "Purchasing " + credits + " credits" ;
+    console.log(document.getElementById('bill').value = "Bill of Ksh" + amount.value);
+}

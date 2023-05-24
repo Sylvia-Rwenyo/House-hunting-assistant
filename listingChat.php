@@ -38,15 +38,17 @@
     <?php 
             include_once 'conn.php';
             session_start();
-            $subjectUnit;
+
+            // $subjectUnit;
             if(!empty($_GET) && isset($_GET['inView'])){
             $id = $_GET['inView'];
             }else if(!empty($_GET) && isset($_GET['id'])){
                 $id = $_GET['id']; 
             }
             else{
-            $id=$subjectUnit;
+            // $id=$subjectUnit;
             }
+
             $mail = $_SESSION['email'];
             $_SESSION['id'] = 0;
             $records = mysqli_query($conn,"SELECT * FROM  registration where emailAddress='$mail' ");
@@ -54,7 +56,9 @@
             $i=0;
             while($result = mysqli_fetch_array($records)) {
                 $_SESSION['id'] = $result['id'];
-                $i++;}}
+                $i++;
+            }}
+
             $userID = $_SESSION['id'];
             $to = '';
             $uploaderID = 0;
@@ -64,8 +68,30 @@
             while($result = mysqli_fetch_array($records)) {
                 $uploaderID = $result['userID'];
         ?>
+         <div class="payPrompt"  id="payPrompt1">
+            <div>
+                <p>To continue, top up your credits</p>
+                <a href="paymentSection.php?userID=<?php echo $_SESSION['id']?>&id=<?php echo $_GET['inView']?>&from=listingChat.php?with=<?php echo $_GET['with']?>&inView=<?php echo $_GET['inView']?>">here</a>
+            </div>
+        </div>
         <div class="card" id="card<?php echo $result['id']?>">
                 <?php
+                if($_SESSION['credits'] >= 1){
+                    echo '<style> #payPrompt1{display:none;}</style>';
+                        date_default_timezone_set("Africa/Nairobi");
+                        $time = date("Y-m-d h:i:s");
+                        $credited = mysqli_query($conn," SELECT * FROM  creditPasses where unitID='$id' && userID='$userID' ");
+                        if (mysqli_num_rows($credited) < 1) {
+                            $expired = false;
+                        $sqlY = mysqli_query($conn," INSERT INTO creditPasses (unitID, userID, time, expired) VALUES ('$id','$userID', '$time', '$expired')" );
+                        if(!$sqlY){
+                            echo "Error: " . $sqlY . "
+                            " . mysqli_error($conn);
+                        }
+                    }
+                }else{
+                    echo '<style> #payPrompt1{display:block;}</style>';
+                }
                 $tour = explode('*', $result['virtualTour']);
                 ?>
                 <div class="tourCard" id="firstSlide">
@@ -90,7 +116,6 @@
         <div class="details">
                 <div>
                     <h5><?php echo $result['bedroomNo']?> bedroom house</h5>
-                   <a href="paymentSection.php?id=<?php echo $id?>"><span id='pay'>Pay</span></a>
                 </div>
                 <div>
                     <p class="first">For <?php if($result["category"] == "forSale"){echo 'sale at Ksh';}
@@ -223,6 +248,9 @@
     </div>
 
 </div>
+<div class="creditMsg">
+            <p>You can use your credits to communicate directly with home owners and care takers as well as view the unit's location. Each credit once in use expires after 24hours.</p>
+        </div>
 </div>
 </body>
 </html>

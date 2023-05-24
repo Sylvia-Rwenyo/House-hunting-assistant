@@ -12,6 +12,7 @@ session_start();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/2751fbc624.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="script.js"  ></script>
     <link rel="stylesheet" href="style.css">
     <title>Active Listings</title>
@@ -20,9 +21,9 @@ session_start();
     <div class="header">
         <h1>Active Listings</h1>
         <div class="search">
-        <form id="searchForm" action="processing.php">
-            <input name="keyword" type="text"/>
-            <button type="submit"><i class="fa-solid fa-search"></i></button>
+        <form id="searchForm" action="listing.php" method="POST">
+            <input name="searchQ" type="text"/>
+            <button type="submit" name="search"><i class="fa-solid fa-search"></i></button>
         </form>
          </div> 
         <span class="menuBar" id="menuBars" onClick="showMenu()"><i class="fa-solid fa-bars"></i></span>
@@ -39,50 +40,63 @@ session_start();
     </div>
     <div class="mainListing">
         <div class="filterSection">
-            <div id="openFilters" onClick="filters()"><i class="fa-solid fa-filter"></i></div>
+            <div id="openFilters" onClick="filters()">
+                <i class="fa-solid fa-filter"></i>
+            </div>
             <div id="openFilters2" onClick="closeFilters()"><span>Sort</span><i class="fa-solid fa-angle-up"></i></div>
-                <div class="filters" id="filters">
+                <form class="filters" id="filters" method="post">
                         <div>
                             <label>Bedrooms</label>
-                            <input name="bedrooms" id="filterBedrooms" type="number" oninput="filterBedroom()"/>
+                            <input name="bedrooms" id="filterBedrooms" type="number" />
                         </div>
                         <div>
                             <label>Bathrooms</label>
-                            <input name="bathrooms" id="filterBathrooms" type="number"  oninput="filterBathrooms()"/>
+                            <input name="bathrooms" id="filterBathrooms" type="number"  />
                         </div>
                         <div>
                             <label>Size in sqft</label>
-                            <input name="size" id="filterSize" type="number"  oninput="filterSize()"/>
+                            <input name="size" id="filterSize" type="number" />
                         </div>
                         <div id="parkingSpace">
                             <label>Parking space</label>
-                            <input name="filterParkingSpace" id="filterParkingSpace"  type="hidden"  onclick="filterParkingSpace()"/>
+                            <input name="filterParkingSpace" id="filterParkingSpace"  type="hidden"  />
                         </div>
                         <div  id="playground">
                             <label>Playground</label>
-                            <input name="filterPlayground"  id="filterPlayground" type="hidden"  onclick="filterPlayground()"/>
+                            <input name="filterPlayground"  id="filterPlayground" type="hidden"  />
                         </div>
-                </div> 
+    </form> 
         </div>
+        <div class="allCards">
         <?php
-        if(!empty($_GET)){
-            if(isset($_GET['action']) == 'filter'){
+            if(isset($_POST['search'])){
             ?>
-            <h4>From you filter search</h4>
-                <div class="cards">
+            <h4 class="searchTitle">From your search</h4>
+                <div class="cards" id="searchResults">
         <?php
          $userID = 0;
-            // $records;
-            // if(empty($_GET)){
-           $records = mysqli_query($conn,"SELECT * FROM  units order by likes DESC");
-            // }else if($_GET['filter'] == true && $_GET['filter'] !== ""){
-            //     $records = mysqli_query($conn,"SELECT * FROM  units where '$filter' == '$val'");
-                if (mysqli_num_rows($records) > 0) {
-            $i=0;
-            while($result = mysqli_fetch_array($records)) {
-                $userID = $result['userID'];
-                $tour = explode('*', $result['virtualTour']);
-
+         $searchQ = $_POST['searchQ'];
+         $keywords = explode(' ', $searchQ);
+         
+         if (count($keywords) > 0) {
+             $conditions = [];
+             foreach ($keywords as $keyword) {
+                 if ($keyword === 'sale' || $keyword === 'for' || $keyword === 'for sale') {
+                     $conditions[] = "category LIKE '%sale%'";
+                 } else {
+                     $conditions[] = "category = '$keyword' OR cost = '$keyword' OR location = '$keyword' OR size = '$keyword' OR bedroomNo = '$keyword'";
+                 }
+             }
+         
+             $searchResults = "SELECT * FROM units WHERE " . implode(" OR ", $conditions) . " ORDER BY likes DESC";
+         }        
+         
+                $fullQ =  mysqli_query($conn, $searchResults);
+                if (mysqli_num_rows($fullQ) > 0) {
+                    $i=0;
+                    while($result = mysqli_fetch_array($fullQ)) {
+                        $userID = $result['userID'];
+                        $tour = explode('*', $result['virtualTour']);
                 ?>
             <div class="singleCard" id="singleCard<?php echo $result['id']?>" onclick="showDetails(<?php echo $result['id']?>)">
                 <img src="Uploads/<?php echo $tour[0]?>" class="previewImg " alt=""/>
@@ -132,22 +146,69 @@ session_start();
             </div>
             <?php
             $i++;
-            }}
+            }}else {
+                echo 'no result matching your search has been found';
+            }
             ?>
     </div>
             <?php
             }
-        }
         ?>
-    <div class="cards">
+      <div class="cards">
         <?php
          $userID = 0;
-            // $records;
-            // if(empty($_GET)){
-           $records = mysqli_query($conn,"SELECT * FROM  units order by likes DESC");
-            // }else if($_GET['filter'] == true && $_GET['filter'] !== ""){
-            //     $records = mysqli_query($conn,"SELECT * FROM  units where '$filter' == '$val'");
-                if (mysqli_num_rows($records) > 0) {
+       
+if(isset($_POST['filter'])){
+$bedrooms =isset($_POST['bedrooms']);
+$bathrooms = isset($_POST['bathrooms']);
+$size =isset( $_POST['size']);
+$parkingSpace = isset($_POST['filterParkingSpace']) ? 1 : 0;
+$playground = isset($_POST['filterPlayground']) ? 1 : 0;
+
+// Prepare the SQL query with the filter criteria
+$sql = "SELECT * FROM units WHERE";
+$conditions = array();
+
+if (!empty($bedrooms)) {
+    $conditions[] = "bedroomNo = " . mysqli_real_escape_string($conn, $bedrooms);
+}
+
+if (!empty($bathrooms)) {
+    $conditions[] = "bathroomNo = " . mysqli_real_escape_string($conn, $bathrooms);
+}
+
+if (!empty($size)) {
+    $conditions[] = "size = " . mysqli_real_escape_string($conn, $size);
+}
+
+if ($parkingSpace) {
+    $conditions[] = "parkingSpace = 1";
+}
+
+if ($playground) {
+    $conditions[] = "playground = 1";
+}
+
+if (empty($conditions)) {
+    // No filters applied, retrieve all units
+    $sql = "SELECT * FROM units";
+} else {
+    // Add the conditions to the SQL query
+    $sql .= " " . implode(" AND ", $conditions);
+}
+
+$sql .= " ORDER BY likes DESC";
+
+// Perform the query
+ echo "No results found.";
+}else{
+    $sql = "SELECT * FROM units ORDER BY likes DESC";
+}
+
+
+
+        $records = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($records) > 0) {
             $i=0;
             while($result = mysqli_fetch_array($records)) {
                 $userID = $result['userID'];
@@ -205,6 +266,7 @@ session_start();
             }}
             ?>
     </div>
+        </div>
 </div>
 </div>
 </body>
@@ -283,7 +345,7 @@ if(isset($_GET['likes'])){
         }
         
     }
-
+$searchQ = "";
 ?>
 <script>
     const filters = () =>{
@@ -307,5 +369,17 @@ const closeMenu = () =>{
 const showDetails = (id) =>{
     window.location.href = "listing-details.php?id=" + id;
 }
+
+// Function to submit the filters form
+function submitFiltersForm() {
+            $('#filters').submit();
+        }
+
+        // Event listeners for form elements
+        $(document).ready(function() {
+            $('#filterBedrooms, #filterBathrooms, #filterSize, #filterParkingSpace, #filterPlayground').on('input change', function() {
+                submitFiltersForm();
+            });
+        });
 
 </script>
