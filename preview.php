@@ -16,68 +16,71 @@
     <link rel="stylesheet" href="style.css">
     <title>New Unit Preview</title>
 </head>
-<body class="Listings">
+<body class="Listings prevPage">
     <div class="header">
         <h1><i class="fa-solid fa-arrow-left"></i></h1>
         <h1>New Unit</h1>
     </div>
     </div>
     <div class="mainListing">
- 
-    <div class="list preview" id="list">
-    <div class="card" id="card1">
-                <div class="tourCard firstSlide" id="firstSlide0">
-                    <img src="Uploads/<?php echo $_SESSION['virtualTour'][0]?>" class="previewImg " alt="living room"/>
-                    <?php if(count($_SESSION['virtualTour']) > 1){?>
-                    <a class="prev" onclick ="showImgs(0)" >&#10094;</a>
-                    <a class="next" onclick ="showImgs(0)" >&#10095;</a>     
-                    <?php } ?>
-                </div>
-                <div class="tourCard secondSlide" id="secondSlide0">
+        <div class="mainView">
+            <div class="tourArea">
                 <?php
-                // if(isset($_GET['action'])){if ($_GET['action'] == 'showSlides'){
-                for($j = 0; $j < count($_SESSION['virtualTour']); $j++){
-                   
+                // $tour = explode('*', );
+                for($j=0; $j < count($_SESSION['virtualTour']); $j++){
                     ?>
-                    <img src="Uploads/<?php echo$_SESSION['virtualTour'][$j]?>" class="previewImg  slide slide0 fade" id="slide<?php echo $j?>"  alt="living room"/>
+                    <img src="Uploads/<?php echo $_SESSION['virtualTour'][$j]?>" class="previewImg  slide fade" id="slide<?php echo $j?>" alt="living room"/>
                     <?php
-                // }
-            // }
-        }
+                    }
                 ?>
-                <div>
-                 <a class="prev" onclick ="plusSlides(-1)" >&#10094;</a>
-                    <a class="next" onclick ="plusSlides(1)" >&#10095;</a> 
-    </div>    
-        </div>
-               
-        <div class="details">
-                <div>
-                    <h5><?php echo $_SESSION['bedroomNo']?> bedroom house</h5>
+                <div class="move-slides">
+                    <a class="prev" onclick ="plusSlides(-1)" >&#10094;</a>
+                    <a class="next" onclick ="plusSlides(1)" >&#10095;</a>     
                 </div>
-                <div>
-                    <p class="first">For <?php if($_SESSION["category"] == "forSale"){echo 'sale at Ksh';}
-                                    else if($_SESSION["category"] == "rental"){echo 'rent at Ksh';} echo $_SESSION['cost'];?></p>
-                    <p>At <?php echo $_SESSION['location']?></p>
-                    <p><?php echo $_SESSION['size']?> sqft</p>
+            </div>
+            <div class="listing-details detail" style=" margin-left: 5%; font-size: 1.15em;">
+                            <?php
+                            if($_SESSION['category'] == 'forSale'){
+                            ?>
+                            <p class="category">For sale</p>
+                            <?php
+                            }elseif($_SESSION['category'] == 'rental'){
+                            ?>
+                                <p class="category">Rental</p>
+                                <?php
+                                }
+                                ?>
+            </div>
+            <div class='listing-details details' >
+                <div class="detailsSection" style="margin:0; margin-left: 2.5%">
+                    <div style="margin:0;  ">
+                <p><?php echo$_SESSION['condition'] . ' ' . $_SESSION['bedroomNo']?> bedroom house</p>
+                            </div>
+            <p>Ksh <?php echo $_SESSION['cost']?></p>
                 </div>
-                <div>
-                <?php
-                    for($j=0; $j <count($_SESSION['others']); $j++){
-                ?> 
-                <p><?php echo $_SESSION['others'][$j];?></p>
-                <?php
-                };
-                ?>
+                <div class="detailsSection">
+                    <p>The features enabling accessibility are <?php  echo   implode(',', $_SESSION['accessibility'])?>.</p>
+                    <p>This unit also has <?php echo   implode(',', $_SESSION['amenities'])?></p>
+                    <p>and <?php echo   implode(',', $_SESSION['others']) ?>.</p>
                 </div>
+        <?php      
+        ?>
         </div>
-        </div>
-        </div>
-        <div class="cardBtns">
-            <a href="processing.php?action=uploadUnit"><button class="btn upload">Upload</button></a>
-            <a href="addUnit.php?action=edit"><button class="btn edit">Edit</button></a>
-            <a href="preview.php?action=deletePreview"><button class="btn delete">Delete</button></a>
-        </div>
+    </div>
+    <div class="cardBtns">
+        <?php
+        if(isset($_GET['state'])){
+            if($_GET['state'] == 'edited'){ 
+        ?>
+        <a href="processing.php?action=editUnit&id=<?php echo $_GET['id']?>"><button class="btn upload">Upload</button></a>
+        <?php
+            }}else{
+        ?>
+        <a href="processing.php?action=uploadUnit"><button class="btn upload">Upload</button></a>
+        <?php } ?>
+        <a href="addUnit.php?action=edit"><button class="btn edit"></button></a>
+        <a href="preview.php?action=deletePreview"><button class="btn delete">Delete</button></a>
+    </div>
     </div>
     </div>
 </body>
@@ -90,10 +93,38 @@
         unset($_SESSION["bedroomNo"]);
         unset($_SESSION["location"]);
         unset($_SESSION["virtualTour"]);
+        unset($_SESSION["amenities"]);
+        unset($_SESSION["accessibility"]);
+        unset($_SESSION["condition"]);
         unset($_SESSION["others"]);
-        header("Location: addUnit.php");
+        echo ' <script> 
+        window.location.href = "addUnit.php";
+        </script>
+        ';
     }};
     
 ?>
+<script>
+    let slideIndex = 1;
+showSlides(slideIndex);
 
+function plusSlides(n){
+    showSlides(slideIndex += n)
+}
+function currentSlide(n){
+    showSlides(slideIndex = n)
+}
+function showSlides(n){
+    let i;
+    let slides = document.getElementsByClassName('slide');
+    if( n > slides.length){
+        slideIndex = 1
+    }
+    if(n < 1){slideIndex = slides.length}
+    for (i = 0; i< slides.length; i++){
+        slides[i].style.display = "none";
+    }
+    slides[slideIndex - 1].style.display = "block";
+} 
+</script>
 

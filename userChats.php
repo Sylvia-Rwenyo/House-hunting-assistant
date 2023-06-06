@@ -3,8 +3,10 @@
     session_start();
     $user = $_SESSION["username"];
     if($_SESSION["loggedIN"] == false){
-        header('location:index.php');
-    }else{
+        echo ' <script> 
+        window.location.href = "index.php";
+        </script>';
+        }else{
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,13 +46,11 @@
                 <?php 
                 $subjectUnit;
                     // get user info
-                    $mail = $_SESSION['email'];
-                    $_SESSION['userID'] = 0;
-                    $records = mysqli_query($conn,"SELECT * FROM  registration where emailAddress='$mail' ");
+                    $userID= $_SESSION['id'] ;
+                    $records = mysqli_query($conn,"SELECT * FROM  registration where id='$userID' ");
                     if (mysqli_num_rows($records) > 0) {
                     $i=0;
                     while($result = mysqli_fetch_array($records)) {
-                        $_SESSION['userID'] = $result['id'];
                         $i++;
                     }}
                 ?>

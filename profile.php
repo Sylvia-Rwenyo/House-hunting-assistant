@@ -3,8 +3,10 @@
         session_start();
         $user = $_SESSION["username"];
         if($_SESSION["loggedIN"] == false){
-            header('location:index.php');
-        }else{
+            echo ' <script> 
+            window.location.href = "index.php";
+            </script>';       
+         }else{
             $id;
     ?>
     <!DOCTYPE html>
@@ -84,7 +86,7 @@
                      echo 'Add phone number';} else{ echo $result['phoneNumber'];}
                      $i++;
                      }}?></a></p>
-                <p onclick="editProfile()">edit<i class="fa-solid fa-pencil"></i></p>
+                <p onclick="editProfile()"><i class="fa-solid fa-pencil"></i></p>
             </div>
             </div>
                 <?php 

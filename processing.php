@@ -45,14 +45,22 @@ if(isset($_POST['signUp']))
         if($_SESSION["loggedIN"]){
             if($category == "looking"){
             //redirect user to their listings page
-            header("Location: listing.php"); 
+            echo ' <script> 
+        window.location.href = "listing.php"
+        </script>
+        '; 
             }else if($category == "showing"){
             //redirect user to their profile page
-            header("Location: userProfile.php"); 
+            echo ' <script> 
+        window.location.href = "userProfile.php"
+        </script>
+        '; 
             }
         }else{
             //redirect to the home page
-            header('location:index.php');
+            echo ' <script> 
+        window.location.href = "index.php";
+        </script>';
         }
 			 } else {	
                 //show error
@@ -93,7 +101,10 @@ if(isset($_POST['editProfile']))
         $_SESSION["username"]=$name;
         $_SESSION["mail"]=$emailAddress;
         echo '$profilePhoto';
-        header('location:userProfile.php');
+        echo ' <script> 
+        window.location.href = "userProfile.php";
+        </script>
+        ';
     } else {	
     echo "Error: " . $sql . "
 " . mysqli_error($conn);
@@ -124,11 +135,16 @@ if(isset($_POST['logIn']))
         $_SESSION['credits']=$row['credits'];
         $_SESSION["loggedIN"] = true;
         $loginStatus = $_SESSION["loggedIN"];
-
         if($_SESSION['category'] == 'looking'){
-            header("Location: listing.php"); 
+            echo ' <script> 
+        window.location.href = "listing.php"
+        </script>
+        '; 
         }else if($_SESSION['category'] == 'showing'){
-            header("Location: userProfile.php"); 
+            echo ' <script> 
+        window.location.href = "userProfile.php"
+        </script>
+        '; 
         }
     }
     else
@@ -141,16 +157,116 @@ if(isset($_GET['action'])){
         if($_GET['action']== "logOut"){
             session_start();
             session_unset();
-            header("Location: index.php"); 
+            echo ' <script> 
+        window.location.href = "index.php"
+        </script>
+        '; 
         }
     }
-  
+    if(isset($_POST['next1'])){	
+        session_start(); 
+        unset($_SESSION["category"]);
+        unset($_SESSION["cost"]) ;
+        unset($_SESSION["size"]);
+        unset($_SESSION["bedroomNo"]);
+        unset($_SESSION["location"]);
+        unset($_SESSION["bathroomNo"]);
+      
+        $_SESSION["category"] = $_POST['category'];
+        $_SESSION["cost"] = $_POST['cost'];
+        $_SESSION["size"] = $_POST['size'];
+        $_SESSION["bedroomNo"] = $_POST['bedroomNo'];
+        $_SESSION["location"]= $_POST['location'];
+        $_SESSION["bathroomNo"]= $_POST['bathroomNo'];
+        $_SESSION["next1"] = true;
+
+        if(isset($_POST['edit'])){
+            echo ' <script> 
+            window.location.href = "addUnit.php?action=edit&a=2" ;
+            </script>';
+        }else if(isset($_POST['editUpload'])){
+            $id = $_POST['editUpload'];
+            echo ' <script> 
+            window.location.href = "addUnit.php?action=editUpload&a=2&id='.$id.'" ;
+            </script>';
+        }else if(isset($_POST['state'])){
+            echo ' <script> 
+            window.location.href = "addUnit.php?a=5" ;
+            </script>';
+         }else{
+         echo ' <script> 
+            window.location.href = "addUnit.php?a=2" ;
+            </script>';
+        }
+    
+    }
+    
+    if(isset($_POST['next2-1']))
+    {	 
+        session_start();
+        unset($_SESSION["condition"]);
+        unset($_SESSION["accessibility"]);
+        $_SESSION["condition"]= $_POST['condition'];
+        for($i=0; $i < count($_POST['accessibility']); $i++){
+            $_SESSION['accessibility'][] = $_POST['accessibility'][$i];
+             }
+         $_SESSION["next2-1"] = true;
+
+         if(isset($_POST['edit'])){
+            echo ' <script> 
+            window.location.href = "addUnit.php?action=edit&a=3" ;
+            </script>';
+        }else if(isset($_POST['editUpload'])){
+            $id = $_POST['editUpload'];
+            echo ' <script> 
+            window.location.href = "addUnit.php?action=editUpload&a=3&id='.$id.'" ;
+            </script>';
+        }else if(isset($_POST['state'])){
+            echo ' <script> 
+            window.location.href = "addUnit.php?a=8" ;
+            </script>';
+         }else{
+         echo ' <script> 
+            window.location.href = "addUnit.php?&a=3" ;
+            </script>';
+        }
+    }if(isset($_POST['next2']))
+    {	 
+        session_start();
+        unset($_SESSION["others"]);
+        unset($_SESSION["amenities"]);
+        for($i=0; $i < count($_POST['amenities']); $i++){
+        $_SESSION['amenities'][] = $_POST['amenities'][$i];
+            }
+         for($i=0; $i < count($_POST['others']); $i++){
+        $_SESSION['others'][] = $_POST['others'][$i];
+         }
+         $_SESSION["next2"] = true;
+
+         if(isset($_POST['edit'])){
+            echo ' <script> 
+            window.location.href = "addUnit.php?action=edit&a=4" ;
+            </script>';
+        }else if(isset($_POST['editUpload'])){
+            $id = $_POST['editUpload'];
+            echo ' <script> 
+            window.location.href = "addUnit.php?action=editUpload&a=4&id='.$id.'" ;
+            </script>';
+        }else{
+         echo ' <script> 
+            window.location.href = "addUnit.php?&a=9" ;
+            </script>';
+        }
+    }
+   
     if(isset($_POST['preview']))
 {	 
     session_start();
+    if(!isset($_SESSION['virtualTour'])){
+        $_SESSION['virtualTour'];
+   
     $files = array_filter($_FILES['virtualTour']['name']);
-    $_SESSION['virtualTour'];
-    //count the no of uploaded files
+        //count the no of uploaded files
     $fileCount = count($_FILES['virtualTour']['name']);
     for($i=0; $i < $fileCount; $i++){
         //obtain temp file
@@ -164,31 +280,9 @@ if(isset($_GET['action'])){
             move_uploaded_file($tmpFilePath, $newFilePath);
         }
     }
-// }else{
-//     for($i=0; $i < count($tourFiles); $i++){
-//         $_SESSION['virtualTour'][] =$tourFiles[$i];
-//          }
-// }
-
-    $_SESSION["category"] = $_POST['category'];
-	$_SESSION["cost"] = $_POST['cost'];
-    $_SESSION["size"] = $_POST['size'];
-    $_SESSION["bedroomNo"] = $_POST['bedroomNo'];
-    $_SESSION["location"]= $_POST['location'];
-     for($i=0; $i < count($_POST['others']); $i++){
-    $_SESSION['others'][] = $_POST['others'][$i];
-     }
-    //  echo  $_SESSION['virtualTour'][0];
-    
-     header('location:preview.php');
-
-}
-if(isset($_POST['editUpload']))
-{	 
-    session_start();
-    $files = array_filter($_FILES['virtualTour']['name']);
-    $_SESSION['virtualTour'];
-    //count the no of uploaded files
+    }else{
+        $files = array_filter($_FILES['virtualTour']['name']);
+        //count the no of uploaded files
     $fileCount = count($_FILES['virtualTour']['name']);
     for($i=0; $i < $fileCount; $i++){
         //obtain temp file
@@ -202,28 +296,30 @@ if(isset($_POST['editUpload']))
             move_uploaded_file($tmpFilePath, $newFilePath);
         }
     }
-
-    $_SESSION["category"] = $_POST['category'];
-	$_SESSION["cost"] = $_POST['cost'];
-    $_SESSION["size"] = $_POST['size'];
-    $_SESSION["bedroomNo"] = $_POST['bedroomNo'];
-    $_SESSION["location"]= $_POST['location'];
-     for($i=0; $i < count($_POST['others']); $i++){
-    $_SESSION['others'][] = $_POST['others'][$i];
-     }
-    
-     header('location:preview.php');
+    }
+    if(isset($_POST['editUpload'])){
+        echo ' <script> 
+        window.location.href = "preview.php?state=edited&id='. $_POST['editUpload'].'" ;
+        </script>';
+    }else{
+     echo ' <script> 
+        window.location.href = "preview.php" ;
+        </script>';
+    }
 
 }
+
 if(isset($_GET['action'])){
     // log out if the user selects "Log Out" on the menu bar
         if($_GET['action']== "logOut"){
             session_start();
             session_unset();
-            header("Location: index.php"); 
+            echo ' <script> 
+                        window.location.href = "index.php"
+                    </script>
+        '; 
         }
     
-    //delete an item from the menus table in the database if a restaurant admin user selects the trash icon in their menu 
         if($_GET['action'] == "deleteAccount"){
             $id = $_GET['id'];
             $sql = "DELETE FROM registration WHERE id=$id";
@@ -231,7 +327,9 @@ if(isset($_GET['action'])){
               {     
                 session_start();
                 session_unset();      
-                header('location:index.php');
+                echo ' <script> 
+                         window.location.href = "index.php";
+                       </script>';
              } 
         
              else {
@@ -240,20 +338,41 @@ if(isset($_GET['action'])){
              }
              mysqli_close($conn);
         }
+        if ($_GET['action'] == "deleteUpload") {
+            $id = $_GET['id'];
+        
+            $stmt = $conn->prepare("DELETE FROM units WHERE id = ?");
+            $stmt->bind_param("i", $id);
+        
+            if ($stmt->execute()) {
+                echo '<script>
+                         window.location.href = "userProfile.php";
+                      </script>';
+            } else {
+                echo "Error: " . $stmt->error;
+            }
+        
+            $stmt->close();
+            $conn->close();
+        }
+        
         if($_GET['action']== "uploadUnit"){
-            
             session_start();
             $cost = $_SESSION["cost"];
             $category = $_SESSION["category"];
             $location = $_SESSION["location"];
+            $condition = $_SESSION["condition"];
+            $accessibility = implode('*', $_SESSION["accessibility"]);
+            $amenities = implode("*", $_SESSION['amenities']);
             $others = implode('*', $_SESSION["others"]);
             $virtualTour = implode("*", $_SESSION['virtualTour']);
             $size = $_SESSION["size"];
             $userID = $_SESSION['userID'];
             $bedroomNo = $_SESSION["bedroomNo"];
+            $bathroomNo = $_SESSION["bathroomNo"];
             //    statement to enter values into the registration table in the database
-            $sql = "INSERT INTO units (cost, size, bedroomNo, category, location, virtualTour, others, userID)
-            VALUES ('$cost','$size','$bedroomNo', '$category', '$location', '$virtualTour',  '$others', '$userID')";
+            $sql = "INSERT INTO units (cost, size, bedroomNo, category, location, virtualTour, others, accessibility, unitCondition, amenities, userID)
+            VALUES ('$cost','$size','$bedroomNo', '$category', '$location', '$virtualTour',  '$others','$accessibility','$condition',  '$amenities', '$userID')";
 
             //  if sql query is executed...
             if (mysqli_query($conn, $sql)) {
@@ -264,7 +383,59 @@ if(isset($_GET['action'])){
                 unset($_SESSION["location"]);
                 unset($_SESSION["virtualTour"]);
                 unset($_SESSION["others"]);
-                header("Location: userProfile.php"); 
+                unset($_SESSION["condition"]);
+                unset($_SESSION["bathroomNo"]);
+                unset($_SESSION["amenities"]);
+                unset($_SESSION["accessibility"]);
+                echo ' <script> 
+        window.location.href = "userProfile.php";
+        </script>
+        '; 
+                    } else {	
+                        //show error
+                echo "Error: " . $sql . " " . mysqli_error($conn);
+            }
+            //close connection
+            mysqli_close($conn);
+
+        }
+        if($_GET['action']== "editUnit"){
+            session_start();
+            $cost = $_SESSION["cost"];
+            $category = $_SESSION["category"];
+            $location = $_SESSION["location"];
+            $condition = $_SESSION["condition"];
+            $accessibility = implode('*', $_SESSION["accessibility"]);
+            $amenities = implode("*", $_SESSION['amenities']);
+            $others = implode('*', $_SESSION["others"]);
+            $virtualTour = implode("*", $_SESSION['virtualTour']);
+            $size = $_SESSION["size"];
+            $userID = $_SESSION['userID'];
+            $bedroomNo = $_SESSION["bedroomNo"];
+            $bathroomNo = $_SESSION["bathroomNo"];
+            $id = $_GET['id'];
+            //    statement to enter values into the registration table in the database
+            $sql = "UPDATE units SET cost = '$cost', size = '$size', bedroomNo = '$bedroomNo',bathroomNo = '$bathroomNo', category = '$category', location = '$location',
+                                             virtualTour = '$virtualTour', others = '$others', accessibility = '$accessibility', unitCondition = '$condition',
+                                              amenities = '$amenities' where id = '$id' ";
+
+            //  if sql query is executed...
+            if (mysqli_query($conn, $sql)) {
+                unset($_SESSION["category"]);
+                unset($_SESSION["cost"]) ;
+                unset($_SESSION["size"]);
+                unset($_SESSION["bedroomNo"]);
+                unset($_SESSION["location"]);
+                unset($_SESSION["virtualTour"]);
+                unset($_SESSION["others"]);
+                unset($_SESSION["condition"]);
+                unset($_SESSION["bathroomNo"]);
+                unset($_SESSION["amenities"]);
+                unset($_SESSION["accessibility"]);
+                echo ' <script> 
+        window.location.href = "userProfile.php";
+        </script>
+        '; 
                     } else {	
                         //show error
                 echo "Error: " . $sql . " " . mysqli_error($conn);

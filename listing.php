@@ -1,6 +1,11 @@
 <?php
 include_once 'conn.php';
 session_start();
+if($_SESSION['category'] == 'showing'){
+    echo '<script> 
+        window.location.href = "userProfile.php";
+        </script>';
+}else{
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -346,6 +351,7 @@ if(isset($_GET['likes'])){
         
     }
 $searchQ = "";
+}
 ?>
 <script>
     const filters = () =>{

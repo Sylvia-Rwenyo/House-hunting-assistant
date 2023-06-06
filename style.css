@@ -134,7 +134,6 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    /* margin-left: 40%; */
 }
 .addUnit .header h1{
     font-size: 2em;
@@ -144,13 +143,39 @@
 .addUnit .header span, .Listings .header span, .profileBody .header span{
     font-size: 2em;
 }
+.progress-section{
+    height: 10%;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+.progress-section div{
+    width: 90%;
+    height: 1em;
+    margin-left: 2.5%;
+    margin-right: 5%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+.progress-section div span{
+    width: 33%;
+    height: 100%;
+    background-color:rgba(50, 50, 50, 0.3) ;
+    border-radius: 10px;
+}
+
+.progress-section div #sec-one{
+    background-color: #a69a8b;
+}
+
 .addUnitForm{
     height: 70%;
     width: 90%;
     margin-left: 5%;
-    display: flex;
+    /* display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-evenly; */
 }
 .addUnit form{
     height:45%;
@@ -182,19 +207,26 @@
 #virtualTour{
     display: flex;
     flex-direction: row;
-    border-bottom: 2px solid white;
+    justify-content: space-evenly;
     width: 84%;
     margin-left: 7%;
     margin-right: 7%;
 }
-#virtualTour input{
+#virtualTour .main{
+    display: grid;
+    grid-template-columns:33% 33% 33%;
+    grid-row-gap:5%;
     width: 70%;
+
+}
+#virtualTour input, #virtualTour .main div{
+    width: 95%;
     border: none;
 }
 #virtualTour label{
     width: 30%;
-    margin-block-start: 1em;
-    margin-block-end: 0;
+    margin-block-start: 0;
+    margin-block-end: 1em;
 }
 .addUnit .card h4{
     font-size: 1.25em;
@@ -860,7 +892,7 @@ li{
     height: 2em;
     background-color: #c89364;
     float: right;
-    margin-left: 40%;
+    margin-left: 82.5%;
     margin-top: 5%;
     border: none;
     margin-right: 5%;
@@ -884,10 +916,10 @@ li{
     height: 70%;
     width: 90%;
     margin-left: 5%;
-    margin-top: 5%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    margin-top: 2%;
+    /* display: flex;
+    flex-direction: column;
+    justify-content: space-between; */
 }
 .addUnit form{
     margin-right: 5% ;
@@ -905,46 +937,37 @@ li{
     margin-left: 7%;
     margin-right: 7%;
     color: white;
+    font-size: 1em;
 }
 .addUnit form select{
     width: 84%;
 }
-#others{
-    display: grid;
-    grid-template-columns: auto auto auto auto;
-    border-bottom: 2px solid white;
+.others{
     margin-left: 7%;
     margin-right: 7%;
-    font-size: 0.75em;
+    font-size: 1.25em;
     font-weight: 100;
-    color:rgba(255, 255, 255, 0.3);
+    color:rgb(255, 255, 255);
     height: 14.25%;
     padding: 1.5em;
+    border-bottom: 2px solid white;
 }
-#others span{
-    /* width:30%; */
-    display: flex;
-    flex-direction: row;
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 5px;
-    margin-right: 5%;
+.addUnit form .others select{
+    width: 100%;
+    margin-left: 1%;
+    border: none;
+    font-size: 0.75em;
+}
+.addUnit form .others select option{
     padding: 0.25em;
-    padding-right: 0;
-    padding-left: 0;
+}
 
-}
-#others span input{
-padding: 0;
-width: 1em;
-height: 1em;
-}
 .addUnit .search form input{
     background: white;
     color: #000000;
 }
 
-.addUnitForm #mainAddForm .category{
+.addUnitForm .mainAddForm .category{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -972,6 +995,7 @@ height: 1em;
     font-size: 1.25em;
     text-align: center;
 }
+
 #password{
     margin-bottom: 3em;
 }
@@ -1219,6 +1243,10 @@ to{opacity: 1}
     margin-left: 0;
     margin-top: 0;
 }
+.profile .intro .links{
+    display: flex;
+    flex-direction: column;
+}
 .editBtn{
     background-color: #83a46f;
     color: black;
@@ -1267,6 +1295,10 @@ height: 60%;
 .cards .singleCard .category, .listing-details .category{
     color: #62A039;
 }
+.view-card a{
+    text-decoration: none;
+    color: #000000;
+}
 .like-btn{
     display: flex;
     align-items: center;
@@ -1288,29 +1320,45 @@ height: 60%;
     justify-content: space-between;
     height: 2em;
 }
+.mainView{
+    width: 60%;
+    margin-left: 5%;
+    margin-top: 5%;
+    box-shadow: 0 2px 4px  0 darkgray;
+}
 .tourArea{
-    width: 70%;
-    margin-left: 15%;
+    width: 95%;
     height: 50vh;
     margin-top: 5%;
     margin-bottom: 5%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    font-size: 1.25em;
 }
 .tourArea img{
     width: 100%;
     height: 100%;
 }
-.tourArea div{
-    width: 100%;
-    display: flex;
+.mainView div{
+    width: 90%;
+    font-size: 1.15em;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+}
+.move-slides{
+    width: 90%;
+    display: flex; 
     flex-direction: row;
     justify-content: space-evenly;
     padding-top:2.5%;
-}
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+} 
 .listing-details{
-margin-left: 15%;
+/* margin-left: 5%; */
 }
 .listings-details .detail{
-    margin-top: 5%;
+    margin-top: 10%;
 }
 .payPrompt{
     position: fixed; /* Sit on top of the page content */
@@ -1370,4 +1418,96 @@ margin-left: 15%;
     width:60%;
     margin-left: 5%;
    margin-top: 2%;
+}
+#payPlan{
+    display: none;
+}
+
+.switchMode{
+    width: 10%;
+    height: 2.5em;
+    display: flex;
+    flex-direction: row;
+    font-size: 1.15em;
+    border-radius: 10px;
+}
+.switchMode a{
+    height: 100%;
+    width: 50%;
+    text-decoration: none;
+    color: #000000;
+}
+.switchMode .btn{
+    border: none;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(98, 160, 57, 0.5);
+}
+.switchMode .btn:hover{
+    background-color: rgb(98, 160, 57);
+}
+.all-views{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+}
+.sideBar{
+    width: 35%;
+}
+.sideBar h4{
+    color: #323232;
+    font-size: 1.25em;
+    text-align: center;
+}
+.sideBar .view-card{
+    width: 100%;
+    padding: 1em;
+}
+.sideBar .view-card:hover{
+    box-shadow: 0 2px 4px  0 rgb(135, 135, 135);
+}
+.sideBar .view-card img{
+    height: 80%;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+.sideBar .view-card div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 90%;
+        margin-left: 5%;
+}
+.prevPage .mainView{
+    box-shadow:none;
+
+}
+#prevTour{
+    width:95%;
+    height: 7.5em;
+    border-radius: 5px;
+    border-color: rgb(240, 248, 255);
+    background-blend-mode: multiply;
+}
+
+#section-two, #section-three, #section-one-back, #virtualTour .vt{
+    display: none;
+}
+#editUpload2 a, #editUpload1 a, #editUpload3 a, #section-two a, #section-three a, #section-two-one a{
+    text-decoration: none;
+    color: white;
+}
+ input:focus, select:focus{
+    outline: none;
+}
+.addUnitForm .mainAddForm a{
+    text-decoration: none;
+    color: #ede9e2;
+}
+.uploads .cards{
+    width: fit-content;
+    height: fit-content;
 }

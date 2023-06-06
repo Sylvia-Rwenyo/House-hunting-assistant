@@ -39,6 +39,7 @@ session_start();
     <?php
          $userID = 0;
         $id = $_GET['id'];
+            $similar;
            $records = mysqli_query($conn,"SELECT * FROM  units where id='$id'");
      
             if (mysqli_num_rows($records) > 0) {
@@ -46,61 +47,138 @@ session_start();
                 while($result = mysqli_fetch_array($records)) {
                 $userID = $result['userID'];
                 $tour = explode('*', $result['virtualTour']);
+             ; 
     ?>
-    <div class="tourArea">
-        <?php
-        for($j=0; $j < count($tour); $j++){
-            ?>
-            <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg  slide fade" id="slide<?php echo $j?>" alt="living room"/>
+    <div class="all-views">
+        <div class="mainView">
+            <div class="tourArea">
+                <?php
+                for($j=0; $j < count($tour); $j++){
+                    ?>
+                    <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg  slide fade" id="slide<?php echo $j?>" alt="living room"/>
+                    <?php
+                    }
+                ?>
+                <div class="move-slides">
+                    <a class="prev" onclick ="plusSlides(-1)" >&#10094;</a>
+                    <a class="next" onclick ="plusSlides(1)" >&#10095;</a>     
+                </div>
+            </div>
+            <div class="listing-details detail" style=" margin-left: 5%; font-size: 1.15em;">
+                            <?php
+                            if($result['category'] == 'forSale'){
+                            ?>
+                            <p class="category">For sale</p>
+                            <?php
+                            }elseif($result['category'] == 'rental'){
+                            ?>
+                                <p class="category">Rental</p>
+                                <?php
+                                }
+                                ?>
+            </div>
+            <div class='listing-details details' >
+                <div class="detailsSection" style="margin:0; margin-left: 2.5%">
+                    <div style="margin:0;  ">
+                <p> <?php echo $result['unitCondition']. ' '. $result['bedroomNo']?> bedroom house</p>
+                <a href="listingChat.php?with=<?php echo $userID; $_SESSION['inView'] = $result['id']; ?>&inView=<?php echo  $_SESSION['inView']?>"><span id="card<?php echo $result['id']?>"><i class="fa-solid fa-message"></i></span>
+                </a>
+                            </div>
+            <p>Ksh <?php echo $result['cost']?></p>
             <?php
-            }
+                if($_SESSION['credits'] < 1){
+                    ?>
+            <p onClick="showOverlay()"><i class="fa fa-location-dot"></i> <?php echo $result['location']?></p>
+            <?php
+                }else{
+            ?>
+            <p ><i class="fa fa-location-dot"></i> <?php echo $result['location']?></p>
+                    <?php
+                }
+                
+                    $details = explode('*', $result['accessibility']);
+                    ?>
+                </div>
+                <div class="detailsSection">
+                    <p>The features enabling accessibility are <?php   for($j=0; $j < count($details); $j++){ echo   ', '.$details[$j] ;}?>.</p>
+                    <p>This unit also has <?php  $details = explode('*', $result['amenities']);for($j=0; $j < count($details); $j++){ echo ', '. $details[$j];}?></p>
+                    <p>and <?php  $details = explode('*', $result['others']);for($j=0; $j < count($details); $j++){ echo ', ' . $details[$j] ;}?>.</p>
+                </div>
+        <?php
+        $i++;
+
+        $bedrooms =isset($result['bedrooms']);
+        // $size =isset( $result['size']);
+        $category =isset( $result['category']);
+        $location =isset( $result['location']);
+        $cost =isset( $result['cost']);
+
+        // Prepare the SQL query with the similar units' criteria
+        $similar = "SELECT * FROM units WHERE bedroomNo = '$bedrooms'  || location = '$location' ||
+        (cost = '$cost' || cost <= '$cost + 10000' || cost >= '$cost - 5000' ) ORDER BY likes DESC";
+        }}
         ?>
-        <div>
-            <a class="prev" onclick ="plusSlides(-1)" >&#10094;</a>
-            <a class="next" onclick ="plusSlides(1)" >&#10095;</a>     
         </div>
-    </div>
-     <div class="listing-details detail">
-                    <?php
-                    if($result['category'] == 'forSale'){
-                    ?>
-                    <p class="category">For sale</p>
-                    <?php
-                    }elseif($result['category'] == 'rental'){
-                    ?>
-                        <p class="category">Rental</p>
+ 
+</div>
+<div class="sideBar">
+            <h4>More like this</h4>
+            <?php
+             $same = mysqli_query($conn,$similar);
+     
+             if (mysqli_num_rows($same) > 0) {
+                // echo "there's more";
+                 $i=0;
+                 while($result = mysqli_fetch_array($same)) {
+                    $tour = explode('*', $result['virtualTour']);
+
+            ?>
+            <a>
+                <div class="view-card">
+                    <img src="Uploads/<?php echo $tour[0]?>" alt=''/>
+                    <div>
+                        <p><?php if($result['category'] == "rental"){ echo 'Rent a ' .  $result['bedroomNo']?> bedroom</p>
+                        <p><?php echo 'for Ksh '.  $result['cost']?> in <?php echo$result['location']?></p>
+                        <?php
+                        }else{
+                           ?>
+                            <p><?php echo 'Buy a ' .  $result['bedroomNo']?> bedroom</p>
+                        <p><?php echo 'at Ksh '.  $result['cost']?> in <?php echo$result['location']?></p>
                         <?php
                         }
                         ?>
-    </div>
-    <div class='listing-details details' >
-        <div class="detailsSection">
-            <div>
-        <p><?php echo $result['bedroomNo']?> bedroom house</p>
-        <a href="listingChat.php?with=<?php echo $userID; $_SESSION['inView'] = $result['id']; ?>&inView=<?php echo  $_SESSION['inView']?>">Chat<span id="card<?php echo $result['id']?>"><i class="fa-solid fa-message"></i></span>
-        </a>
+                        <a href="listing-details.php?likes=<?php echo $result['likes']?>&id=<?php echo $_GET['id']?>&liked=<?php echo $result['id']?>&by=<?php echo $_SESSION['id']?>">
+                        <button class="like-btn">
+                            <i class="fa fa-heart" <?php
+                                                        $unitID=$result['id'];
+                                                        $by = $_SESSION['id'];
+                                                        $stmt=mysqli_query($conn,"SELECT likedBy FROM units where id='$unitID'");
+                                                        $row  = mysqli_fetch_array($stmt);
+                                                        //if sql query is executed...
+                                                        if(is_array($row))
+                                                        {
+                                                        $likedBy = explode('*', $row['likedBy']);
+                                                        if(in_array($by, $likedBy)){
+                                                            echo 'style="color: #c89364"';
+                                                        }
+                                                    }
+                                                        ?>>
+                            </i>
+                            <span><?php echo $result['likes']?></span>
+                        </button>
+                    </a>
                     </div>
-    <p>Ksh <?php echo $result['cost']?></p>
-    <?php
-        if($_SESSION['credits'] < 1){
-            ?>
-    <p onClick="showOverlay()"><i class="fa fa-location-dot"></i> <?php echo $result['location']?></p>
-    <?php
-        }else{
-    ?>
-    <p ><i class="fa fa-location-dot"></i> <?php echo $result['location']?></p>
+                </div>
+            </a>
             <?php
-        }
+                 }
             $i++;
-            }}
+                }else{
+                    echo "there's no more";
+                }
             ?>
         </div>
-        <div class="detailsSection">
-            <p>This is a paragraph.</p>
-            <p>This is a another paragraph.</p>
-            <p>This is a the last paragraph.</p>
-        </div>
-
+    </div>
         <div class="payPrompt"  id="payPrompt2">
             <div>
                 <p>To continue, top up your credits</p>
@@ -134,7 +212,8 @@ if(isset($_POST['send'])){
 if(isset($_GET['likes'])){
         $by = $_GET['by'];
         $id = $_GET['id'];
-        $sql=mysqli_query($conn,"SELECT likedBy FROM units where id='$id'");
+        $liked = $_GET['liked'];
+        $sql=mysqli_query($conn,"SELECT likedBy FROM units where id='$liked'");
         $row  = mysqli_fetch_array($sql);
         //if sql query is executed...
         if(is_array($row))
@@ -143,11 +222,11 @@ if(isset($_GET['likes'])){
         if(in_array($by, $likedBy)){
             $likes = $_GET['likes'] - 1;
             $likedBy =str_replace($row['likedBy'], '*'.$by, '');
-            $sql2 = "UPDATE units SET likes ='$likes', likedBy='$likedBy' where id = '$id'";
+            $sql2 = "UPDATE units SET likes ='$likes', likedBy='$likedBy' where id = '$liked'";
     
         //if sql query is executed...
         if (mysqli_query($conn, $sql2)) {
-              echo '<script> window.location.href = "listing.php"</script>'; 
+              echo '<script> window.location.href = "listing-details.php?id='. $id. '"</script>'; 
                } else {	
                    //show error
            echo "Error: " . $sql2 . "
@@ -162,7 +241,7 @@ if(isset($_GET['likes'])){
     
         //if sql query is executed...
         if (mysqli_query($conn, $sql2)) {
-            echo '<script> window.location.href = "listing.php"</script>'; 
+            echo '<script> window.location.href = "listing-details.php?id='. $id. '"</script>'; 
         } else {	
                    //show error
            echo "Error: " . $sql2 . "

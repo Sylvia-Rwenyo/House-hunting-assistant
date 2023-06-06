@@ -88,17 +88,6 @@ function editProfile(){
     document.getElementById('editingProfile').style.display = "block";
 }
 
-function pswdDisplay(){
-    let showPswd = document.getElementById('showPswd');
-    let pswd = document.getElementById("password");
-    if(pswd.type == "text"){
-        pswd.type = "password";
-        showPswd.innerHTML = "Show";
-    }else{
-        pswd.type = "text";
-        showPswd.textContent = "Hide";
-    }
-}
 
 function rentalForm(){
     document.getElementById('rentalForm').style.display = "block"
@@ -185,4 +174,23 @@ window.onload = () => {
     document.addEventListener("contextmenu", function(e) {
         e.preventDefault();
     });
+}
+
+document.getElementById("saleOpt").onclick = () =>{
+    document.getElementById("payPlan").style.display = "block";
+}
+
+// document.getElementById("section-one-nxt").onclick =() =>{
+//     document.getElementById("section-one").style.display = "none";
+//     document.getElementById("section-two").style.display = "block";
+
+// }
+// document.getElementById("section-two-nxt").onclick =() =>{
+//     document.getElementById("section-one").style.display = "none";
+//     document.getElementById("section-two").style.display = "none";
+//     document.getElementById("section-three").style.display = "block";
+
+// }
+document.getElementById('loginPswd').onclick = () =>{
+document.getElementById('loginPswd').style.border = "2px solid #c89364";
 }
