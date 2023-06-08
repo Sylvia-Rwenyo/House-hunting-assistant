@@ -16,10 +16,6 @@
     <div class="header">
         <h1>Active Listings</h1>
         <div class="search">
-        <form>
-            <input name="keyword" type="text"/>
-            <button type="submit"><i class="fa-solid fa-search"></i></button>
-        </form>
          </div> 
         <span class="menuBar" id="menuBars" onClick="showMenu()"><i class="fa-solid fa-bars"></i></span>
         <div class="menu" id="menu">
@@ -35,7 +31,6 @@
     </div>
     <div class="listingsChat payArea">
    
-    <!-- <div class="list" id="list"> -->
     <?php 
             include_once 'conn.php';
             session_start();

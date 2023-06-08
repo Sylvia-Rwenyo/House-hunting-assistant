@@ -19,12 +19,6 @@ session_start();
 <body class="Listings listings-details">
     <div class="header">
         <h1>Active Listings</h1>
-        <div class="search">
-        <form>
-            <input name="keyword" type="text"/>
-            <button type="submit"><i class="fa-solid fa-search"></i></button>
-        </form>
-         </div> 
         <span class="menuBar" id="menuBars" onClick="showMenu()"><i class="fa-solid fa-bars"></i></span>
         <div class="menu" id="menu">
             <span class="menuBar" id="menuBar" onClick="closeMenu()"><i class="fa-solid fa-x"></i></span>
@@ -50,60 +44,71 @@ session_start();
              ; 
     ?>
     <div class="all-views">
-        <div class="mainView">
-            <div class="tourArea">
+        <div class="cards">
+            <div class="singleCard" id="singleCard<?php echo $result['id']?>">
                 <?php
-                for($j=0; $j < count($tour); $j++){
-                    ?>
-                    <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg  slide fade" id="slide<?php echo $j?>" alt="living room"/>
-                    <?php
-                    }
+                    for($j=0; $j < count($tour); $j++){
+                        ?>
+                        <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg  slide fade" id="slide<?php echo $j?>" alt="living room"/>
+                        <?php
+                        }
                 ?>
                 <div class="move-slides">
                     <a class="prev" onclick ="plusSlides(-1)" >&#10094;</a>
-                    <a class="next" onclick ="plusSlides(1)" >&#10095;</a>     
-                </div>
-            </div>
-            <div class="listing-details detail" style=" margin-left: 5%; font-size: 1.15em;">
-                            <?php
-                            if($result['category'] == 'forSale'){
-                            ?>
-                            <p class="category">For sale</p>
-                            <?php
-                            }elseif($result['category'] == 'rental'){
-                            ?>
-                                <p class="category">Rental</p>
-                                <?php
-                                }
-                                ?>
-            </div>
-            <div class='listing-details details' >
-                <div class="detailsSection" style="margin:0; margin-left: 2.5%">
-                    <div style="margin:0;  ">
-                <p> <?php echo $result['unitCondition']. ' '. $result['bedroomNo']?> bedroom house</p>
-                <a href="listingChat.php?with=<?php echo $userID; $_SESSION['inView'] = $result['id']; ?>&inView=<?php echo  $_SESSION['inView']?>"><span id="card<?php echo $result['id']?>"><i class="fa-solid fa-message"></i></span>
-                </a>
-                            </div>
-            <p>Ksh <?php echo $result['cost']?></p>
-            <?php
-                if($_SESSION['credits'] < 1){
-                    ?>
-            <p onClick="showOverlay()"><i class="fa fa-location-dot"></i> <?php echo $result['location']?></p>
-            <?php
-                }else{
-            ?>
-            <p ><i class="fa fa-location-dot"></i> <?php echo $result['location']?></p>
+                    <a class="next" onclick ="plusSlides(1)" >&#10095;</a>  
+                </div>  
+                <div>
                     <?php
-                }
-                
-                    $details = explode('*', $result['accessibility']);
+                    if($result['category'] == 'forSale'){
                     ?>
+                    <p class="category">For sale</p>
+                    <?php
+                    }elseif($result['category'] == 'rental'){
+                    ?>
+                        <p class="category">Rental</p>
+                        <?php
+                        }
+                        ?>
+                    <a href="listing.php?likes=<?php echo $result['likes']?>&id=<?php echo $result['id']?>&by=<?php echo $_SESSION['id']?>">
+                        <button class="like-btn">
+                            <i class="fa fa-heart" <?php
+                                                        $unitID=$result['id'];
+                                                        $by = $_SESSION['id'];
+                                                        $stmt=mysqli_query($conn,"SELECT likedBy FROM units where id='$unitID'");
+                                                        $row  = mysqli_fetch_array($stmt);
+                                                        //if sql query is executed...
+                                                        if(is_array($row))
+                                                        {
+                                                        $likedBy = explode('*', $row['likedBy']);
+                                                        if(in_array($by, $likedBy)){
+                                                            echo 'style="color: #c89364"';
+                                                        }
+                                                    }
+                                                        ?>>
+                            </i>
+                            <span><?php echo $result['likes']?></span>
+                        </button>
+                    </a>
                 </div>
-                <div class="detailsSection">
-                    <p>The features enabling accessibility are <?php   for($j=0; $j < count($details); $j++){ echo   ', '.$details[$j] ;}?>.</p>
-                    <p>This unit also has <?php  $details = explode('*', $result['amenities']);for($j=0; $j < count($details); $j++){ echo ', '. $details[$j];}?></p>
-                    <p>and <?php  $details = explode('*', $result['others']);for($j=0; $j < count($details); $j++){ echo ', ' . $details[$j] ;}?>.</p>
-                </div>
+                    <div>
+                        <p><?php echo $result['bedroomNo']?> bedroom house</p>
+                        <a href="listingChat.php?with=<?php echo $userID; $_SESSION['inView'] = $result['id']; ?>&inView=<?php echo  $_SESSION['inView']?>">
+                            <span id="card<?php echo $result['id']?>">
+                                <i class="fa-solid fa-message"></i>
+                            </span>
+                        </a>
+                    </div>
+                    <p><?php echo $result['bathroomNo']?> bathrooms<?php $amenities = explode('*', $result['amenities']); 
+                   $details = explode('*', $result['amenities']);for($j=0; $j < count($details); $j++){ echo strtolower(', '. $details[$j]);}?> available
+                    </p>
+                    <p>There is a 
+                        <?php $details = explode('*', $result['accessibility']);for($j=0; $j < count($details); $j++){ echo strtolower($details[$j]. ', ');}?>
+                        and <?php $details = explode('*', $result['others']);for($j=0; $j < count($details); $j++){ echo strtolower($details[$j]. ', ');}?>
+                    </p>
+                    <p>Ksh <?php echo $result['cost']?></p>
+                    <p><i class="fa fa-location-dot"></i> <?php echo $result['location']?>&nbsp;&nbsp;<i class="fa fa-ellipsis"onclick="showDetails(<?php echo $result['id']?>)" ></i>
+            </div>
+        </div>
         <?php
         $i++;
 
@@ -117,10 +122,7 @@ session_start();
         $similar = "SELECT * FROM units WHERE bedroomNo = '$bedrooms'  || location = '$location' ||
         (cost = '$cost' || cost <= '$cost + 10000' || cost >= '$cost - 5000' ) ORDER BY likes DESC";
         }}
-        ?>
-        </div>
- 
-</div>
+        ?> 
 <div class="sideBar">
             <h4>More like this</h4>
             <?php
@@ -133,11 +135,15 @@ session_start();
                     $tour = explode('*', $result['virtualTour']);
 
             ?>
-            <a>
-                <div class="view-card">
+            <!-- <a -->
+                <div class="view-card"  onclick="showDetails(<?php echo $result['id']?>)">
                     <img src="Uploads/<?php echo $tour[0]?>" alt=''/>
-                    <div>
-                        <p><?php if($result['category'] == "rental"){ echo 'Rent a ' .  $result['bedroomNo']?> bedroom</p>
+                    <div class="details">
+                        <div class="sub-details">
+                        <?php
+                        if($result['category'] == "rental"){
+                            ?>
+                        <p><?php echo 'Rent a ' .  $result['bedroomNo']?> bedroom</p>
                         <p><?php echo 'for Ksh '.  $result['cost']?> in <?php echo$result['location']?></p>
                         <?php
                         }else{
@@ -147,6 +153,7 @@ session_start();
                         <?php
                         }
                         ?>
+                        </div>
                         <a href="listing-details.php?likes=<?php echo $result['likes']?>&id=<?php echo $_GET['id']?>&liked=<?php echo $result['id']?>&by=<?php echo $_SESSION['id']?>">
                         <button class="like-btn">
                             <i class="fa fa-heart" <?php
@@ -169,7 +176,7 @@ session_start();
                     </a>
                     </div>
                 </div>
-            </a>
+            <!-- </a> -->
             <?php
                  }
             $i++;

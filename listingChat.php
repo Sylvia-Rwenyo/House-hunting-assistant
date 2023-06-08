@@ -15,12 +15,6 @@
 <body class="Listings">
     <div class="header">
         <h1>Active Listings</h1>
-        <div class="search">
-        <form>
-            <input name="keyword" type="text"/>
-            <button type="submit"><i class="fa-solid fa-search"></i></button>
-        </form>
-         </div> 
         <span class="menuBar" id="menuBars" onClick="showMenu()"><i class="fa-solid fa-bars"></i></span>
         <div class="menu" id="menu">
             <span class="menuBar" id="menuBar" onClick="closeMenu()"><i class="fa-solid fa-x"></i></span>
@@ -34,7 +28,7 @@
     </div>
     </div>
     <div class="listingsChat">
-    <div class="list" id="list">
+    <!-- <div class="list" id="list"> -->
     <?php 
             include_once 'conn.php';
             session_start();
@@ -68,6 +62,8 @@
             $i=0;
             while($result = mysqli_fetch_array($records)) {
                 $uploaderID = $result['userID'];
+                $tour = explode('*', $result['virtualTour']);
+
         ?>
          <div class="payPrompt"  id="payPrompt1">
             <div>
@@ -75,71 +71,67 @@
                 <a href="paymentSection.php?userID=<?php echo $_SESSION['id']?>&id=<?php echo $_GET['inView']?>&from=listingChat.php?with=<?php echo $_GET['with']?>&inView=<?php echo $_GET['inView']?>">here</a>
             </div>
         </div>
-        <div class="card" id="card<?php echo $result['id']?>">
-                <?php
-                if($_SESSION['credits'] >= 1){
-                    echo '<style> #payPrompt1{display:none;}</style>';
-                        date_default_timezone_set("Africa/Nairobi");
-                        $time = date("Y-m-d h:i:s");
-                        $credited = mysqli_query($conn," SELECT * FROM  creditPasses where unitID='$id' && userID='$userID' && expired=0 ");
-                        if (mysqli_num_rows($credited) < 1) {
-                            $expired = false;
-                        $sqlY = mysqli_query($conn," INSERT INTO creditPasses (unitID, userID, time, expired) VALUES ('$id','$userID', '$time', '$expired')" );
-                        if(!$sqlY){
-                            echo "Error: " . $sqlY . "
-                            " . mysqli_error($conn);
-                        }
-                    }
-                }else{
-                    echo '<style> #payPrompt1{display:block;}</style>';
-                }
-                $tour = explode('*', $result['virtualTour']);
-                ?>
-                <div class="tourCard" id="firstSlide">
-                    <img src="Uploads/<?php echo $tour[0]?>" class="previewImg " alt="living room"/>
-                    <?php if(count($tour) > 1){?>
-            <a class="prev" onclick ="showImgs(<?php echo $result['id']?>)" >&#10094;</a>
-            <a class="next" onclick ="showImgs(<?php echo $result['id']?>)" >&#10095;</a>   
-            <?php } ?>     
-                </div>
-                <div class="tourCard" id="secondSlide">
-                <?php
+        <div class="cards">
+        <div class="singleCard" id="singleCard<?php echo $result['id']?>" onclick="showDetails(<?php echo $result['id']?>)">
+        <?php
                 for($j=0; $j < count($tour); $j++){
                     ?>
                     <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg  slide fade" id="slide<?php echo $j?>" alt="living room"/>
                     <?php
-        }
+                    }
                 ?>
-                 <a class="prev" onclick ="plusSlides(-1)" >&#10094;</a>
-                    <a class="next" onclick ="plusSlides(1)" >&#10095;</a>     
-        </div>
-               
-        <div class="details">
-                <div>
-                    <h5><?php echo $result['bedroomNo']?> bedroom house</h5>
+                <div class="move-slides">
+                    <a class="prev" onclick ="plusSlides(-1)" >&#10094;</a>
+                    <a class="next" onclick ="plusSlides(1)" >&#10095;</a>  
+                </div>  
+                    <div>
+                    <?php
+                    if($result['category'] == 'forSale'){
+                    ?>
+                    <p class="category">For sale</p>
+                    <?php
+                    }elseif($result['category'] == 'rental'){
+                    ?>
+                        <p class="category">Rental</p>
+                        <?php
+                        }
+                        ?>
+                    <a href="listing.php?likes=<?php echo $result['likes']?>&id=<?php echo $result['id']?>&by=<?php echo $_SESSION['id']?>">
+                        <button class="like-btn">
+                            <i class="fa fa-heart" <?php
+                                                        $unitID=$result['id'];
+                                                        $by = $_SESSION['id'];
+                                                        $stmt=mysqli_query($conn,"SELECT likedBy FROM units where id='$unitID'");
+                                                        $row  = mysqli_fetch_array($stmt);
+                                                        //if sql query is executed...
+                                                        if(is_array($row))
+                                                        {
+                                                        $likedBy = explode('*', $row['likedBy']);
+                                                        if(in_array($by, $likedBy)){
+                                                            echo 'style="color: #c89364"';
+                                                        }
+                                                    }
+                                                        ?>>
+                            </i>
+                            <span><?php echo $result['likes']?></span>
+                        </button>
+                    </a>
                 </div>
-                <div>
-                    <p class="first">For <?php if($result["category"] == "forSale"){echo 'sale at Ksh';}
-                                    else if($result["category"] == "rental"){echo 'rent at Ksh';} echo $result['cost'];?></p>
-                    <p>At <?php echo $result['location']?></p>
-                    <p><?php echo $result['size']?> sqft</p>
-                </div>
-                <div>
-                <?php
-                $others =explode('*', $result['others']);
-                    for($j=0; $j <count($others); $j++){
-                ?> 
-                <p><?php echo $others[$j];?></p>
-                <?php
-                };
-                ?>
-                </div>
-        </div>
-        </div>
+                    <div>
+                        <p><?php echo $result['bedroomNo']?> bedroom house</p>
+                        <a href="listingChat.php?with=<?php echo $userID; $_SESSION['inView'] = $result['id']; ?>&inView=<?php echo  $_SESSION['inView']?>">
+                            <span id="card<?php echo $result['id']?>">
+                                <i class="fa-solid fa-message"></i>
+                            </span>
+                        </a>
+                    </div>
+                    <p>Ksh <?php echo $result['cost']?></p>
+                    <p><i class="fa fa-location-dot"></i> <?php echo $result['location']?>&nbsp;&nbsp;<i class="fa fa-ellipsis"onclick="showDetails(<?php echo $result['id']?>)" ></i>
+            </div>
+        </div> 
         <?php
         $i++;}}
         ?>
-    </div>
 
     <div class="message" id="message">
         <div class="singleMessages">
@@ -151,7 +143,7 @@
             $sentTo = $results['receipientID'];
             $from = $results['senderID'];
 
-            $getDetails = mysqli_query($conn,"SELECT * FROM  registration where (id='$sentTo' || id='$from') && id!='$userID' ");
+            $getDetails = mysqli_query($conn,"SELECT * FROM  registration where (id='$sentTo' || id='$from') ");
               if (mysqli_num_rows($getDetails) > 0) {
               $i=0;
               while($record = mysqli_fetch_array($getDetails)) {
@@ -161,13 +153,6 @@
                 <a href="listingChat.php?action=chat&with=<?php echo $record['id']?>&id=<?php echo $id;?>">
                 <div class="intro">
                     <h5><?php echo $record['name']?></h5>
-                    <!-- <div>
-                        <i class="fa-solid fa-star"></i>                   
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>  -->
                 </div>
                 <?php
                 $rec = $record['id'];
@@ -256,22 +241,14 @@
 </body>
 </html>
 <script>
-    // const msgForm = document.getElementById('typingArea');
-    // const submitMsg = document.getElementById('sendMsg');
-    //    submitMsg.onclick = () =>{
-    //    const xhttp = new XMLHttpRequest();
-    // //    xhttp.onload = function(){
-    // //    }
-    // xhttp.open("POST", "processing.php", true);
-    // // xhttp.onreadystatechange = function(){
-    // //     if(this.readyState == 4 && this.status == 200){
-
-    // //     }
-    // // }
-
-    // let msgData = new FormData(msgForm);
-    // xhttp.send();
-    // }
+const showMenu = () =>{
+    document.getElementById('menuBars').style.display = 'none';
+    document.getElementById('menu').style.display = 'block';
+}
+const closeMenu = () =>{
+    document.getElementById('menuBars').style.display = 'block';
+    document.getElementById('menu').style.display = 'none';
+}
 let slideIndex = 1;
 showSlides(slideIndex);
 

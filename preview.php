@@ -18,55 +18,63 @@
 </head>
 <body class="Listings prevPage">
     <div class="header">
-        <h1><i class="fa-solid fa-arrow-left"></i></h1>
+        <?php
+        echo '<style>.header a{text-decoration: none; color: #323232;}</style>';
+        if(isset($_GET['state'])){
+            if($_GET['state'] == 'edited'){ 
+        ?>
+        <a href="addUnit.php?action=editUpload&a=4&id="><h1><i class="fa-solid fa-arrow-left"></i></h1></a>
+        <?php
+            }}else{
+        ?>
+        <a href="addUnit.php?a=9"><h1><i class="fa-solid fa-arrow-left"></i></h1></a>
+        <?php
+            }
+        ?>
         <h1>New Unit</h1>
     </div>
     </div>
     <div class="mainListing">
-        <div class="mainView">
-            <div class="tourArea">
+        <div class="cards">
+            <div class="singleCard" id="singleCard<?php echo $_SESSION['id']?>">
                 <?php
-                // $tour = explode('*', );
-                for($j=0; $j < count($_SESSION['virtualTour']); $j++){
-                    ?>
-                    <img src="Uploads/<?php echo $_SESSION['virtualTour'][$j]?>" class="previewImg  slide fade" id="slide<?php echo $j?>" alt="living room"/>
-                    <?php
-                    }
+                    $tour =  $_SESSION['virtualTour'];
+                    for($j=0; $j < count($tour); $j++){
+                        ?>
+                        <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg  slide fade" id="slide<?php echo $j?>" alt="living room"/>
+                        <?php
+                        }
                 ?>
                 <div class="move-slides">
                     <a class="prev" onclick ="plusSlides(-1)" >&#10094;</a>
-                    <a class="next" onclick ="plusSlides(1)" >&#10095;</a>     
+                    <a class="next" onclick ="plusSlides(1)" >&#10095;</a>  
+                </div>  
+                <div>
+                    <?php
+                    if($_SESSION['category'] == 'forSale'){
+                    ?>
+                    <p class="category">For sale</p>
+                    <?php
+                    }elseif($_SESSION['category'] == 'rental'){
+                    ?>
+                        <p class="category">Rental</p>
+                        <?php
+                        }
+                        ?>
                 </div>
-            </div>
-            <div class="listing-details detail" style=" margin-left: 5%; font-size: 1.15em;">
-                            <?php
-                            if($_SESSION['category'] == 'forSale'){
-                            ?>
-                            <p class="category">For sale</p>
-                            <?php
-                            }elseif($_SESSION['category'] == 'rental'){
-                            ?>
-                                <p class="category">Rental</p>
-                                <?php
-                                }
-                                ?>
-            </div>
-            <div class='listing-details details' >
-                <div class="detailsSection" style="margin:0; margin-left: 2.5%">
-                    <div style="margin:0;  ">
-                <p><?php echo$_SESSION['condition'] . ' ' . $_SESSION['bedroomNo']?> bedroom house</p>
-                            </div>
-            <p>Ksh <?php echo $_SESSION['cost']?></p>
-                </div>
-                <div class="detailsSection">
-                    <p>The features enabling accessibility are <?php  echo   implode(',', $_SESSION['accessibility'])?>.</p>
-                    <p>This unit also has <?php echo   implode(',', $_SESSION['amenities'])?></p>
-                    <p>and <?php echo   implode(',', $_SESSION['others']) ?>.</p>
-                </div>
-        <?php      
-        ?>
+                    <div>
+                        <p><?php echo $_SESSION['bedroomNo']?> bedroom house</p>
+                    </div>
+                    <p><?php echo $_SESSION['bathroomNo']?> bathrooms<?php
+                   $details = $_SESSION['amenities'];for($j=0; $j < count($details); $j++){ echo strtolower(', '. $details[$j]);}?> available
+                    </p>
+                    <p>There is a 
+                        <?php $details = $_SESSION['accessibility'];for($j=0; $j < count($details); $j++){ echo strtolower($details[$j]. ', ');}?>
+                        and <?php $details =  $_SESSION['others'];for($j=0; $j < count($details); $j++){ echo strtolower($details[$j]. ', ');}?>
+                    </p>
+                    <p>Ksh <?php echo $_SESSION['cost']?></p>
+                    <p><i class="fa fa-location-dot"></i> <?php echo $_SESSION['location']?>&nbsp;&nbsp;</p>            </div>
         </div>
-    </div>
     <div class="cardBtns">
         <?php
         if(isset($_GET['state'])){
@@ -78,7 +86,7 @@
         ?>
         <a href="processing.php?action=uploadUnit"><button class="btn upload">Upload</button></a>
         <?php } ?>
-        <a href="addUnit.php?action=edit"><button class="btn edit"></button></a>
+        <a href="addUnit.php?action=edit"><button class="btn edit">Edit</button></a>
         <a href="preview.php?action=deletePreview"><button class="btn delete">Delete</button></a>
     </div>
     </div>

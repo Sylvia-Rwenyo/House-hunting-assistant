@@ -25,12 +25,6 @@
 <body class="profileBody">
     <div class="header">
         <h1>Your Chats</h1>
-    <!-- <div class="search"> -->
-        <!-- <form>
-            <input name="keyword" type="text"/>
-            <button type="submit"><i class="fa-solid fa-search"></i></button>
-        </form> -->
-         <!-- </div>  -->
         <span class="menuBar" id="menuBars" onClick="showMenu()"><i class="fa-solid fa-bars"></i></span>
         <div class="menu" id="menu">
             <span class="menuBar" id="menuBar" onClick="closeMenu()"><i class="fa-solid fa-x"></i></span>
@@ -58,7 +52,7 @@
             <div class="message" id="message">
         <div class="singleMessages">
     <?php
-        $userID = $_SESSION['userID'];
+        $userID = $_SESSION['id'];
         $messageWith = mysqli_query($conn,"SELECT * FROM  messages where receipientID ='$userID' || senderID ='$userID'  GROUP BY  receipientID");
         if (mysqli_num_rows($messageWith) > 0) {
          $j=0;
@@ -66,7 +60,7 @@
             $sentTo = $results['receipientID'];
             $from = $results['senderID'];
 
-            $getDetails = mysqli_query($conn,"SELECT * FROM  registration where (id='$sentTo' || id='$from') && id!='$userID' ");
+            $getDetails = mysqli_query($conn,"SELECT * FROM  registration where (id='$sentTo' || id='$from') ");
             if (mysqli_num_rows($getDetails) > 0) {
               $i=0;
               while($record = mysqli_fetch_array($getDetails)) {
@@ -139,11 +133,12 @@
                 $length = 35;
                 if(strlen($row['message']) < $length){ echo $row['message'];} else{
                     for($k = 0; $k < strlen($row['message']) ; $k+=$length){
-                    echo substr($row['message'], $k, ($k+$length)) . '<br>';
+                    echo substr($row['message'], $k+1, ($k+$length)) . '<br>';
                     }
                 }
                     ?>
                 </p>
+                <span><?php echo substr($row['time'],11)?></span>
             </div>
             <?php
             $i++; }}
@@ -223,5 +218,13 @@ function showSlides(n){
     function showImgs(){
     document.getElementById('firstSlide').style.display = "none";
     document.getElementById('secondSlide').style.display = "block";
+}
+const showMenu = () =>{
+    document.getElementById('menuBars').style.display = 'none';
+    document.getElementById('menu').style.display = 'block';
+}
+const closeMenu = () =>{
+    document.getElementById('menuBars').style.display = 'block';
+    document.getElementById('menu').style.display = 'none';
 }
 </script>

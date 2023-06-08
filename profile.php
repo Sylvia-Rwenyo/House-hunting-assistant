@@ -29,10 +29,6 @@
             echo ucwords($user);
             ?></h1>
         <div class="search">
-            <form>
-                <input name="keyword" type="text"/>
-                <button type="submit"><i class="fa-solid fa-search"></i></button>
-            </form>
             </div> 
             <span class="menuBar" id="menuBars" onClick="showMenu()"><i class="fa-solid fa-bars"></i></span>
             <div class="menu" id="menu">
@@ -67,13 +63,6 @@
                         alt="profile photo"/>
                     <div class="rating">
                     <h4><?php echo $result['name'];?></h4>
-                        <div>
-                        <i class="fa-solid fa-star"></i>                   
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                        </div>
                     </div>
 
                 </div>
@@ -160,6 +149,47 @@
             deleteQ.style.display = "none";
         confirmDelete.style.display = "none";
         }
+        function editProfile(){
+    document.getElementById('completeProfile').style.display = "none";
+    document.getElementById('editingProfile').style.display = "block";
+    }
+    function pswdDisplay(){
+        let showPswd = document.getElementById('showPswd');
+        let pswd = document.getElementById("password");
+        if(pswd.type == "text"){
+            pswd.type = "password";
+            showPswd.innerHTML = "Show";
+        }else{
+            pswd.type = "text";
+            showPswd.textContent = "Hide";
+            pswd.style.border = "none";
+        }
+    }
+    let profilePhoto = document.getElementById('profilePhoto');
+    let pfp = document.getElementById('pfp');
+    pfp.onclick = () =>{
+        profilePhoto.style.display = "block"
+    }
+    profilePhoto.oninput = () =>{
+        // profilePhoto.style.display = "none"
+        console.log(profilePhoto.value);
+        let pfpName = profilePhoto.value;
+    
+        let photo = 'Uploads/' +  pfpName.replace('C:\\fakepath\\', '');
+        pfp.src = photo;
+    }
+    let phoneNo = document.getElementById('phoneNumber');
+        phoneNo.onclick = () =>{
+        phoneNo.type = "number";
+    }
+    const showMenu = () =>{
+    document.getElementById('menuBars').style.display = 'none';
+    document.getElementById('menu').style.display = 'block';
+}
+const closeMenu = () =>{
+    document.getElementById('menuBars').style.display = 'block';
+    document.getElementById('menu').style.display = 'none';
+}
 
     </script>
     <?php

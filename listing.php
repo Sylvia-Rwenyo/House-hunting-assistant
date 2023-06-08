@@ -26,10 +26,10 @@ if($_SESSION['category'] == 'showing'){
     <div class="header">
         <h1>Active Listings</h1>
         <div class="search">
-        <form id="searchForm" action="listing.php" method="POST">
-            <input name="searchQ" type="text"/>
-            <button type="submit" name="search"><i class="fa-solid fa-search"></i></button>
-        </form>
+            <form id="searchForm" action="listing.php" method="POST">
+                <input name="searchQ" type="text"/>
+                <button type="submit" name="search"><i class="fa-solid fa-search"></i></button>
+            </form>
          </div> 
         <span class="menuBar" id="menuBars" onClick="showMenu()"><i class="fa-solid fa-bars"></i></span>
         <div class="menu" id="menu">
@@ -147,7 +147,7 @@ if($_SESSION['category'] == 'showing'){
                     </a>
                     </div>
                     <p>Ksh <?php echo $result['cost']?></p>
-                    <p><i class="fa fa-location-dot"></i> <?php echo $result['location']?></p>
+                    <p><i class="fa fa-location-dot"></i> <?php echo $result['location']?>&nbsp;&nbsp;<i class="fa fa-ellipsis"onclick="showDetails(<?php echo $result['id']?>)" ></i>
             </div>
             <?php
             $i++;
@@ -264,7 +264,7 @@ $sql .= " ORDER BY likes DESC";
                     </a>
                     </div>
                     <p>Ksh <?php echo $result['cost']?></p>
-                    <p><i class="fa fa-location-dot"></i> <?php echo $result['location']?></p>
+                    <p><i class="fa fa-location-dot"></i> <?php echo $result['location']?>&nbsp;&nbsp;<i class="fa fa-ellipsis"onclick="showDetails(<?php echo $result['id']?>)" ></i>
             </div>
             <?php
             $i++;

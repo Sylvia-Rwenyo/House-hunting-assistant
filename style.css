@@ -550,6 +550,10 @@ li{
     max-height: 50%;
 
 }
+.message .chat .chatBubble1 span , .message .chat .chatBubble2 span{
+    color:rgb(89, 89, 87);
+    margin-left: 70%;
+}
 .message .chat .bubbles{
     height: 90%;
     overflow: scroll;
@@ -1004,6 +1008,8 @@ li{
     flex-direction: row;
     margin: 0;
     width: 100%;
+    justify-content: space-around;
+    margin-top: 5%;
 }
 #closeCard{
     position: fixed;
@@ -1115,7 +1121,8 @@ li{
 .prev, .next{
     cursor: pointer;
     /* position: absolute; */
-    top: 50%;
+    /* top: 50%; */
+    height: 80%;
     width: auto;
     margin-top: -22px;
     padding: 16px;
@@ -1192,11 +1199,19 @@ to{opacity: 1}
     flex-direction: row;
     justify-content: space-between;
 }
-.listingsChat .list{
-    width: 30%;
+.listingsChat .cards{
+    display: flex;
+    width: 35%;
+    margin: 0;
+    margin-top: 2.5%;
+    height: 70vh;
 }
-.listingsChat .list .card{
+.listingsChat .cards .singleCard{
     width: 100%;
+    height: 90%;
+}
+.listingsChat .cards .singleCard img{
+    height: 55%
 }
 .listingsChat .message{
     width: 60%;
@@ -1270,16 +1285,14 @@ height: 60%;
     margin-left: 7.5%;
     background-color: white;
     padding-right: 2.5%;
-    padding-left: 2.5%;
     padding-top: 1.5%;
     padding-bottom: 1.5%;
     margin-top: 5%;
-    align-content: space-evenly;
     row-gap: 3%;
 }
 .cards .singleCard{
     width: 90%;
-    padding: 1em;
+    padding: 1.5em;
     height: 50vh;
 }
 .cards .singleCard:hover{
@@ -1298,6 +1311,11 @@ height: 60%;
 .view-card a{
     text-decoration: none;
     color: #000000;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+}
+.view-card div{
+    background-color: white;
 }
 .like-btn{
     display: flex;
@@ -1318,7 +1336,8 @@ height: 60%;
 }
 .singleCard div{
     justify-content: space-between;
-    height: 2em;
+    height: 7%;
+    margin-right: 0.25em;
 }
 .mainView{
     width: 60%;
@@ -1345,17 +1364,9 @@ height: 60%;
     margin-left: 2.5%;
     margin-right: 2.5%;
 }
-.move-slides{
-    width: 90%;
-    display: flex; 
-    flex-direction: row;
-    justify-content: space-evenly;
-    padding-top:2.5%;
-    margin-left: 2.5%;
-    margin-right: 2.5%;
-} 
-.listing-details{
-/* margin-left: 5%; */
+
+.move-slides a{
+    margin: 0;
 }
 .listings-details .detail{
     margin-top: 10%;
@@ -1400,6 +1411,7 @@ height: 60%;
 .allCards{
     display: flex;
     flex-direction: column;
+    width: 90%
 }
 .searchTitle{
     margin-left: 7.5%;
@@ -1449,9 +1461,40 @@ height: 60%;
 .all-views{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    margin-left: 2.5%;
-    margin-right: 2.5%;
+    justify-content: space-evenly;
+    margin-left: 7.5%;
+    margin-right: 7.5%;
+}
+.all-views .cards{
+    display: flex;
+    width: 60%;
+    margin: 0;
+    margin-top: 8%;
+    height: 100%;
+}
+.all-views .cards .singleCard{
+    width: 100%;
+    height: 70vh;
+}
+.all-views .cards .singleCard img{
+    height: 55%
+}
+.mainListing .cards{
+    display: flex;
+    width: 60%;
+    margin: 0;
+    height: 100%;
+    background-color: white;
+    height: 90vh;
+    padding-right: 0;
+}
+.mainListing .cards .singleCard{
+    width: 100%;
+    height: 100%;
+}
+.mainListing .cards .singleCard img{
+    width: 90%;
+    height: 50%
 }
 .sideBar{
     width: 35%;
@@ -1474,12 +1517,21 @@ height: 60%;
     margin-left: 5%;
     margin-right: 5%;
 }
-.sideBar .view-card div{
+.sideBar .view-card .details{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-evenly;
     width: 90%;
-        margin-left: 5%;
+    margin-left: 5%;
+}
+.sideBar .view-card .sub-details{
+    display: flex;
+    flex-direction: column;
+}
+.sub-details p{
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+
 }
 .prevPage .mainView{
     box-shadow:none;
@@ -1507,7 +1559,13 @@ height: 60%;
     text-decoration: none;
     color: #ede9e2;
 }
-.uploads .cards{
-    width: fit-content;
+.move-slides{
+    width: 90%;
+    display: flex; 
+    flex-direction: row;
+    justify-content: space-evenly;
     height: fit-content;
-}
+    /* margin-left: 2.5%;
+    margin-right: 2.5%; */
+    margin-bottom: 2%;
+} 

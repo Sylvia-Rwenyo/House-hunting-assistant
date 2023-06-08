@@ -1,19 +1,3 @@
-const showMenu = () =>{
-    document.getElementById('menuBars').style.display = 'none';
-    document.getElementById('menu').style.display = 'block';
-}
-const closeMenu = () =>{
-    document.getElementById('menuBars').style.display = 'block';
-    document.getElementById('menu').style.display = 'none';
-}
-// const showMessages1 = (id) => {
-//     document.getElementById('message').style.display = 'flex';
-//     document.getElementsByClassName('card').style.display = 'none';
-//     document.getElementById('msg').style.display = 'none';
-//     document.getElementById('pay').style.display = 'block';
-//     document.getElementById('id').style.display = 'block';
-
-// }
 function showMessages1(id){
     document.getElementById('message').style.display = 'flex';
     document.getElementsByClassName('card').style.display = 'none';
@@ -65,28 +49,7 @@ const closeFilters = () =>{
 }
 
 // let photoDisplay = document.getElementById('editPhoto');
-let profilePhoto = document.getElementById('profilePhoto');
-let pfp = document.getElementById('pfp');
-pfp.onclick = () =>{
-    profilePhoto.style.display = "block"
-}
-profilePhoto.oninput = () =>{
-    // profilePhoto.style.display = "none"
-    console.log(profilePhoto.value);
-    let pfpName = profilePhoto.value;
-   
-    let photo = 'Uploads/' +  pfpName.replace('C:\\fakepath\\', '');
-    pfp.src = photo;
-}
-let phoneNo = document.getElementById('phoneNumber');
-    phoneNo.onclick = () =>{
-    phoneNo.type = "number";
-}
 
-function editProfile(){
-    document.getElementById('completeProfile').style.display = "none";
-    document.getElementById('editingProfile').style.display = "block";
-}
 
 
 function rentalForm(){

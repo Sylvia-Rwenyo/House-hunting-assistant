@@ -40,4 +40,19 @@
 <h4>Welcome</h4>
 </div>
 </body>
+<script>
+    function pswdDisplay(){
+    let showPswd = document.getElementById('showPswd');
+    let pswd = document.getElementById("password");
+    if(pswd.type == "text"){
+        pswd.type = "password";
+        showPswd.innerHTML = "Show";
+    }else{
+        pswd.type = "text";
+        showPswd.textContent = "Hide";
+        pswd.style.border = "none";
+    }
+}
+
+</script>
 </html>

@@ -22,12 +22,6 @@
 <body class="addUnit">
     <div class="header">
         <h1>New upload</h1>
-        <div class="search">
-        <form>
-            <input name="keyword" type="text"/>
-            <button type="submit"><i class="fa-solid fa-search"></i></button>
-        </form>
-         </div> 
         <span class="menuBar" id="menuBars" onClick="showMenu()"><i class="fa-solid fa-bars"></i></span>
         <div class="menu" id="menu">
             <span class="menuBar" id="menuBar" onClick="closeMenu()"><i class="fa-solid fa-x"></i></span>
@@ -94,13 +88,13 @@
                  <form class="card mainAddform"  method="post" enctype="multipart/form-data" action="processing.php">
                     <select name="category" required>
                         <?php
-                         if($_SESSION['category'] == "forSale"){?>
-                        <option selected><?php echo $_SESSION['category']?></option>
+                         if($_SESSION['unitCategory'] == "forSale"){?>
+                        <option selected><?php echo $_SESSION['unitCategory']?></option>
                         <option value="rental" >For renting</option>
                         <?php
                         }else{
                         ?>
-                        <option selected><?php echo $_SESSION['category']?></option>
+                        <option selected><?php echo $_SESSION['unitCategory']?></option>
                         <option value="forSale" >For sale</option>
                         <?php } ?>
                     </select>
@@ -160,6 +154,7 @@
                     <div class="others">  
                         <label>Select the available amenities</label>
                         <select name="amenities[]" multiple required>
+                            <option value="Running water">Running water</option>
                             <option value="Gym">Gym </option>
                             <option value="Storage area">Storage Area </option>
                             <option value="Parking space">Parking space </option>
@@ -255,6 +250,7 @@
                             <?php
                                 $selectedAmenities = $_SESSION['amenities'];
                                 $availableAmenities = array(
+                                    'Running water',
                                     'Gym',
                                     'Storage area',
                                     'Parking space',
@@ -359,13 +355,13 @@
                 <form class="card mainAddform" id="section-one-edit" method="post" enctype="multipart/form-data" action="processing.php">
                     <select name="category" required>
                         <?php
-                         if($_SESSION['category'] == "forSale"){?>
-                        <option selected><?php echo $_SESSION['category']?></option>
+                         if($_SESSION['unitCategory'] == "forSale"){?>
+                        <option selected><?php echo $_SESSION['unitCategory']?></option>
                         <option value="rental" >For renting</option>
                         <?php
                         }else{
                         ?>
-                        <option selected><?php echo $_SESSION['category']?></option>
+                        <option selected><?php echo $_SESSION['unitCategory']?></option>
                         <option value="forSale" >For sale</option>
                         <?php } ?>
                     </select>
@@ -436,6 +432,7 @@
                             <?php
                                 $selectedAmenities = $_SESSION['amenities'];
                                 $availableAmenities = array(
+                                    'Running water',
                                     'Gym',
                                     'Storage area',
                                     'Parking space',
@@ -622,6 +619,7 @@
                             <?php
                                 $selectedAmenities = explode('*', $result['amenities']);
                                 $availableAmenities = array(
+                                    'Running water',
                                     'Gym',
                                     'Storage area',
                                     'Parking space',
@@ -720,29 +718,17 @@
         <?php
         $i++;
         }}}}}
-        
-        // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        //     $valueToRemove = $_POST['value'];
-        
-        //     if (($key = array_search($valueToRemove, $_SESSION['virtualTour'])) !== false) {
-        //         unset($_SESSION['virtualTour'][$key]);
-        //     }
-        // }
         ?>
         </div>
 </body>
 </html>
 <script>
-    //   function uncheck(checkbox) {
-    //             var value = checkbox.value;
-    //             $.ajax({
-    //                 url: 'addUnit.php',
-    //                 type: 'POST',
-    //                 data: { value: value },
-    //                 success: function(response) {
-    //                     $(checkbox).closest('.prevTour').remove();
-    //                 }
-    //             });
-    //     }
-  
+ const showMenu = () =>{
+    document.getElementById('menuBars').style.display = 'none';
+    document.getElementById('menu').style.display = 'block';
+}
+const closeMenu = () =>{
+    document.getElementById('menuBars').style.display = 'block';
+    document.getElementById('menu').style.display = 'none';
+}
  </script>

@@ -31,7 +31,6 @@ if(isset($_POST['signUp']))
 	 $emailAddress = $_POST['emailAddress'];
 	 $password = $_POST['password'];
      $category = $_POST['category'];
-     
      //statement to enter values into the registration table in the database
 	 $sql = "INSERT INTO registration (name,emailAddress, password, category)
 	 VALUES ('$name','$emailAddress','$password', '$category')";
@@ -43,6 +42,7 @@ if(isset($_POST['signUp']))
         $_SESSION["username"] = $name;
         $_SESSION["email"] = $emailAddress;
         if($_SESSION["loggedIN"]){
+            $_SESSION['category'] = $category;
             if($category == "looking"){
             //redirect user to their listings page
             echo ' <script> 
@@ -165,14 +165,14 @@ if(isset($_GET['action'])){
     }
     if(isset($_POST['next1'])){	
         session_start(); 
-        unset($_SESSION["category"]);
+        unset($_SESSION["unitCategory"]);
         unset($_SESSION["cost"]) ;
         unset($_SESSION["size"]);
         unset($_SESSION["bedroomNo"]);
         unset($_SESSION["location"]);
         unset($_SESSION["bathroomNo"]);
       
-        $_SESSION["category"] = $_POST['category'];
+        $_SESSION["unitCategory"] = $_POST['category'];
         $_SESSION["cost"] = $_POST['cost'];
         $_SESSION["size"] = $_POST['size'];
         $_SESSION["bedroomNo"] = $_POST['bedroomNo'];
@@ -359,7 +359,7 @@ if(isset($_GET['action'])){
         if($_GET['action']== "uploadUnit"){
             session_start();
             $cost = $_SESSION["cost"];
-            $category = $_SESSION["category"];
+            $category = $_SESSION["unitCategory"];
             $location = $_SESSION["location"];
             $condition = $_SESSION["condition"];
             $accessibility = implode('*', $_SESSION["accessibility"]);
@@ -376,7 +376,7 @@ if(isset($_GET['action'])){
 
             //  if sql query is executed...
             if (mysqli_query($conn, $sql)) {
-                unset($_SESSION["category"]);
+                unset($_SESSION["unitCategory"]);
                 unset($_SESSION["cost"]) ;
                 unset($_SESSION["size"]);
                 unset($_SESSION["bedroomNo"]);
