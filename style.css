@@ -471,7 +471,16 @@ li{
     width:65%;
     height: 75vh;
     border: 2px solid black;
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: transparent transparent;
 }
+.message::-webkit-scrollbar {
+    width: 8px; /* Adjust as needed */
+  }
+  
+  .message::-webkit-scrollbar-thumb {
+    background-color: transparent; /* Adjust as needed */
+  }
 
 .singleMessages a{
     text-decoration: none;
@@ -483,6 +492,7 @@ li{
     border: 1px solid black;
     padding: 0.75em;
     height: 10%;
+    overflow: hidden;
 }
 .message .singleMessage .intro{
     display: flex;
@@ -507,6 +517,8 @@ li{
     width: 60%;
     height: 100%;
     border: 1px solid black;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 .message .chat .top{
     width: 100%;
@@ -556,7 +568,8 @@ li{
 }
 .message .chat .bubbles{
     height: 90%;
-    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 .message .chat .typingArea{
     height: 10%;
@@ -566,10 +579,10 @@ li{
     border-left: none;
 }
 .message .chat .typingArea textarea{
-    height: 93.5%;
+    height: 100%;
     background: transparent;
-    width: 75%;
-    padding-left: 5%;
+    width: 70%;
+    padding: 5%;
     border: none;
 }
 .message .chat .typingArea button{
@@ -577,8 +590,7 @@ li{
     background: transparent;
     border: none;
     width: 15%;
-    /* border-left: 2px solid black; */
-
+    font-size: 1.5em;
 }
 .paymentArea{
     width: 65%;
@@ -1186,7 +1198,8 @@ to{opacity: 1}
     display: flex;
     flex-direction: column;
     width: 40%;
-    overflow: scroll;
+    /* overflow-y: scroll;
+    overflow-x: hidden; */
 }
 .loginPswd #password{
     margin-bottom: 0;
@@ -1479,7 +1492,7 @@ height: 60%;
 .all-views .cards .singleCard img{
     height: 55%
 }
-.mainListing .cards{
+.previewSec .cards{
     display: flex;
     width: 60%;
     margin: 0;
@@ -1488,16 +1501,21 @@ height: 60%;
     height: 90vh;
     padding-right: 0;
 }
-.mainListing .cards .singleCard{
+.previewSec .cards .singleCard{
     width: 100%;
     height: 100%;
 }
-.mainListing .cards .singleCard img{
+.previewSec .cards .singleCard img{
     width: 90%;
     height: 50%
 }
 .sideBar{
     width: 35%;
+}
+.sideBar .view-cards{
+    height: 85vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 .sideBar h4{
     color: #323232;
@@ -1552,7 +1570,7 @@ height: 60%;
     text-decoration: none;
     color: white;
 }
- input:focus, select:focus{
+ input:focus, select:focus, textarea:focus{
     outline: none;
 }
 .addUnitForm .mainAddForm a{

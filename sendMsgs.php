@@ -1,5 +1,7 @@
 <?php
 include_once 'conn.php';
+session_start();
+
 $message = $_POST['message'];
 $senderID = $_POST['senderID'];
 $receipientID = $_POST['receipientID'];
@@ -8,10 +10,12 @@ $receipientID = $_POST['receipientID'];
 $sql = "INSERT INTO messages (message,senderID, receipientID, time)
 VALUES ('$message','$senderID','$receipientID', '$time')";
 
+
+
 //if sql query is executed...
 if (!mysqli_query($conn, $sql)) {
-            //show error
-    echo "Error: " . $sql . "
+    //show error
+echo "Error: " . $sql . "
 " . mysqli_error($conn);
 }
 //close connection

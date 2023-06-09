@@ -402,7 +402,7 @@ if(isset($_GET['action'])){
         if($_GET['action']== "editUnit"){
             session_start();
             $cost = $_SESSION["cost"];
-            $category = $_SESSION["category"];
+            $category = $_SESSION["unitCategory"];
             $location = $_SESSION["location"];
             $condition = $_SESSION["condition"];
             $accessibility = implode('*', $_SESSION["accessibility"]);
@@ -421,7 +421,7 @@ if(isset($_GET['action'])){
 
             //  if sql query is executed...
             if (mysqli_query($conn, $sql)) {
-                unset($_SESSION["category"]);
+                unset($_SESSION["unitCategory"]);
                 unset($_SESSION["cost"]) ;
                 unset($_SESSION["size"]);
                 unset($_SESSION["bedroomNo"]);

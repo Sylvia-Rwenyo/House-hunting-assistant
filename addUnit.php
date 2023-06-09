@@ -59,11 +59,11 @@
                             <option id="saleOpt" value="forSale">For sale</option>
                             <option value="rental">For renting</option>
                         </select>
-                        <!-- <select name="payPlan" id="payPlan">
+                        <select name="payPlan" id="payPlan">
                             <option disabled selected>payment plan</option>
                             <option value="mortgage">Mortgage</option>
                             <option value="opt2">Opt 2</option>
-                        </select> -->
+                        </select>
                         <input type="hidden" value='<?php echo $_SESSION['userID']?>'   name="userID" />
                         <input type="text" placeholder="Cost"   name="cost" required/>
                         <input type="text" placeholder="location"  name="location" required/>
@@ -730,5 +730,8 @@
 const closeMenu = () =>{
     document.getElementById('menuBars').style.display = 'block';
     document.getElementById('menu').style.display = 'none';
+}
+document.getElementById("saleOpt").onclick = () =>{
+    document.getElementById('payPlan').style.display = 'block';
 }
  </script>

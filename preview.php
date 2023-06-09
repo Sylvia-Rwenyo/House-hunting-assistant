@@ -34,7 +34,7 @@
         <h1>New Unit</h1>
     </div>
     </div>
-    <div class="mainListing">
+    <div class="previewSec">
         <div class="cards">
             <div class="singleCard" id="singleCard<?php echo $_SESSION['id']?>">
                 <?php
@@ -51,11 +51,11 @@
                 </div>  
                 <div>
                     <?php
-                    if($_SESSION['category'] == 'forSale'){
+                    if($_SESSION['unitCategory'] == 'forSale'){
                     ?>
                     <p class="category">For sale</p>
                     <?php
-                    }elseif($_SESSION['category'] == 'rental'){
+                    }elseif($_SESSION['unitCategory'] == 'rental'){
                     ?>
                         <p class="category">Rental</p>
                         <?php

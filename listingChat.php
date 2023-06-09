@@ -143,14 +143,14 @@
             $sentTo = $results['receipientID'];
             $from = $results['senderID'];
 
-            $getDetails = mysqli_query($conn,"SELECT * FROM  registration where (id='$sentTo' || id='$from') ");
+            $getDetails = mysqli_query($conn,"SELECT * FROM  registration where (id='$sentTo' || id='$from') && id!=' $userID'");
               if (mysqli_num_rows($getDetails) > 0) {
               $i=0;
               while($record = mysqli_fetch_array($getDetails)) {
                 $to = 'listingChat.php?action=chat&with='. $record['id']. '&id=' . $id;
               ?>
             <div class="singleMessage">
-                <a href="listingChat.php?action=chat&with=<?php echo $record['id']?>&id=<?php echo $id;?>">
+                <a href="listingChat.php?action=chat&with=<?php echo $record['id'];?>&id=<?php echo $id;?>">
                 <div class="intro">
                     <h5><?php echo $record['name']?></h5>
                 </div>

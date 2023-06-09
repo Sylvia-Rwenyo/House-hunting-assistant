@@ -106,7 +106,7 @@ session_start();
                         and <?php $details = explode('*', $result['others']);for($j=0; $j < count($details); $j++){ echo strtolower($details[$j]. ', ');}?>
                     </p>
                     <p>Ksh <?php echo $result['cost']?></p>
-                    <p><i class="fa fa-location-dot"></i> <?php echo $result['location']?>&nbsp;&nbsp;<i class="fa fa-ellipsis"onclick="showDetails(<?php echo $result['id']?>)" ></i>
+                    <p><i class="fa fa-location-dot"></i> <?php echo $result['location']?></p>
             </div>
         </div>
         <?php
@@ -125,6 +125,7 @@ session_start();
         ?> 
 <div class="sideBar">
             <h4>More like this</h4>
+            <div class="view-cards">
             <?php
              $same = mysqli_query($conn,$similar);
      
@@ -148,7 +149,7 @@ session_start();
                         <?php
                         }else{
                            ?>
-                            <p><?php echo 'Buy a ' .  $result['bedroomNo']?> bedroom</p>
+                            <p><?php echo 'Buy a ' .  $result['bedroomNo']?> bedroom house</p>
                         <p><?php echo 'at Ksh '.  $result['cost']?> in <?php echo$result['location']?></p>
                         <?php
                         }
@@ -184,6 +185,7 @@ session_start();
                     echo "there's no more";
                 }
             ?>
+            </div>
         </div>
     </div>
         <div class="payPrompt"  id="payPrompt2">

@@ -60,7 +60,7 @@
             $sentTo = $results['receipientID'];
             $from = $results['senderID'];
 
-            $getDetails = mysqli_query($conn,"SELECT * FROM  registration where (id='$sentTo' || id='$from') ");
+            $getDetails = mysqli_query($conn,"SELECT * FROM  registration where (id='$sentTo' || id='$from') && id!=' $userID'");
             if (mysqli_num_rows($getDetails) > 0) {
               $i=0;
               while($record = mysqli_fetch_array($getDetails)) {
@@ -70,17 +70,10 @@
                 <a href="userChats.php?action=chat&with=<?php echo $record['id']?>&id=?>">
                 <div class="intro">
                     <h5><?php echo $record['name']?></h5>
-                    <!-- <div>
-                        <i class="fa-solid fa-star"></i>                   
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>  -->
                 </div>
                 <?php
                 $rec = $record['id'];
-                $msg = mysqli_query($conn,"SELECT * FROM  messages where  receipientID='$rec' ORDER BY `time` DESC LIMIT 1 ");
+                $msg = mysqli_query($conn,"SELECT * FROM  messages where  receipientID='$rec' || senderID='$rec' ORDER BY `time` DESC LIMIT 1 ");
                 if (mysqli_num_rows($msg) > 0) {
                 $k=0;
                 while($found = mysqli_fetch_array($msg)) {
@@ -119,7 +112,6 @@
                     <?php $i++; }} ?></a>
                     <p>direct message</p>
                 </div>
-                <span onClick="closeMessages()"><i class="fa-solid fa-x"></i></span>
             </div>
             <?php
             $messages = mysqli_query($conn,"SELECT * FROM  messages where (senderID='$with' && receipientID ='$userID') || (senderID='$userID' && receipientID ='$with')");
@@ -149,45 +141,13 @@
                         <input type="hidden" name="senderID" value="<?php echo  $userID?>" />
                         <input type="hidden" name="receipientID" value="<?php echo  $with?>" />
                         <input type="hidden" name="subjectUnit" value="<?php echo  $subjectUnit?>" />
-                        <button type="submit" name="send"><FaRegPaperPlane/></button>
+                        <button type="submit" id="sendMsg" name="send"><i class="fa-solid fa-paper-plane"></i></button>
         </form>
         <?php
         }
         ?>
         </div>
     </div>
-            <!-- <div class="paymentArea" id="paymentArea">
-            <span onClick="closePaymentSection1()"><i class="fa-solid fa-x"></i></span>
-                <div>
-                    <h4>Payment History</h4>
-                    <table>
-                        <tr>
-                            <th>From</th>
-                            <th>Amount</th>
-                            <th>Time</th>
-                            <th>Confirmation code</th>
-                        </tr>
-                        <tr>
-                            <td>Jane Doe</td>
-                            <td>Ksh 100</td>
-                            <td>17th March 2023</td>
-                            <td>RHFJBJBJSDB</td>
-                        </tr>
-                        <tr>
-                            <td>Jane Doe</td>
-                            <td>Ksh 100</td>
-                            <td>17th March 2023</td>
-                            <td>RHFJBJBJSDB</td>
-                        </tr>
-                        <tr>
-                            <td>Jane Doe</td>
-                            <td>Ksh 100</td>
-                            <td>17th March 2023</td>
-                            <td>RHFJBJBJSDB</td>
-                        </tr>
-                    </table>
-                </div>
-            </div> -->
 </body>
 </html>
 <?php

@@ -103,7 +103,7 @@ if($_SESSION['category'] == 'showing'){
                         $userID = $result['userID'];
                         $tour = explode('*', $result['virtualTour']);
                 ?>
-            <div class="singleCard" id="singleCard<?php echo $result['id']?>" onclick="showDetails(<?php echo $result['id']?>)">
+            <div class="singleCard" id="singleCard<?php echo $result['id']?>" >
                 <img src="Uploads/<?php echo $tour[0]?>" class="previewImg " alt=""/>
                 <div>
                     <?php
@@ -220,7 +220,7 @@ $sql .= " ORDER BY likes DESC";
                 $tour = explode('*', $result['virtualTour']);
 
                 ?>
-            <div class="singleCard" id="singleCard<?php echo $result['id']?>" onclick="showDetails(<?php echo $result['id']?>)">
+            <div class="singleCard" id="singleCard<?php echo $result['id']?>">
                 <img src="Uploads/<?php echo $tour[0]?>" class="previewImg " alt=""/>
                 <div>
                     <?php
