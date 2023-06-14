@@ -374,6 +374,14 @@ width: 90%;
     margin-top: 0.85em;
     margin-left: 0.95em;
 }
+.profileBody .list{
+    display: flex;
+    flex-direction: column;
+}
+.profileBody .list a{
+    text-decoration: none;
+    color: #000000;
+}
 .menu{
     display: flex;
     flex-direction: column;
@@ -579,17 +587,15 @@ li{
     border-left: none;
 }
 .message .chat .typingArea textarea{
-    height: 100%;
     background: transparent;
-    width: 70%;
-    padding: 5%;
+    width: 75%;
+    padding: 2.5%;
     border: none;
 }
 .message .chat .typingArea button{
-    height: 100%;
     background: transparent;
     border: none;
-    width: 15%;
+    width: 10%;
     font-size: 1.5em;
 }
 .paymentArea{
@@ -728,20 +734,27 @@ li{
     font-size: 1.5em;
     width: 65%;
 }
-.contactInfo  p{
+.contacts .admChat{
+    display: flex;
+    flex-direction: row;
+    width: 15em;
+}
+.contacts  p{
     margin-block-end: 0.4em;
     margin-block-start: 0.4em;
 }
-.contactInfo .location{
-    margin-bottom: 2em;
-}
-.contactInfo .links a{
+.contacts .links a{
     text-decoration: none;
     width: 100%;
     color: white;
 }
-.contactInfo .links p{
+.contacts .links .admChat a{
+    width: 10%;
     font-size: 0.8em;
+}
+.contacts .links p{
+    font-size: 0.8em;
+    width: 80%;
 }
 .contacts .buttons{
     font-size: 1.5em;
@@ -1022,6 +1035,7 @@ li{
     width: 100%;
     justify-content: space-around;
     margin-top: 5%;
+    height: fit-content;
 }
 #closeCard{
     position: fixed;
@@ -1299,9 +1313,9 @@ height: 60%;
     background-color: white;
     padding-right: 2.5%;
     padding-top: 1.5%;
-    padding-bottom: 1.5%;
     margin-top: 5%;
-    row-gap: 3%;
+    /* row-gap: 3%; */
+    height: 100%;
 }
 .cards .singleCard{
     width: 90%;
@@ -1319,7 +1333,7 @@ height: 60%;
     margin-left: 2.5%;
 }
 .cards .singleCard .category, .listing-details .category{
-    color: #62A039;
+    color: rgb(98, 160, 57);
 }
 .view-card a{
     text-decoration: none;
@@ -1441,8 +1455,17 @@ height: 60%;
 }
 .creditMsg{
     width:60%;
+    margin-left: 40%;
+   margin-top: 2%;
+   color: black;
+   text-decoration: none;
+}
+.Msg1{
+    width:60%;
     margin-left: 5%;
    margin-top: 2%;
+   color: black;
+   text-decoration: none;
 }
 #payPlan{
     display: none;

@@ -28,14 +28,13 @@
             <ul>
                 <a href="listing.php"><li  class="active">Active Listings</li></a>
                 <a href="userProfile.php"><li  class="active">Profile</li></a>
-                <a href="tools.php"><li  class="active">Tools</li></a>
-                <a href="contacts.php"><li  class="active">Help</li></a>
+                <a href="userChats.php"><li  class="active">Help</li></a>
             </ul>
         </div>
     </div>
     </div>
     <div class="progress-section ">
-                <p class="creditMsg">This form has four parts, fill all sections accordingly</p>
+                <p class="Msg1">This form has four parts, fill all sections accordingly</p>
                 <div class="progress-bars">
                     <span id="sec-one"><span id="sec-one-x"></span></span>
                     <span id="sec-two"><span id="sec-two-x"></span></span>

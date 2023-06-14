@@ -23,8 +23,7 @@
             <ul>
                 <a href="listing.php"><li  class="active">Active Listings</li></a>
                 <a href="userProfile.php"><li  class="active">Profile</li></a>
-                <a href="tools.php"><li  class="active">Tools</li></a>
-                <a href="contacts.php"><li  class="active">Help</li></a>
+                <a href="userChats.php"><li  class="active">Help</li></a>
             </ul>
         </div>
     </div>
@@ -45,7 +44,7 @@
             //     $uploaderID = $result['userID'];
         ?>
         <div class="creditMsg">
-            <p>Each credit is worth Ksh 50. You can use your credits to communicate directly with home owners and care takers as well as view the unit's location. Each credit once in use expires after 24hours.</p>
+            <p>Each credit is worth Ksh 50. You can use your credits to communicate directly with us and to view the unit's location. Each credit once in use expires after 24hours.</p>
         </div>
     <div class="paymentArea" id="paymentArea">
         <div id="payPrompt">

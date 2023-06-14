@@ -36,19 +36,14 @@
                 <ul>
                     <a href="listing.php"><li  class="active">Active Listings</li></a>
                     <a href="userProfile.php"><li  class="active">Profile</li></a>
-                    <a href="tools.php"><li  class="active">Tools</li></a>
-                    <a href="contacts.php"><li  class="active">Help</li></a>
+                    <a href="userChats.php"><li  class="active">Help</li></a>
                 </ul>
             </div>
         </div>
         </div> 
         <?php 
             // get user info
-            if(isset($_GET)){
-                $id=$_GET['id'];
-                }else{
                 $id = $_SESSION['id'];
-                }  
                 $records = mysqli_query($conn,"SELECT * FROM  registration where id='$id'");
             if (mysqli_num_rows($records) > 0) {
             $i=0;
@@ -79,12 +74,6 @@
             </div>
             </div>
                 <?php 
-            // get user info
-            if(isset($_GET)){
-            $id=$_GET['id'];
-            }else{
-            $id = $_SESSION['id'];
-            }
             $records = mysqli_query($conn,"SELECT * FROM  registration where id='$id' ");
             if (mysqli_num_rows($records) > 0) {
             $i=0;

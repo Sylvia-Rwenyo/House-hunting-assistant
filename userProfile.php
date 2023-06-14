@@ -65,8 +65,8 @@ const showDetails = (id) =>{
         }
         if ($_SESSION['category'] == 'looking') {
             echo '<style>
-            .viewing{background-color:  #62A039;}
-            .showing{background-color: rgb(131, 164, 111);}
+            .viewing{background-color: rgb(98, 150, 67);}
+            .showing{background-color: rgba(98, 150, 67, 0.3);}
             </style>';
         }
         ?>
@@ -82,8 +82,7 @@ const showDetails = (id) =>{
             <ul>
                 <a href="listing.php"><li class="active">Active Listings</li></a>
                 <a href="userProfile.php"><li class="active">Profile</li></a>
-                <a href="tools.php"><li class="active">Tools</li></a>
-                <a href="contacts.php"><li class="active">Help</li></a>
+                <a href="userChats.php"><li class="active">Help</li></a>
             </ul>
         </div>
     </div>
@@ -106,6 +105,9 @@ const showDetails = (id) =>{
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $_SESSION['id']= $row['id'];
+                if(!isset($_SESSION['mail'])){
+                    $_SESSION['mail'] = $row['emailAddress'];
+                }
                 ?>
                 <div class="profile">
         <div class="intro">
@@ -114,7 +116,7 @@ const showDetails = (id) =>{
                 <h4><?php echo $row['name']; ?></h4>
             </div>
             <div class="links">
-                <p><a href="userChats.php?action=chat&with=<?php echo $row['id']; ?>" style="text-decoration: none; color: black;"><i class="fa-solid fa-message"></i></a></p>
+                <p><a href="userChats.php" style="text-decoration: none; color: black;"><i class="fa-solid fa-message"></i></a></p>
                 <p><a href="profile.php?id=<?php echo$row['id']; ?>" style="text-decoration: none; color: black;"><i class="fa-solid fa-gears"></i></a></p>
             </div>
         </div>
@@ -126,10 +128,10 @@ const showDetails = (id) =>{
         }
     }
 
-    if ($_SESSION['category'] == 'showing') {
+    if ($_SESSION['category'] == 'showing' && !stristr('hhs@admin.com', $_SESSION['mail'])) {
         echo '<style>
-        .showing{background-color:  #62A039;}
-        .viewing{background-color: rgb(131, 164, 111);}
+        .showing{background-color: rgb(98, 150, 67);}
+        .viewing{background-color: rgba(98, 150, 67, 0.5);}
         </style>';
         $userID = $_SESSION['id'];
     ?>
@@ -287,8 +289,14 @@ const showDetails = (id) =>{
             }}
             ?>
         </div>
-    </div>
-             <?php
+    </div><?php
+    }else if(stristr('hhs@admin.com', $_SESSION['mail']) && $_SESSION['category'] == 'showing'){
+        $userID = $_SESSION['id'];
+        echo '
+        <script>
+        window.location.href = "userChats.php";
+        </script>
+        ';
              }else if($_SESSION['category'] == 'looking'){
             ?>
             <div class="uploads" id="uploads">
@@ -364,6 +372,9 @@ const showDetails = (id) =>{
                         ?>
             <div class="list" id="list">
             <h4>Your hunt history is empty</h4>
+            <a href="listing.php">
+                See new listings here <i class="fa fa-arrow-right"></i>
+            </a>
         </div>
         <?php
                        }

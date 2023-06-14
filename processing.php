@@ -37,40 +37,15 @@ if(isset($_POST['signUp']))
 
      //if sql query is executed...
 	 if (mysqli_query($conn, $sql)) {
-        $_SESSION["loggedIN"] = true;
-        $loginStatus = $_SESSION["loggedIN"];
-        $_SESSION["username"] = $name;
-        $_SESSION["email"] = $emailAddress;
-        if($_SESSION["loggedIN"]){
-            $_SESSION['category'] = $category;
-            if($category == "looking"){
-            //redirect user to their listings page
-            echo ' <script> 
-        window.location.href = "listing.php"
-        </script>
-        '; 
-            }else if($category == "showing"){
-            //redirect user to their profile page
-            echo ' <script> 
-        window.location.href = "userProfile.php"
-        </script>
-        '; 
-            }
-        }else{
-            //redirect to the home page
-            echo ' <script> 
-        window.location.href = "index.php";
-        </script>';
-        }
-			 } else {	
+            login($conn);
+		} else {	
                 //show error
-		echo "Error: " . $sql . "
-" . mysqli_error($conn);
+		echo "Error: " . $sql . " " . mysqli_error($conn);
 	 }
-     //close connection
-	 mysqli_close($conn);
+        //close connection
+        mysqli_close($conn);
 
-}
+    }
 if(isset($_POST['editProfile']))
 {	 
      // specify directory for uploading the file
@@ -115,41 +90,53 @@ if(isset($_POST['logIn']))
 {
     //create session
     session_start();
-
-    //import variables from an array into local symbol table
-    extract($_POST);
-    $emailAddress = $_POST ["emailAddress"];
-    $password = $_POST ["password"];
-
-     //statement to select values from the registration table in the database
-    $sql=mysqli_query($conn,"SELECT * FROM registration where emailAddress='$emailAddress' and password='$password'");
-    //fetch the result row as an array
-    $row  = mysqli_fetch_array($sql);
-    //if sql query is executed...
-    if(is_array($row))
-    {
-        $_SESSION["email"]=$row['emailAddress'];
-        $_SESSION["username"]=$row['name'];
-        $_SESSION["id"]=$row['id'];
-        $_SESSION['category']=$row['category'];
-        $_SESSION['credits']=$row['credits'];
-        $_SESSION["loggedIN"] = true;
-        $loginStatus = $_SESSION["loggedIN"];
-        if($_SESSION['category'] == 'looking'){
-            echo ' <script> 
-        window.location.href = "listing.php"
+    login($conn);
+}
+function login($conn){
+      //import variables from an array into local symbol table
+      extract($_POST);
+      $emailAddress = $_POST ["emailAddress"];
+      $password = $_POST ["password"];
+  
+       //statement to select values from the registration table in the database
+      $sql=mysqli_query($conn,"SELECT * FROM registration where emailAddress='$emailAddress' and password='$password'");
+      //fetch the result row as an array
+      $row  = mysqli_fetch_array($sql);
+      //if sql query is executed...
+      if(is_array($row))
+      {
+          $_SESSION["email"]=$row['emailAddress'];
+          $_SESSION["username"]=$row['name'];
+          $_SESSION["id"]=$row['id'];
+          $_SESSION['category']=$row['category'];
+          $_SESSION['credits']=$row['credits'];
+          $_SESSION["loggedIN"] = true;
+          $loginStatus = $_SESSION["loggedIN"];
+          if($_SESSION['category'] == 'looking'){
+              echo ' <script> 
+          window.location.href = "listing.php"
+          </script>
+          '; 
+          }else if($_SESSION['category'] == 'showing'){
+              echo ' <script> 
+          window.location.href = "userProfile.php"
+          </script>
+          '; 
+          }
+      }
+      else
+      {
+          echo "Invalid Username /Password";
+      }
+}
+if(isset($_GET['action1'])){
+    if($_GET['action1'] == "msgAdmin"){
+        assignReceipient($conn);
+        $redirect = $_GET['from'];
+        echo ' <script> 
+        window.location.href = "'. $redirect . $receipientID .'";
         </script>
-        '; 
-        }else if($_SESSION['category'] == 'showing'){
-            echo ' <script> 
-        window.location.href = "userProfile.php"
-        </script>
-        '; 
-        }
-    }
-    else
-    {
-        echo "Invalid Username /Password";
+        ';
     }
 }
 if(isset($_GET['action'])){
@@ -158,7 +145,7 @@ if(isset($_GET['action'])){
             session_start();
             session_unset();
             echo ' <script> 
-        window.location.href = "index.php"
+        window.location.href = "index.php";
         </script>
         '; 
         }
@@ -445,19 +432,28 @@ if(isset($_GET['action'])){
 
         }
         }
+      
         if(isset($_POST['send'])){
+            session_start();
+            $recipientID = $_POST['recipientID'];
+            $to = $_POST['to'];
+
+            if ($recipientID == '' || $recipientID == '0') {
+              assignReceipient($conn);
+            $recipientID = $_SESSION['recipientID'];
+            $to = $_POST['to'].'?action=chat&with='. $recipientID;
+
+            }
             $message = $_POST['message'];
             $senderID = $_POST['senderID'];
-            $receipientID = $_POST['receipientID'];
             $subjectUnit = $_POST['subjectUnit'];
              date_default_timezone_set("Africa/Nairobi");
              $time = date("Y-m-d h:i:sa");
             $sql = "INSERT INTO messages (message,senderID, receipientID, time, subjectUnit)
-            VALUES ('$message','$senderID','$receipientID', '$time', '$subjectUnit')";
+            VALUES ('$message','$senderID','$recipientID', '$time', '$subjectUnit')";
         
             //if sql query is executed...
             if (mysqli_query($conn, $sql)) {
-                $to= 'listingChat.php?action=chat&with='.$receipientID.'&inView='. $subjectUnit;
                 echo '<script> window.location.href = "'. $to.'"; </script>';
                    } else {	
                        //show error
@@ -467,6 +463,68 @@ if(isset($_GET['action'])){
             //close connection
             mysqli_close($conn);
         }
+        function assignReceipient($conn){
+            // Retrieve the list of emails
+            $sqlQ = mysqli_query($conn, "SELECT * FROM registration WHERE emailAddress IN ('hhs1@admin.com', 'hhs2@admin.com', 'hhs@admin.com')");
+            $emails = array('hhs1@admin.com', 'hhs2@admin.com', 'hhs@admin.com');
+            
+            // Fetch the last assigned recipient ID
+            $lastRecipientID = getLastRecipientID($conn);
+            
+            // Determine the index of the next email to assign
+            $nextIndex = ($lastRecipientID !== null) ? array_search($lastRecipientID, $emails) + 1 : 0;
+            
+            // Wrap around to the first email if necessary
+            if ($nextIndex >= count($emails)) {
+                $nextIndex = 0;
+            }
+            
+            // Assign the recipient ID to the next email
+            $chosenEmail = $emails[$nextIndex];
+            
+            // Retrieve the corresponding ID of the chosen email
+            $getID = mysqli_query($conn, "SELECT id FROM registration WHERE emailAddress = '$chosenEmail'");
+            if ($getID && mysqli_num_rows($getID) > 0) {
+                $row = mysqli_fetch_assoc($getID);
+                $recipientID = $row['id'];
+            } else {
+                // Handle error condition if the ID retrieval fails
+                $recipientID = null;
+            }
+            
+            // Store the recipient ID in the session
+            $_SESSION['recipientID'] = $recipientID;
+            
+            // Update the last assigned recipient ID
+            updateLastRecipientID($_SESSION['recipientID'], $_SESSION['id'], $conn);
+        }
+              function getLastRecipientID($conn) {
+                 // Retrieve the last assigned recipient ID from a database table or any other storage mechanism
+                  // Modify this code to suit your specific storage method
+                  
+                  // Assuming a MySQLi connection object named $conn is available
+                  $result = mysqli_query($conn, "SELECT lastReceipientID FROM admin_receipient ORDER BY id DESC LIMIT 1");
+                  
+                  if ($result && mysqli_num_rows($result) > 0) {
+                      $row = mysqli_fetch_assoc($result);
+                      return $row['lastReceipientID'];
+                  }
+                  
+                  return null;
+              }
+              
+              function updateLastRecipientID($recipientID, $userID, $conn) {
+                  // Update the last assigned recipient ID in a database table or any other storage mechanism
+                  // Modify this code to suit your specific storage method
+
+                  
+                  // Assuming a MySQLi connection object named $conn is available
+                  date_default_timezone_set("Africa/Nairobi");
+                  $time = date("Y-m-d h:i:sa");
+                  $recipientID =$_SESSION['recipientID'];
+                  mysqli_query($conn, "INSERT INTO admin_receipient (lastReceipientID, senderID, time) VALUES ('$recipientID', '$userID', '$time')");
+              }
+        
         if(isset($_POST['pay'])){
             session_start();
             $id = $_POST['id'];

@@ -25,8 +25,7 @@ session_start();
             <ul>
                 <a href="listing.php"><li  class="active">Active Listings</li></a>
                 <a href="userProfile.php"><li  class="active">Profile</li></a>
-                <a href="tools.php"><li  class="active">Tools</li></a>
-                <a href="contacts.php"><li  class="active">Help</li></a>
+                <a href="userChats.php"><li  class="active">Help</li></a>
             </ul>
         </div>
     </div>
@@ -69,7 +68,7 @@ session_start();
                         <?php
                         }
                         ?>
-                    <a href="listing.php?likes=<?php echo $result['likes']?>&id=<?php echo $result['id']?>&by=<?php echo $_SESSION['id']?>">
+                    <a href="listing-details.php?likes=<?php echo $result['likes']?>&id=<?php echo $result['id']?>&by=<?php echo $_SESSION['id']?>">
                         <button class="like-btn">
                             <i class="fa fa-heart" <?php
                                                         $unitID=$result['id'];
@@ -130,13 +129,11 @@ session_start();
              $same = mysqli_query($conn,$similar);
      
              if (mysqli_num_rows($same) > 0) {
-                // echo "there's more";
                  $i=0;
                  while($result = mysqli_fetch_array($same)) {
                     $tour = explode('*', $result['virtualTour']);
 
             ?>
-            <!-- <a -->
                 <div class="view-card"  onclick="showDetails(<?php echo $result['id']?>)">
                     <img src="Uploads/<?php echo $tour[0]?>" alt=''/>
                     <div class="details">
@@ -181,6 +178,8 @@ session_start();
             <?php
                  }
             $i++;
+            ?>
+            <?php
                 }else{
                     echo "there's no more";
                 }
@@ -222,7 +221,7 @@ if(isset($_GET['likes'])){
         $by = $_GET['by'];
         $id = $_GET['id'];
         $liked = $_GET['liked'];
-        $sql=mysqli_query($conn,"SELECT likedBy FROM units where id='$liked'");
+        $sql=mysqli_query($conn,"SELECT likedBy FROM units where id='$id'");
         $row  = mysqli_fetch_array($sql);
         //if sql query is executed...
         if(is_array($row))
@@ -231,7 +230,7 @@ if(isset($_GET['likes'])){
         if(in_array($by, $likedBy)){
             $likes = $_GET['likes'] - 1;
             $likedBy =str_replace($row['likedBy'], '*'.$by, '');
-            $sql2 = "UPDATE units SET likes ='$likes', likedBy='$likedBy' where id = '$liked'";
+            $sql2 = "UPDATE units SET likes ='$likes', likedBy='$likedBy' where id = '$id'";
     
         //if sql query is executed...
         if (mysqli_query($conn, $sql2)) {
