@@ -8,7 +8,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/2751fbc624.js" crossorigin="anonymous"></script>
-    <script src="script.js" ></script>
     <link rel="stylesheet" href="style.css">
     <title>Join House Hunting Site</title>
 </head>
@@ -18,19 +17,19 @@
 </div>
 <form action="processing.php" method="post">
     <div class="registerForm">
-        <input type="text" placeholder="enter your name" name="name">
-        <input type="text" placeholder="enter your email address" name="emailAddress">
+        <input type="text" placeholder="enter your name" name="name" required>
+        <input type="text" placeholder="enter your email address" name="emailAddress" required>
         <div class="loginPswd">
             <input type="password" id="password" placeholder="enter your password" name="password">&nbsp;<p onclick="pswdDisplay()" id="showPswd" >Show</p>
         </div>
         <div class="category">
             <div>
                 <label>Looking for a house</label><br>
-                <input type="radio" name="category" value="looking"><br>
+                <input type="radio" name="category" value="looking" required><br>
             </div>
             <div>
                 <label>Showing houses</label><br>
-                <input type="radio" name="category"value="showing"><br>
+                <input type="radio" name="category"value="showing" required><br>
             </div>
         </div>
     </div>

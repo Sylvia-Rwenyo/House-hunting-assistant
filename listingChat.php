@@ -117,7 +117,7 @@
                 </div>
                     <div>
                         <p><?php echo $result['bedroomNo']?> bedroom house</p>
-                        <a href="listingChat.php?with=<?php  echo $_SESSION['recipientID']; $_SESSION['inView'] = $result['id']; ?>&inView=<?php echo  $_SESSION['inView']?>">
+                        <a href="listingChat.php?with=<?php if(isset($_SESSION['recipientID'])){ echo $_SESSION['recipientID'];} $_SESSION['inView'] = $result['id']; ?>&inView=<?php echo  $_SESSION['inView']?>">
                             <span id="card<?php echo $result['id']?>">
                                 <i class="fa-solid fa-message"></i>
                             </span>
@@ -190,7 +190,23 @@
                 <?php
             }
         }
-    }
+    }else {
+        ?>
+            <div class="singleMessage">
+                <a href="listingChat.php?action=chat&with=<?php 
+                if(isset($_SESSION['recipientID'])){
+                    echo $_SESSION['recipientID'];
+                    }else{ echo 0;}?>
+                    &inView=<?php echo $_GET['inView']?>">
+                    <div class="intro">
+                        <h5>Hhs admin</h5>
+                    </div>
+                    <p>Start your chat with us</p>
+                </a>
+            </div>
+            <?php
+            $noReciepient = true;
+                }
     ?>
 </div>
 
@@ -211,7 +227,6 @@
                         if ($nextIndex >= count($emails)) {
                             $nextIndex = 0;
                         }
-                    
                         // Assign the recipient ID to the next email
                         $_SESSION['recipientID'] = $emails[$nextIndex];                   
                     
@@ -249,60 +264,11 @@
                         }else{
                             $recipientID =$_SESSION['recipientID'];
                         }
-                        if(!isset($_GET['with'])){
                           ?>
-                <div class="chat" id="chat">
-        <div class="bubbles">
-            <div class="top">
-                <div>
-                    <?php
-                    $records = mysqli_query($conn,"SELECT name, id FROM  registration where emailAddress='$recipientID'");
-                    if (mysqli_num_rows($records) > 0) {
-                    $i=0;
-                    while($result = mysqli_fetch_array($records)) {
-                        $recipientID = $result['id'];
-                        $_SESSION['recipientID'] = $recipientID;
-                    ?>
-                    <a href="userProfile.php?id=<?php echo $recipientID;?>"><h4><?php echo $result['name']?></h4>
-                    <?php $i++; }} ?></a>
-                    <p>direct message</p>
-                </div>
-            </div>
-            <?php
-            $messages = mysqli_query($conn,"SELECT * FROM  messages where (senderID='$recipientID' && receipientID ='$userID') || (senderID='$userID' && receipientID ='$ $recipientID')");
-            if (mysqli_num_rows($messages) > 0) {
-            $i=0;
-            while($row = mysqli_fetch_array($messages)) {
-                $subjectUnit = $row['subjectUnit'];
-            ?>
-             <div class="<?php if($row['senderID']==$userID){ echo 'chatBubble1'; } else if($row['receipientID']==$userID){ echo 'chatBubble2'; }?>">
-                <p><?php
-                $length = 35;
-                if(strlen($row['message']) < $length){ echo $row['message'];} else{
-                    for($k = 0; $k < strlen($row['message']) ; $k+=$length){
-                    echo substr($row['message'], $k, ($length)) . '<br>';
-                    }
-                }
-                    ?>
-                </p>
-                <span><?php echo substr($row['time'],11)?></span>
-            </div>
-            <?php
-            $i++; }}
-            ?>
-        </div>
-        <form class="typingArea" method="POST" action="processing.php">
-                        <textarea type="text" name="message" placeholder="type here ..."></textarea>
-                        <input type="hidden" name="senderID" value="<?php echo  $userID?>" />
-                        <input type="hidden" name="recipientID" value="<?php echo  $recipientID?>" />
-                        <input type="hidden" name="subjectUnit" value="<?php echo  $subjectUnit?>" />
-                        <input type="hidden" name="to" value="<?php echo  $to?>" />
-                        <button type="submit" id="sendMsg" name="send"><i class="fa-solid fa-paper-plane"></i></button>
-        </form>
-       
-        </div>
+         
         <?php
-                        }else{
+                       if(isset($_GET['with'])){
+                        if($_GET['with'] > 0){
         ?>
                   <div class="chat" id="chat">
         <div class="bubbles">
@@ -359,10 +325,10 @@
        
         </div>
         <?php
-                        }
+                        }}
         ?>
                           </div>
-    </div>
+    <!-- </div> -->
         <?php
                      
                      if(isset($_GET['likes'])){
@@ -386,7 +352,7 @@
                                 color: black;
                             }
                             </style>';
-                              echo '<script> window.location.href = "listingChat.php"</script>'; 
+                              echo '<script> window.location.href = '. $to.'</script>'; 
                                } else {	
                                    //show error
                            echo "Error: " . $sql2 . "
@@ -406,7 +372,7 @@
                                 color: #c89364;
                             }
                             </style>';
-                            echo '<script> window.location.href = "listingChat.php"</script>'; 
+                            echo '<script> window.location.href = '. $to.'</script>'; 
                         } else {	
                                    //show error
                            echo "Error: " . $sql2 . "
