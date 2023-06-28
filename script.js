@@ -98,32 +98,6 @@ function showSlides(n) {
   x[slideIndex-1].style.display = "block";
 }
 
-let filterBathrooms = document.getElementById('filterBathrooms');
-let filterSize = document.getElementById('filterSize');
-let filterParkingSpace = document.getElementById('filterParkingSpace');
-let filterPlayground = document.getElementById('filterPlayground');
-let filterBedrooms = document.getElementById('filterBedrooms');
-
-function filterBedroom(){
-    let number = filterBedrooms.value;
-    window.location.href = "listing.php?action=filter&bedrooms=" + number;
-}
-function filterBathrooms(){
-    let number = filterBathrooms.value;
-    window.location.href = "listing.php?action=filter&bathrooms=" + number;
-}
-function filterSize(){
-    let number = filterSize.value;
-    window.location.href = "listing.php?action=filter&size=" + number;
-}
-function filterParkingSpace(){
-    let availability = 1;
-    window.location.href = "listing.php?action=filter&parkingSpace=" + availability;
-}
-function filterPlayground (){
-    let availability = 1;
-    window.location.href = "listing.php?action=filter&playground=" + availability;
-}
 
 let amount = document.getElementById('amount');
 amount.oninput = () =>{

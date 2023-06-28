@@ -1,7 +1,13 @@
-<?php
-include_once 'conn.php';
-session_start();
-?>
+<?php 
+    include_once 'conn.php';
+    session_start();
+    if(!isset($_SESSION["loggedIN"]) || $_SESSION["loggedIN"] == false){
+        echo ' <script> 
+        window.location.href = "index.php";
+        </script>';
+        }else{
+        $user = $_SESSION["username"];
+            ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +18,7 @@ session_start();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/2751fbc624.js" crossorigin="anonymous"></script>
-    <script src="script.js"  ></script>
+    <!-- <script src="script.js"  ></script> -->
     <link rel="stylesheet" href="style.css">
     <title>Active Listings</title>
 </head>
@@ -20,14 +26,9 @@ session_start();
     <div class="header">
         <h1>Active Listings</h1>
         <span class="menuBar" id="menuBars" onClick="showMenu()"><i class="fa-solid fa-bars"></i></span>
-        <div class="menu" id="menu">
-            <span class="menuBar" id="menuBar" onClick="closeMenu()"><i class="fa-solid fa-x"></i></span>
-            <ul>
-                <a href="listing.php"><li  class="active">Active Listings</li></a>
-                <a href="userProfile.php"><li  class="active">Profile</li></a>
-                <a href="userChats.php"><li  class="active">Help</li></a>
-            </ul>
-        </div>
+        <?php
+            include_once 'menu.php';
+        ?>
     </div>
     <?php
          $userID = 0;
@@ -44,7 +45,7 @@ session_start();
     ?>
     <div class="all-views">
         <div class="cards">
-            <div class="singleCard" id="singleCard<?php echo $result['id']?>">
+            <div class="singleCard" id="singleCard<?php echo $result['id']?>" style="padding-bottom:10%;">
                 <?php
                     for($j=0; $j < count($tour); $j++){
                         ?>
@@ -283,7 +284,7 @@ const closeMenu = () =>{
     document.getElementById('menuBars').style.display = 'block';
     document.getElementById('menu').style.display = 'none';
 }
-const showDetails = (id) =>{
+function showDetails(id){
     window.location.href = "listing-details.php?id=" + id;
 }
 let slideIndex = 1;
@@ -311,3 +312,6 @@ function showOverlay(){
     document.getElementById("payPrompt2").style.display = "block";
          }
 </script>
+<?php
+        }
+?>

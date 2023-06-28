@@ -75,7 +75,6 @@ if(isset($_POST['editProfile']))
     if (mysqli_query($conn, $sql)) {
         $_SESSION["username"]=$name;
         $_SESSION["mail"]=$emailAddress;
-        echo '$profilePhoto';
         echo ' <script> 
         window.location.href = "userProfile.php";
         </script>
@@ -354,7 +353,7 @@ if(isset($_GET['action'])){
             $others = implode('*', $_SESSION["others"]);
             $virtualTour = implode("*", $_SESSION['virtualTour']);
             $size = $_SESSION["size"];
-            $userID = $_SESSION['userID'];
+            $userID = $_SESSION['id'];
             $bedroomNo = $_SESSION["bedroomNo"];
             $bathroomNo = $_SESSION["bathroomNo"];
             //    statement to enter values into the registration table in the database
@@ -397,7 +396,7 @@ if(isset($_GET['action'])){
             $others = implode('*', $_SESSION["others"]);
             $virtualTour = implode("*", $_SESSION['virtualTour']);
             $size = $_SESSION["size"];
-            $userID = $_SESSION['userID'];
+            $userID = $_SESSION['id'];
             $bedroomNo = $_SESSION["bedroomNo"];
             $bathroomNo = $_SESSION["bathroomNo"];
             $id = $_GET['id'];
@@ -437,13 +436,6 @@ if(isset($_GET['action'])){
             session_start();
             $recipientID = $_POST['recipientID'];
             $to = $_POST['to'];
-
-            if ($recipientID == '' || $recipientID == '0') {
-              assignReceipient($conn);
-            $recipientID = $_SESSION['recipientID'];
-            $to = $_POST['to'].'?action=chat&with='. $recipientID;
-
-            }
             $message = $_POST['message'];
             $senderID = $_POST['senderID'];
             $subjectUnit = $_POST['subjectUnit'];

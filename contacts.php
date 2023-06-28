@@ -16,14 +16,9 @@
         <h6>HOUSE HUNTING SITE</h6>
     </div>
                 <span class="menuBar" id="menuBars" onClick=showMenu() ><FaBars/></span>
-                <div class="menu" id="menu">
-                    <span class="menuBar" id="menuBar" onClick=closeMenu()><FaTimes/></span>
-                    <ul>
-                        <a href="listing.php"><li>Active Listings</li></a>
-                        <a href="userProfile.php"><li>Profile</li></a>
-                        <a href="contacts.php"><li>Help</li></a>
-                    </ul>
-                </div>
+                <?php
+                 include_once 'menu.php';
+                ?>
             <div class="mainSection">
                 <div class="title">
                     <h4>Contact us</h4>

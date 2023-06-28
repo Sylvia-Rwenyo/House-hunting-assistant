@@ -77,14 +77,9 @@ const showDetails = (id) =>{
         </div>
 
         <span class="menuBar" id="menuBars" onClick="showMenu()"><i class="fa-solid fa-bars"></i></span>
-        <div class="menu" id="menu">
-            <span class="menuBar" id="menuBar" onClick="closeMenu()"><i class="fa-solid fa-x"></i></span>
-            <ul>
-                <a href="listing.php"><li class="active">Active Listings</li></a>
-                <a href="userProfile.php"><li class="active">Profile</li></a>
-                <a href="userChats.php"><li class="active">Help</li></a>
-            </ul>
-        </div>
+        <?php
+            include_once 'menu.php';
+        ?>
     </div>
 
     <!-- Header section code here -->
@@ -116,7 +111,7 @@ const showDetails = (id) =>{
                 <h4><?php echo $row['name']; ?></h4>
             </div>
             <div class="links">
-                <p><a href="userChats.php" style="text-decoration: none; color: black;"><i class="fa-solid fa-message"></i></a></p>
+                <p><a href="listingChat.php?inView=<?php echo $_SESSION['inView'];?>" style="text-decoration: none; color: black;"><i class="fa-solid fa-message"></i></a></p>
                 <p><a href="profile.php?id=<?php echo$row['id']; ?>" style="text-decoration: none; color: black;"><i class="fa-solid fa-gears"></i></a></p>
             </div>
         </div>
@@ -136,7 +131,7 @@ const showDetails = (id) =>{
         $userID = $_SESSION['id'];
     ?>
     <div class="uploads" id="uploads">
-        <h4 class="uploadsHeader">Uploads&nbsp;&nbsp;<i class="fa-solid fa-add"></i></h4>
+        <h4 class="uploadsHeader">Uploads&nbsp;&nbsp;<a href="addUnit.php"><i class="fa-solid fa-add"></i></a></h4>
         <?php
             if(isset($_POST['search'])){
             ?>
@@ -294,7 +289,7 @@ const showDetails = (id) =>{
         $userID = $_SESSION['id'];
         echo '
         <script>
-        window.location.href = "userChats.php";
+        window.location.href = "";
         </script>
         ';
              }else if($_SESSION['category'] == 'looking'){

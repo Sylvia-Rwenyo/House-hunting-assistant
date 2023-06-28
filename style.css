@@ -1,6 +1,15 @@
 *{
     src: url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
 }
+@media print {
+    html,
+    body {
+       display: none;
+    }
+ }
+ input:focus {
+    background-color: initial;
+ }
 .homePage , .contacts{
     background: url("./images/living-room.jpg") no-repeat;
     background-color: grey;
@@ -52,10 +61,24 @@
     margin-left: 25%;
     margin-top: 2.5%;
 }
-.homePage .mainCTA h4, .homePage .mainCTA2 h4{
+.homePage .mainCTA h4{
     margin-left: 2.5%;
 }
-
+@keyframes slide-in {
+    0% {
+      opacity: 0;
+      transform: translateX(0);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(2.5%);
+    }
+  }
+.homePage .mainCTA a{
+    text-decoration: none;
+    color: white;
+    animation: slide-in 1s ease-in-out;
+}
 .registerForm{
     margin-top: 2.5%;
     width: 100%;
@@ -407,6 +430,7 @@ width: 90%;
     padding: 0;
     padding-left: 10%;
     margin-top: 0;
+    height: 30%;
 
 }
 .header .menu span{
@@ -415,7 +439,7 @@ width: 90%;
     margin-top: 10%;
 }
 .active{
- font-weight: 600;
+    border-bottom: 2px solid black;
 }
 #moreTools, #theTools{
     display: none;
@@ -456,6 +480,7 @@ li{
     flex-direction: row;
     /* justify-content: space-between; */
     padding: 0.25em;
+    padding-right: 0;
 }
 .filters div input{
     border: none;
@@ -463,8 +488,8 @@ li{
     width: fit-content;
     height: 70%;
     width: 60%;
-    margin-top: 0.15em;
-    margin-bottom: 0.15em;
+    margin-top: 0.6em;
+    margin-bottom: 0.1em;
     margin-left: 0.5em;
     margin-right: 0;
     border-radius: 2px;
@@ -478,11 +503,13 @@ li{
     height: 100%;
     font-size: 1em;
     padding: 0.5em;
-
+    border:none;
 }
 .filters .submit{
     padding: 0;
     background-color: #83a46f;
+    border:none;
+
 }
 .filters div label{
     margin-top: 0.5em;
@@ -531,7 +558,7 @@ li{
     font-size: 0.75em;
     margin: 0;
     margin-left: 1em;
-    color: #c89364;
+    color: rgb(200, 147, 100);
 }
 .message .singleMessage .intro h5, .message .singleMessage p{
     margin-block-start: 0;
@@ -620,7 +647,7 @@ li{
     height: 63vh;
     border: 2px solid black;
     padding: 5%;
-    margin-left: 5%;
+    margin-left: 15%;
     margin-top: 2%;
 }
 .paymentForm{
@@ -1327,11 +1354,28 @@ height: 60%;
     width: 85%;
     margin-left: 7.5%;
     background-color: white;
-    padding-right: 2.5%;
+    padding-left: 2.5%;
     padding-top: 1.5%;
     margin-top: 5%;
     /* row-gap: 3%; */
     height: 100%;
+}
+#Listings .cards{
+    width: 90%;
+    margin-left: 2%;
+    padding-right: 4%;
+    padding-left: 2.5%;
+  
+}
+#listingsChat .cards{
+    padding-left: 0;
+    padding-right: 0;
+
+}
+.listings-details .cards{
+    padding-left: 0;
+    padding-right: 0;
+
 }
 .cards .singleCard{
     width: 90%;
@@ -1371,11 +1415,13 @@ height: 60%;
     border-radius: 5px;
     /* margin-top:1em; */
 }
+
 .like-btn:hover{
     box-shadow: 0 2px 4px  0 #62A039;
 }
 .like-btn i{
     margin-right: 0.5em;
+    color: black;
 }
 .singleCard div{
     justify-content: space-between;
@@ -1531,6 +1577,11 @@ height: 60%;
 .all-views .cards .singleCard img{
     height: 55%
 }
+.previewSec{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
 .previewSec .cards{
     display: flex;
     width: 60%;
@@ -1628,4 +1679,12 @@ height: 60%;
 } 
 #filterResults{
     margin-top: 2%;
+}
+.like-btn .liked{
+    color: '#c89364';
+}
+
+.payArea .creditMsg{
+    margin-left: 15%;
+    width: 70%;
 }

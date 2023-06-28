@@ -15,17 +15,10 @@
 <body class="Listings">
     <div class="header">
         <h1>Active Listings</h1>
-        <div class="search">
-         </div> 
         <span class="menuBar" id="menuBars" onClick="showMenu()"><i class="fa-solid fa-bars"></i></span>
-        <div class="menu" id="menu">
-            <span class="menuBar" id="menuBar" onClick="closeMenu()"><i class="fa-solid fa-x"></i></span>
-            <ul>
-                <a href="listing.php"><li  class="active">Active Listings</li></a>
-                <a href="userProfile.php"><li  class="active">Profile</li></a>
-                <a href="userChats.php"><li  class="active">Help</li></a>
-            </ul>
-        </div>
+        <?php
+            include_once 'menu.php';
+        ?>
     </div>
     </div>
     <div class="listingsChat payArea">
@@ -48,13 +41,13 @@
         </div>
     <div class="paymentArea" id="paymentArea">
         <div id="payPrompt">
-        <div>
+        <!-- <div>
             <label>Credit Card</label>
             <input type="radio" name="method" value="card" id="payMethodC"/>
-        </div>
+        </div> -->
         <div>
             <label>Mpesa</label>
-            <input type="radio" name="method" value="mpesa" id="payMethodM"/>
+            <input type="radio" name="method" value="mpesa" id="payMethodM" checked/>
         </div>
     </div>
         <form class="paymentForm" id="creditCard">

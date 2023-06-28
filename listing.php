@@ -1,11 +1,6 @@
 <?php
 include_once 'conn.php';
 session_start();
-if($_SESSION['category'] == 'showing'){
-    echo '<script> 
-        window.location.href = "userProfile.php";
-        </script>';
-}else{
     $inView = 0;
 ?>
 <!DOCTYPE html>
@@ -19,28 +14,23 @@ if($_SESSION['category'] == 'showing'){
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/2751fbc624.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="script.js"  ></script>
+    <!-- <script src="script.js"  ></script> -->
     <link rel="stylesheet" href="style.css">
     <title>Active Listings</title>
 </head>
 <body class="Listings" id="Listings">
-    <div class="header">
+    <div class="header" id="listing-header">
         <h1>Active Listings</h1>
-        <div class="search">
+        <div class="search" id="listing-search">
             <form id="searchForm" method="POST">
                 <input name="searchQ" type="text"/>
                 <button type="submit" name="search"><i class="fa-solid fa-search"></i></button>
             </form>
          </div> 
         <span class="menuBar" id="menuBars" onClick="showMenu()"><i class="fa-solid fa-bars"></i></span>
-        <div class="menu" id="menu">
-            <span class="menuBar" id="menuBar" onClick="closeMenu()"><i class="fa-solid fa-x"></i></span>
-            <ul>
-                <a href="listing.php"><li  class="active">Active Listings</li></a>
-                <a href="userProfile.php"><li  class="active">Profile</li></a>
-                <a href="userChats.php"><li  class="active">Help</li></a>
-            </ul>
-        </div>
+        <?php
+            include_once 'menu.php';
+        ?>
     </div>
     <div class="mainListing">
         <div class="filterSection">
@@ -48,32 +38,32 @@ if($_SESSION['category'] == 'showing'){
                 <i class="fa-solid fa-filter"></i>
             </div>
             <div id="openFilters2" onClick="closeFilters()"><span>Filters</span><i class="fa-solid fa-angle-up"></i></div>
-                <form class="filters" id="filters" method="post">
-                        <div>
-                            <label>Cost</label>
-                            <input name="cost"  type="number" />
-                        </div>
-                        <div>
-                            <label>Location</label>
-                            <input name="location" type="text"  />
-                        </div>
-                        <div>
-                            <label>Bedrooms</label>
-                            <input name="bedrooms"  type="number" />
-                        </div>
-                        <div>
-                            <label>Bathrooms</label>
-                            <input name="bathrooms"  type="number"  />
-                        </div>
-                        <div>
-                            <label>Size in sqft</label>
-                            <input name="size"  type="number" />
-                        </div>
-                        <div class="submit">
-                            <input name="filter"  type="submit"  value="Apply"/>
-                        </div>
-                       
-    </form> 
+            <form class="filters" id="filters" method="post">
+                <div id="filterCost">
+                    <label>Cost</label>
+                    <input name="cost" type="number" placeholder="<?php echo isset($_POST['filter']) || isset($_GET['filter']) ? htmlspecialchars($_POST['cost']) : ''; ?>"/>
+                </div>
+                <div id="filterLocation">
+                    <label>Location</label>
+                    <input name="location" type="text" placeholder="<?php echo isset($_POST['filter']) || isset($_GET['filter']) ? htmlspecialchars($_POST['location']) : ''; ?>"/>
+                </div>
+                <div id="filterBedrooms">
+                    <label>Bedrooms</label>
+                    <input name="bedrooms" type="number" placeholder="<?php echo isset($_POST['filter']) || isset($_GET['filter']) ? htmlspecialchars($_POST['bedrooms']) : ''; ?>"/>
+                </div>
+                <div id="filterBathrooms">
+                    <label>Bathrooms</label>
+                    <input name="bathrooms" type="number" placeholder="<?php echo isset($_POST['filter']) || isset($_GET['filter']) ? htmlspecialchars($_POST['bathrooms']) : ''; ?>"/>
+                </div>
+                <div id="filterSize">
+                    <label>Size in sqft</label>
+                    <input name="size" type="number" placeholder="<?php echo isset($_POST['filter']) || isset($_GET['filter']) ? htmlspecialchars($_POST['size']) : ''; ?>"/>
+                </div>
+                <div class="submit">
+                    <input name="filter" type="submit" value="Apply"/>
+                </div>
+            </form>
+
         </div>
         <div class="allCards" id="allCards">
         <?php
@@ -123,30 +113,52 @@ if($_SESSION['category'] == 'showing'){
                         <?php
                         }
                         ?>
-                    <a href="listing.php?likes=<?php echo $result['likes']?>&id=<?php echo $result['id']?>&by=<?php echo $_SESSION['id']?>">
-                        <button class="like-btn">
-                            <i class="fa fa-heart" <?php
-                                                        $unitID=$result['id'];
-                                                        $by = $_SESSION['id'];
-                                                        $stmt=mysqli_query($conn,"SELECT likedBy, id FROM units where id='$unitID'");
-                                                        $row  = mysqli_fetch_array($stmt);
-                                                        //if sql query is executed...
-                                                        if(is_array($row))
-                                                        {
-                                                        $likedBy = explode('*', $row['likedBy']);
-                                                        if(in_array($by, $likedBy)){
-                                                            echo 'style="color: #c89364"';
-                                                        }
-                                                    }
-                                                        ?>>
-                            </i>
-                            <span><?php echo $result['likes']?></span>
-                        </button>
-                    </a>
+                    <a href="
+                    <?php
+                    if(!isset($_SESSION['id'])){
+                        ?>
+                        index.php
+                        <?php
+                    }else{
+                    ?>
+                   #" 
+                     class="like-link" 
+                     data-likes="<?php echo $result['likes'] ?>" data-id="<?php echo $result['id'] ?>" data-by="<?php
+                      $id = $_SESSION['id'];
+                      $sql=mysqli_query($conn,"SELECT likedBy FROM units where id='$id'");
+                      $row  = mysqli_fetch_array($sql);
+                      //if sql query is executed...
+                      if(is_array($row))
+                      {
+                      $likedBy = explode('*', $row['likedBy']);
+                      if(in_array($by, $likedBy)){
+                        echo '
+                        <style>
+                            .like-btn .fa-heart{
+                                color: #c89364;
+                            }
+                        </style>
+                        ';
+                      }}
+                      echo $id; 
+                      ?>">
+                    <button class="like-btn">
+                        <i class="fa fa-heart"></i>
+                        <span><?php echo $result['likes'] ?></span>
+                    </button>
+                </a>
                 </div>
                     <div>
                         <p><?php echo $result['bedroomNo']?> bedroom house</p>
-                    <a href="listingChat.php?inView=<?php echo  $inView?>">
+                    <a href="
+                    <?php
+                    if(!isset($_SESSION['id'])){
+                        ?>
+                        index.php
+                        <?php
+                    }else{
+                    ?>
+                    listingChat.php?inView=<?php echo  $inView;}?>">
                         <span id="card<?php echo $result['id']?>">
                             <i class="fa-solid fa-message"></i>
                         </span>
@@ -157,8 +169,8 @@ if($_SESSION['category'] == 'showing'){
             </div>
             <?php
             $i++;
-            }}else {
-                echo 'no result matching your search has been found';
+            }}}else {
+                echo '<p style="margin-left: 1em">no result matching your search has been found</p>';
             }
             ?>
     </div>
@@ -170,12 +182,12 @@ if($_SESSION['category'] == 'showing'){
         ?>
         <?php
          $userID = 0;
-         if (isset($_POST['filter'])) {
-            $cost = $_POST['cost'] ?? '';
-            $location = $_POST['location'] ?? '';
-            $bedrooms = $_POST['bedrooms'] ?? '';
-            $bathrooms = $_POST['bathrooms'] ?? '';
-            $size = $_POST['size'] ?? '';
+         if (isset($_POST['filter']) || isset($_GET['filter'])) {
+                $cost = $_POST['cost'] ?? '';
+                $location = $_POST['location'] ?? '';
+                $bedrooms = $_POST['bedrooms'] ?? '';
+                $bathrooms = $_POST['bathrooms'] ?? '';
+                $size = $_POST['size'] ?? '';
         
             // Prepare the SQL query with the filter criteria
             $sql = "SELECT * FROM units WHERE";
@@ -183,22 +195,47 @@ if($_SESSION['category'] == 'showing'){
         
             if (!empty($cost)) {
                 $conditions[] = "cost = '" . mysqli_real_escape_string($conn, $cost) . "'";
+                echo '<style>
+                #filterCost{
+                    background-color: rgba(200, 147, 100, 0.3);
+                }
+                </style>';
             }
         
             if (!empty($location)) {
                 $conditions[] = "location = '" . mysqli_real_escape_string($conn, $location) . "'";
+                echo '<style>
+                #filterLocation{
+                    background-color: rgba(200, 147, 100, 0.3);
+                }
+                </style>';
             }
         
             if (!empty($bedrooms)) {
                 $conditions[] = "bedroomNo = '" . mysqli_real_escape_string($conn, $bedrooms) . "'";
+                echo '<style>
+                #filterBedrooms{
+                    background-color: rgba(200, 147, 100, 0.3);
+                }
+                </style>';
             }
         
             if (!empty($bathrooms)) {
                 $conditions[] = "bathroomNo = '" . mysqli_real_escape_string($conn, $bathrooms) . "'";
+                echo '<style>
+                #filterBathrooms{
+                    background-color: rgba(200, 147, 100, 0.3);
+                }
+                </style>';
             }
         
             if (!empty($size)) {
                 $conditions[] = "size = '" . mysqli_real_escape_string($conn, $size) . "'";
+                echo '<style>
+                #filterSize{
+                    background-color: rgba(200, 147, 100, 0.3);
+                }
+                </style>';
             }
         
             if (empty($conditions)) {
@@ -210,8 +247,16 @@ if($_SESSION['category'] == 'showing'){
             }
         
             $sql .= " ORDER BY CASE WHEN " . implode(' AND ', $conditions) . " THEN 0 ELSE 1 END, likes DESC";
+
+            echo "
+            <script>
+            document.getElementById('filters').style.display = 'block';
+            document.getElementById('openFilters').style.display = 'none';
+            document.getElementById('openFilters2').style.display = 'flex';
+            </script>
+            ";
             ?>
-                        <h4 class="searchTitle">From your filter search</h4>
+                        <h4 class="searchTitle" id="filterResult">From your filter search</h4>
                     <div class="cards" id="filterResults">
         <?php
         $records = mysqli_query($conn, $sql);
@@ -236,7 +281,32 @@ if($_SESSION['category'] == 'showing'){
                         <?php
                         }
                         ?>
-                 <a href="#" class="like-link" data-likes="<?php echo $result['likes'] ?>" data-id="<?php echo $result['id'] ?>" data-by="<?php echo $_SESSION['id'] ?>">
+                 <a href="
+                 <?php
+                    if(!isset($_SESSION['id'])){
+                        ?>
+                        index.php
+                        <?php
+                    }else{
+                    ?>
+                 #" class="like-link" data-likes="<?php echo $result['likes'] ?>" data-id="<?php echo $result['id'] ?>" data-by="<?php 
+                        $id = $_SESSION['id'];
+                        $sql=mysqli_query($conn,"SELECT likedBy FROM units where id='$id'");
+                        $row  = mysqli_fetch_array($sql);
+                        //if sql query is executed...
+                        if(is_array($row))
+                        {
+                        $likedBy = explode('*', $row['likedBy']);
+                        if(in_array($by, $likedBy)){
+                            echo '
+                            <style>
+                                .like-btn .fa-heart{
+                                    color: #c89364;
+                                }
+                            </style>
+                            ';
+                        }}
+                        echo $id;                  }?>">
                     <button class="like-btn">
                         <i class="fa fa-heart"></i>
                         <span><?php echo $result['likes'] ?></span>
@@ -246,7 +316,15 @@ if($_SESSION['category'] == 'showing'){
                 </div>
                     <div>
                         <p><?php echo $result['bedroomNo']?> bedroom house</p>
-                    <a href="listingChat.php?inView=<?php echo  $inView?>">
+                    <a href="
+                    <?php
+                    if(!isset($_SESSION['id'])){
+                        ?>
+                        index.php
+                        <?php
+                    }else{
+                    ?>
+                    listingChat.php?inView=<?php echo  $inView;}?>">
                         <span id="card<?php echo $result['id']?>">
                             <i class="fa-solid fa-message"></i>
                         </span>
@@ -292,17 +370,51 @@ if($_SESSION['category'] == 'showing'){
                         <?php
                         }
                         ?>
-                 <a href="#" class="like-link" data-likes="<?php echo $result['likes'] ?>" data-id="<?php echo $result['id'] ?>" data-by="<?php echo $_SESSION['id'] ?>">
+                 <a href="
+                 <?php
+                    if(!isset($_SESSION['id'])){
+                        ?>
+                        index.php
+                        <?php
+                    }else if(isset($_SESSION['id'])){
+                    ?>
+                        #" 
+                     class="like-link" 
+                     data-likes="<?php echo $result['likes'] ?>" data-id="<?php echo $result['id'] ?>" data-by="<?php 
+                        $id = $_SESSION['id'];
+                        $sql=mysqli_query($conn,"SELECT likedBy FROM units where id='$id'");
+                        $row  = mysqli_fetch_array($sql);
+                        //if sql query is executed...
+                        if(is_array($row))
+                        {
+                        $likedBy = explode('*', $row['likedBy']);
+                        if(in_array($by, $likedBy)){
+                            echo '
+                            <style>
+                                .like-btn .fa-heart{
+                                    color: #c89364;
+                                }
+                            </style>
+                            ';
+                        }}
+                        echo $id;                      }?>">
                     <button class="like-btn">
                         <i class="fa fa-heart"></i>
                         <span><?php echo $result['likes'] ?></span>
                     </button>
                 </a>
-
                 </div>
                     <div>
                         <p><?php echo $result['bedroomNo']?> bedroom house</p>
-                    <a href="listingChat.php?inView=<?php echo  $inView?>">
+                    <a href="
+                    <?php
+                    if(!isset($_SESSION['id'])){
+                       
+                       echo 'index.php';
+                       
+                    }else{
+                    ?>
+                    listingChat.php?inView=<?php echo  $inView;}?>">
                         <span id="card<?php echo $result['id']?>">
                             <i class="fa-solid fa-message"></i>
                         </span>
@@ -322,60 +434,56 @@ if($_SESSION['category'] == 'showing'){
 </body>
 </html>
 <?php
-if(isset($_GET['likes'])){
-        $by = $_GET['by'];
-        $id = $_GET['id'];
-        $sql=mysqli_query($conn,"SELECT likedBy FROM units where id='$id'");
-        $row  = mysqli_fetch_array($sql);
-        //if sql query is executed...
-        if(is_array($row))
-        {
-        $likedBy = explode('*', $row['likedBy']);
-        if(in_array($by, $likedBy)){
-            $likes = $_GET['likes'] - 1;
-            $likedBy =str_replace($row['likedBy'], '*'.$by, '');
-            $sql2 = "UPDATE units SET likes ='$likes', likedBy='$likedBy' where id = '$id'";
-    
-        //if sql query is executed...
-        if (mysqli_query($conn, $sql2)) {
-            echo '<style type="text/css">
-            .fa-heart {
-                color: black;
-            }
-            </style>';
-            //   echo '<script> window.location.href = "listing.php"</script>'; 
-               } else {	
-                   //show error
-           echo "Error: " . $sql2 . "
-    " . mysqli_error($conn);
-        }
-        //close connection
-        mysqli_close($conn);
 
-        }else{
-            $likes = $_GET['likes'] + 1;
-            $sql2 = "UPDATE units SET likes ='$likes', likedBy=concat(likedBy,'*','$by') where id = '$id'";
-    
-        //if sql query is executed...
-        if (mysqli_query($conn, $sql2)) {
-            echo '<style type="text/css">
-            .fa-heart {
-                color: #c89364;
-            }
-            </style>';
-            // echo '<script> window.location.href = "listing.php"</script>'; 
-        } else {	
-                   //show error
-           echo "Error: " . $sql2 . "
-    " . mysqli_error($conn);
-        }
-        //close connection
-        mysqli_close($conn);
-        }
-        }
-        
+if(isset($_GET['likes'])){
+    $by = $_GET['by'];
+    $id = $_GET['id'];
+    $sql=mysqli_query($conn,"SELECT likedBy FROM units where id='$id'");
+    $row  = mysqli_fetch_array($sql);
+    //if sql query is executed...
+    if(is_array($row))
+    {
+    $likedBy = explode('*', $row['likedBy']);
+    if(in_array($by, $likedBy)){
+        $likes = $_GET['likes'] + 1;
+        $likedBy =str_replace($row['likedBy'], '*'.$by, '');
+        $sql2 = "UPDATE units SET likes ='$likes', likedBy='$likedBy' where id = '$id'";
+
+    //if sql query is executed...
+    if (mysqli_query($conn, $sql2)) {
+     
+           } else {	
+               //show error
+       echo "Error: " . $sql2 . "
+" . mysqli_error($conn);
     }
+    //close connection
+    mysqli_close($conn);
+
+    }else{
+        $likes = $_GET['likes'] - 1;
+        $sql2 = "UPDATE units SET likes ='$likes', likedBy=concat(likedBy,'*','$by') where id = '$id'";
+
+    //if sql query is executed...
+    if (mysqli_query($conn, $sql2)) {
+      
+    } else {	
+               //show error
+       echo "Error: " . $sql2 . "
+" . mysqli_error($conn);
+    }
+    //close connection
+    mysqli_close($conn);
+    }
+    }
+    
 }
+    if(isset($_SESSION['category'])){
+        if($_SESSION['category'] == 'showing'){
+        echo '<script> 
+            window.location.href = "userProfile.php";
+            </script>';
+    }}
 ?>
 <script>
     const filters = () =>{
@@ -387,14 +495,23 @@ const closeFilters = () =>{
     document.getElementById('filters').style.display = 'none';
     document.getElementById('openFilters').style.display = 'block';
     document.getElementById('openFilters2').style.display = 'none';
+    document.getElementById('filterResults').style.display = 'none';
+    document.getElementById('filterResult').style.display = 'none';
+
 }
 const showMenu = () =>{
     document.getElementById('menuBars').style.display = 'none';
     document.getElementById('menu').style.display = 'block';
+    document.getElementById('listing-header').style.width = '80%';
+    let screenWidth = window.innerWidth ;
+    document.getElementById('listing-search').style.width = screenWidth * 0.28 + "px";
+    console.log( document.getElementById('listing-search').style.width);
 }
 const closeMenu = () =>{
     document.getElementById('menuBars').style.display = 'block';
     document.getElementById('menu').style.display = 'none';
+    document.getElementById('listing-header').style.width = '100%';
+    document.getElementById('listing-search').style.width = '30%';
 }
 const showDetails = (id) =>{
     window.location.href = "listing-details.php?id=" + id;
@@ -410,16 +527,19 @@ function handleSearchForm() {
     $('#searchForm').submit();
   }
   // Function to submit the filters form
-$('#searchForm').on('submit', function(event){
+$('#filters').on('submit', function(event){
     event.preventDefault(); // Prevent the form from submitting normally
+    document.getElementById('filters').style.display = 'block';
+    document.getElementById('openFilters').style.display = 'none';
+    document.getElementById('openFilters2').style.display = 'flex';
     // Perform the AJAX request
     $.ajax({
-      url: 'listing.php',
+      url: 'listing.php?filter=1',
       type: 'POST',
       data: $(this).serialize(),
       success: function(response) {
         // Update the search results container with the received response
-        $('#filterResults').html(response);
+        $('#Listings').html(response);
       },
       error: function(xhr, status, error) {
         console.log(error); // Handle any errors
@@ -447,7 +567,7 @@ $('#searchForm').on('submit', function(event){
     // Set a new timeout to delay the form submission by 2 seconds (adjust as needed)
     searchTimeout = setTimeout(function() {
         handleSearchForm();
-        }, 2000); // Delay in milliseconds
+        }, 300000); // Delay in milliseconds
       },
       error: function(xhr, status, error) {
         console.log(error); // Handle any errors
@@ -456,8 +576,8 @@ $('#searchForm').on('submit', function(event){
   });
 
 
-  // Event listener for like link
-  $('.like-link').on('click', function(event) {
+ // Event listener for like link
+ $('.like-link').on('click', function(event) {
     event.preventDefault();
 
     var link = $(this);
@@ -468,7 +588,7 @@ $('#searchForm').on('submit', function(event){
 
     // Perform the AJAX request
     $.ajax({
-      url: 'listing.php?likes',
+      url: 'listingChat.php?likes',
       type: 'GET',
       data: {
         likes: likes,
@@ -478,21 +598,17 @@ $('#searchForm').on('submit', function(event){
       success: function(response) {
         if (isLiked) {
           link.removeClass('liked');
-          link.find('.fa-heart').css('color', 'black');
-          link.find('span').text(likes - 1);
         } else {
           link.addClass('liked');
-          link.find('.fa-heart').css('color', '#c89364');
-          link.find('span').text(likes + 1);
         }
+        fetchData();
       },
       error: function(xhr, status, error) {
         console.log(error); // Handle any errors
       }
     });
   });
-
-
+  
 function fetchData() {
   if (!formSubmitted) {
     $.ajax({

@@ -31,14 +31,9 @@
         <div class="search">
             </div> 
             <span class="menuBar" id="menuBars" onClick="showMenu()"><i class="fa-solid fa-bars"></i></span>
-            <div class="menu" id="menu">
-                <span class="menuBar" id="menuBar" onClick="closeMenu()"><i class="fa-solid fa-x"></i></span>
-                <ul>
-                    <a href="listing.php"><li  class="active">Active Listings</li></a>
-                    <a href="userProfile.php"><li  class="active">Profile</li></a>
-                    <a href="userChats.php"><li  class="active">Help</li></a>
-                </ul>
-            </div>
+            <?php
+            include_once 'menu.php';
+        ?>
         </div>
         </div> 
         <?php 

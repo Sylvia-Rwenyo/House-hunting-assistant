@@ -24,7 +24,7 @@
     </div>
 </div>
 <div class="mainCTA">
-<h4>View more</h4>
+<a href="listing.php"><h4>View more</h4></a>
 </div>
 </body>
 </html>

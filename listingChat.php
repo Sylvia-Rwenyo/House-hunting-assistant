@@ -1,3 +1,13 @@
+<?php 
+    include_once 'conn.php';
+    session_start();
+    $user = $_SESSION["username"];
+    if($_SESSION["loggedIN"] == false){
+        echo ' <script> 
+        window.location.href = "index.php";
+        </script>';
+        }else{
+            ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +18,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/2751fbc624.js" crossorigin="anonymous"></script>
-    <script src="script.js" ></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="style.css">
     <title>Chat with</title>
 </head>
@@ -16,29 +26,76 @@
     <div class="header">
         <h1>Active Listings</h1>
         <span class="menuBar" id="menuBars" onClick="showMenu()"><i class="fa-solid fa-bars"></i></span>
-        <div class="menu" id="menu">
-            <span class="menuBar" id="menuBar" onClick="closeMenu()"><i class="fa-solid fa-x"></i></span>
-            <ul>
-                <a href="listing.php"><li  class="active">Active Listings</li></a>
-                <a href="userProfile.php"><li  class="active">Profile</li></a>
-                <a href="userChats.php"><li  class="active">Help</li></a>
-            </ul>
-        </div>
+        <?php
+            include_once 'menu.php';
+        ?>
     </div>
     </div>
-    <div class="listingsChat">
+    <div class="listingsChat" id="listingsChat">
     <?php 
-            include_once 'conn.php';
-            session_start();
+     function assignReceipient($conn){
+        // Retrieve the list of emails
+        $sqlQ = mysqli_query($conn, "SELECT * FROM registration WHERE emailAddress IN ('hhs1@admin.com', 'hhs2@admin.com', 'hhs@admin.com')");
+        $emails = array('hhs1@admin.com', 'hhs2@admin.com', 'hhs@admin.com');
+    
+        // Fetch the last assigned recipient ID
+        $lastRecipientID = getLastRecipientID($conn);
+    
+        // Determine the index of the next email to assign
+        $nextIndex = ($lastRecipientID !== null) ? array_search($lastRecipientID, $emails) + 1 : 0;
+    
+        // Wrap around to the first email if necessary
+        if ($nextIndex >= count($emails)) {
+            $nextIndex = 0;
+        }
+        // Assign the recipient ID to the next email
+        $_SESSION['recipientID'] = $emails[$nextIndex];                   
+    
+        // Update the last assigned recipient ID
+        updateLastRecipientID($_SESSION['recipientID'], $_SESSION['id'], $conn);
+    }
+          function getLastRecipientID($conn) {
+             // Retrieve the last assigned recipient ID from a database table or any other storage mechanism
+              // Modify this code to suit your specific storage method
+              
+              // Assuming a MySQLi connection object named $conn is available
+              $result = mysqli_query($conn, "SELECT lastReceipientID FROM admin_receipient ORDER BY id DESC LIMIT 1");
+              
+              if ($result && mysqli_num_rows($result) > 0) {
+                  $row = mysqli_fetch_assoc($result);
+                  return $row['lastReceipientID'];
+              }
+              
+              return null;
+          }
+          
+          function updateLastRecipientID($recipientID, $userID, $conn) {
+              // Update the last assigned recipient ID in a database table or any other storage mechanism
+              // Modify this code to suit your specific storage method
 
-            // $subjectUnit;
+              
+              // Assuming a MySQLi connection object named $conn is available
+              date_default_timezone_set("Africa/Nairobi");
+              $time = date("Y-m-d h:i:sa");
+              $recipientID =$_SESSION['recipientID'];
+              mysqli_query($conn, "INSERT INTO admin_receipient (lastReceipientID, senderID, time) VALUES ('$recipientID', '$userID', '$time')");
+          }
+        
+
+            if(!isset($_SESSION['recipientID'])){
+                assignReceipient($conn);
+            }else{
+                $recipientID =$_SESSION['recipientID'];
+            }
+            $to = '';
+            $subjectUnit;
             if(!empty($_GET) && isset($_GET['inView'])){
+                $subjectUnit = $_GET['inView'];
             $id = $_GET['inView'];
             }else if(!empty($_GET) && isset($_GET['id'])){
                 $id = $_GET['id']; 
             }
             else{
-            // $id=$subjectUnit;
             }
 
             $mail = $_SESSION['email'];
@@ -49,11 +106,18 @@
             while($result = mysqli_fetch_array($records)) {
                 $_SESSION['id'] = $result['id'];
                 $_SESSION['credits'] = $result["credits"];
+                if(  $_SESSION['credits'] < 1){
+                    echo '
+                    <style>
+                    #payPrompt1{
+                        display: block;
+                    </style>
+                    ';
+                }
                 $i++;
             }}
 
             $userID = $_SESSION['id'];
-            $to = '';
             $uploaderID = 0;
             $records = mysqli_query($conn,"SELECT * FROM  units where id =  '$id'");
             if (mysqli_num_rows($records) > 0) {
@@ -66,11 +130,11 @@
          <div class="payPrompt"  id="payPrompt1">
             <div>
                 <p>To continue, top up your credits</p>
-                <a href="paymentSection.php?userID=<?php echo $_SESSION['id']?>&id=<?php echo $_GET['inView']?>&from=listingChat.php?with=<?php echo $_GET['with']?>&inView=<?php echo $_GET['inView']?>">here</a>
+                <a href="paymentSection.php?userID=<?php echo $_SESSION['id']?>&id=<?php echo $_GET['inView']?>&from=listingChat.php?with=<?php echo $_SESSION['recipientID']?>&inView=<?php echo $_GET['inView']?>">here</a>
             </div>
         </div>
         <div class="cards">
-        <div class="singleCard" id="singleCard<?php echo $result['id']?>" onclick="showDetails(<?php echo $result['id']?>)">
+        <div class="singleCard" id="singleCard<?php echo $result['id']?>" >
         <?php
                 for($j=0; $j < count($tour); $j++){
                     ?>
@@ -94,26 +158,13 @@
                         <?php
                         }
                         ?>
-                    <a href="listingChat.php?likes=<?php echo $result['likes']?>&id=<?php echo $result['id']?>&by=<?php echo $_SESSION['id']?>">
-                        <button class="like-btn">
-                            <i class="fa fa-heart" <?php
-                                                        $unitID=$result['id'];
-                                                        $by = $_SESSION['id'];
-                                                        $stmt=mysqli_query($conn,"SELECT likedBy FROM units where id='$unitID'");
-                                                        $row  = mysqli_fetch_array($stmt);
-                                                        //if sql query is executed...
-                                                        if(is_array($row))
-                                                        {
-                                                        $likedBy = explode('*', $row['likedBy']);
-                                                        if(in_array($by, $likedBy)){
-                                                            echo 'style="color: #c89364"';
-                                                        }
-                                                    }
-                                                        ?>>
-                            </i>
-                            <span><?php echo $result['likes']?></span>
-                        </button>
-                    </a>
+                     <a href="#" 
+                     class="like-link" data-likes="<?php echo $result['likes'] ?>" data-id="<?php echo $result['id'] ?>" data-by="<?php echo $_SESSION['id'] ?>">
+                    <button class="like-btn">
+                        <i class="fa fa-heart"></i>
+                        <span><?php echo $result['likes'] ?></span>
+                    </button>
+                </a>
                 </div>
                     <div>
                         <p><?php echo $result['bedroomNo']?> bedroom house</p>
@@ -193,10 +244,7 @@
     }else {
         ?>
             <div class="singleMessage">
-                <a href="listingChat.php?action=chat&with=<?php 
-                if(isset($_SESSION['recipientID'])){
-                    echo $_SESSION['recipientID'];
-                    }else{ echo 0;}?>
+                <a href="listingChat.php?action=chat&with=<?php echo $_SESSION['recipientID'];?>
                     &inView=<?php echo $_GET['inView']?>">
                     <div class="intro">
                         <h5>Hhs admin</h5>
@@ -205,77 +253,16 @@
                 </a>
             </div>
             <?php
-            $noReciepient = true;
                 }
     ?>
 </div>
 
-        <?php
-                        $userID = $_SESSION['id'];
-                    function assignReceipient($conn){
-                        // Retrieve the list of emails
-                        $sqlQ = mysqli_query($conn, "SELECT * FROM registration WHERE emailAddress IN ('hhs1@admin.com', 'hhs2@admin.com', 'hhs@admin.com')");
-                        $emails = array('hhs1@admin.com', 'hhs2@admin.com', 'hhs@admin.com');
-                    
-                        // Fetch the last assigned recipient ID
-                        $lastRecipientID = getLastRecipientID($conn);
-                    
-                        // Determine the index of the next email to assign
-                        $nextIndex = ($lastRecipientID !== null) ? array_search($lastRecipientID, $emails) + 1 : 0;
-                    
-                        // Wrap around to the first email if necessary
-                        if ($nextIndex >= count($emails)) {
-                            $nextIndex = 0;
-                        }
-                        // Assign the recipient ID to the next email
-                        $_SESSION['recipientID'] = $emails[$nextIndex];                   
-                    
-                        // Update the last assigned recipient ID
-                        updateLastRecipientID($_SESSION['recipientID'], $_SESSION['id'], $conn);
-                    }
-                          function getLastRecipientID($conn) {
-                             // Retrieve the last assigned recipient ID from a database table or any other storage mechanism
-                              // Modify this code to suit your specific storage method
-                              
-                              // Assuming a MySQLi connection object named $conn is available
-                              $result = mysqli_query($conn, "SELECT lastReceipientID FROM admin_receipient ORDER BY id DESC LIMIT 1");
-                              
-                              if ($result && mysqli_num_rows($result) > 0) {
-                                  $row = mysqli_fetch_assoc($result);
-                                  return $row['lastReceipientID'];
-                              }
-                              
-                              return null;
-                          }
-                          
-                          function updateLastRecipientID($recipientID, $userID, $conn) {
-                              // Update the last assigned recipient ID in a database table or any other storage mechanism
-                              // Modify this code to suit your specific storage method
-
-                              
-                              // Assuming a MySQLi connection object named $conn is available
-                              date_default_timezone_set("Africa/Nairobi");
-                              $time = date("Y-m-d h:i:sa");
-                              $recipientID =$_SESSION['recipientID'];
-                              mysqli_query($conn, "INSERT INTO admin_receipient (lastReceipientID, senderID, time) VALUES ('$recipientID', '$userID', '$time')");
-                          }
-                          if(!isset($_SESSION['recipientID'])){
-                            assignReceipient($conn);
-                        }else{
-                            $recipientID =$_SESSION['recipientID'];
-                        }
-                          ?>
-         
-        <?php
-                       if(isset($_GET['with'])){
-                        if($_GET['with'] > 0){
-        ?>
-                  <div class="chat" id="chat">
-        <div class="bubbles">
-            <div class="top">
+            <div class="chat" id="chat">
+                <div class="bubbles">
+                    <div class="top">
                 <div>
                     <?php
-                    $recipientID = $_GET['with'];
+                    $recipientID = $_SESSION['recipientID'];
                     $records = mysqli_query($conn,"SELECT name, id FROM  registration where emailAddress='$recipientID' ||  id='$recipientID'");
                     if (mysqli_num_rows($records) > 0) {
                     $i=0;
@@ -293,7 +280,6 @@
             if (mysqli_num_rows($messages) > 0) {
             $i=0;
             while($row = mysqli_fetch_array($messages)) {
-                $subjectUnit = $row['subjectUnit'];
             ?>
              <div class="<?php if($row['senderID']==$userID){ echo 'chatBubble1'; } else if($row['receipientID']==$userID){ echo 'chatBubble2'; }?>">
                 <p><?php
@@ -311,7 +297,10 @@
                 <span><?php echo substr($row['time'],11)?></span>
             </div>
             <?php
-            $i++; }}
+            $i++; }}else{
+                mysqli_query($conn, "INSERT INTO messages ( senderID, receipientID, message) VALUES ('$recipientID', '$userID', 'Hello, how can we help you?')");
+
+            }
             ?>
         </div>
         <form class="typingArea" method="POST" action="processing.php">
@@ -319,71 +308,60 @@
                         <input type="hidden" name="senderID" value="<?php echo  $userID?>" />
                         <input type="hidden" name="recipientID" value="<?php echo  $recipientID?>" />
                         <input type="hidden" name="subjectUnit" value="<?php echo  $subjectUnit?>" />
-                        <input type="hidden" name="to" value="<?php echo  $to?>" />
+                        <input type="hidden" name="to" value="<?php
+                        if($to == ''){
+                            $to = 'listingChat.php?with='. $recipientID.'&inView='.$_GET['inView'];
+                        }
+                         echo  $to;
+                         ?>" />
                         <button type="submit" id="sendMsg" name="send"><i class="fa-solid fa-paper-plane"></i></button>
         </form>
-       
-        </div>
+            </div>
+    </div>
         <?php
-                        }}
-        ?>
-                          </div>
-    <!-- </div> -->
-        <?php
+                                          if(isset($_GET['likes'])){
+                             $by = $_GET['by'];
+                             $id = $_GET['id'];
+                             $sql=mysqli_query($conn,"SELECT likedBy FROM units where id='$id'");
+                             $row  = mysqli_fetch_array($sql);
+                             //if sql query is executed...
+                             if(is_array($row))
+                             {
+                             $likedBy = explode('*', $row['likedBy']);
+                             if(in_array($by, $likedBy)){
+                                 $likes = $_GET['likes'] + 1;
+                                 $likedBy =str_replace($row['likedBy'], '*'.$by, '');
+                                 $sql2 = "UPDATE units SET likes ='$likes', likedBy='$likedBy' where id = '$id'";
+                         
+                             //if sql query is executed...
+                             if (mysqli_query($conn, $sql2)) {
+                              
+                                    } else {	
+                                        //show error
+                                echo "Error: " . $sql2 . "
+                         " . mysqli_error($conn);
+                             }
+                             //close connection
+                             mysqli_close($conn);
                      
-                     if(isset($_GET['likes'])){
-                        $by = $_GET['by'];
-                        $id = $_GET['id'];
-                        $sql=mysqli_query($conn,"SELECT likedBy FROM units where id='$id'");
-                        $row  = mysqli_fetch_array($sql);
-                        //if sql query is executed...
-                        if(is_array($row))
-                        {
-                        $likedBy = explode('*', $row['likedBy']);
-                        if(in_array($by, $likedBy)){
-                            $likes = $_GET['likes'] - 1;
-                            $likedBy =str_replace($row['likedBy'], '*'.$by, '');
-                            $sql2 = "UPDATE units SET likes ='$likes', likedBy='$likedBy' where id = '$id'";
-                    
-                        //if sql query is executed...
-                        if (mysqli_query($conn, $sql2)) {
-                            echo '<style type="text/css">
-                            .fa-heart {
-                                color: black;
-                            }
-                            </style>';
-                              echo '<script> window.location.href = '. $to.'</script>'; 
-                               } else {	
-                                   //show error
-                           echo "Error: " . $sql2 . "
-                    " . mysqli_error($conn);
-                        }
-                        //close connection
-                        mysqli_close($conn);
-                
-                        }else{
-                            $likes = $_GET['likes'] + 1;
-                            $sql2 = "UPDATE units SET likes ='$likes', likedBy=concat(likedBy,'*','$by') where id = '$id'";
-                    
-                        //if sql query is executed...
-                        if (mysqli_query($conn, $sql2)) {
-                            echo '<style type="text/css">
-                            .fa-heart {
-                                color: #c89364;
-                            }
-                            </style>';
-                            echo '<script> window.location.href = '. $to.'</script>'; 
-                        } else {	
-                                   //show error
-                           echo "Error: " . $sql2 . "
-                    " . mysqli_error($conn);
-                        }
-                        //close connection
-                        mysqli_close($conn);
-                        }
-                        }
-                        
-                    }
+                             }else{
+                                 $likes = $_GET['likes'] - 1;
+                                 $sql2 = "UPDATE units SET likes ='$likes', likedBy=concat(likedBy,'*','$by') where id = '$id'";
+                         
+                             //if sql query is executed...
+                             if (mysqli_query($conn, $sql2)) {
+                               
+                             } else {	
+                                        //show error
+                                echo "Error: " . $sql2 . "
+                         " . mysqli_error($conn);
+                             }
+                             //close connection
+                             mysqli_close($conn);
+                             }
+                             }
+                             
+                         }
                      ?>
         </div>
 
@@ -400,6 +378,9 @@ const showMenu = () =>{
 const closeMenu = () =>{
     document.getElementById('menuBars').style.display = 'block';
     document.getElementById('menu').style.display = 'none';
+}
+const showDetails = (id) =>{
+    window.location.href = "listing-details.php?id=" + id;
 }
 let slideIndex = 1;
 showSlides(slideIndex);
@@ -423,13 +404,60 @@ function showSlides(n){
     slides[slideIndex - 1].style.display = "block";
 }
 
-const pay = () =>{
-    document.getElementById('paymentArea').style.display = 'block';
-    document.getElementById('message').style.display = 'none';
-    document.getElementById('creditCard').style.display = 'block';
+ // Event listener for like link
+ $('.like-link').on('click', function(event) {
+    event.preventDefault();
+
+    var link = $(this);
+    var likes = parseInt(link.data('likes'));
+    var id = link.data('id');
+    var by = link.data('by');
+    var isLiked = link.hasClass('liked');
+
+    // Perform the AJAX request
+    $.ajax({
+      url: 'listingChat.php?likes',
+      type: 'GET',
+      data: {
+        likes: likes,
+        id: id,
+        by: by
+      },
+      success: function(response) {
+        if (isLiked) {
+          link.removeClass('liked');
+        } else {
+          link.addClass('liked');
+        }
+        fetchData();
+      },
+      error: function(xhr, status, error) {
+        console.log(error); // Handle any errors
+      }
+    });
+  });
+  function fetchData() {
+  if (!formSubmitted) {
+    $.ajax({
+      url: 'listingChat.php', // Replace with your server-side script URL
+      method: 'GET',
+      success: function(response) {
+        // Handle the response and update the HTML content
+        $('#listingsChat').html(response);
+        console.log("all good");
+      },
+      error: function(xhr, status, error) {
+        // Handle errors
+        console.error(error);
+      }
+    });
+  }
 }
-function showImgs(){
-    document.getElementById('firstSlide').style.display = "none";
-    document.getElementById('secondSlide').style.display = "block";
-}
+
+// Call the getNewData function periodically to fetch new data
+setInterval(fetchData, 60000);
+
 </script>
+<?php
+}
+?>
