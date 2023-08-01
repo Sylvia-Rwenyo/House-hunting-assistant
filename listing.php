@@ -35,7 +35,7 @@ session_start();
     <div class="mainListing">
         <div class="filterSection">
             <div id="openFilters" onClick="filters()">
-                <i class="fa-solid fa-filter"></i>
+                <i class="fa-solid fa-filter">f</i>
             </div>
             <div id="openFilters2" onClick="closeFilters()"><span>Filters</span><i class="fa-solid fa-angle-up"></i></div>
             <form class="filters" id="filters" method="post">
@@ -121,31 +121,26 @@ session_start();
                         <?php
                     }else{
                     ?>
-                   #" 
-                     class="like-link" 
-                     data-likes="<?php echo $result['likes'] ?>" data-id="<?php echo $result['id'] ?>" data-by="<?php
-                      $id = $_SESSION['id'];
-                      $sql=mysqli_query($conn,"SELECT likedBy FROM units where id='$id'");
-                      $row  = mysqli_fetch_array($sql);
-                      //if sql query is executed...
-                      if(is_array($row))
-                      {
-                      $likedBy = explode('*', $row['likedBy']);
-                      if(in_array($by, $likedBy)){
-                        echo '
-                        <style>
-                            .like-btn .fa-heart{
-                                color: #c89364;
-                            }
-                        </style>
-                        ';
-                      }}
-                      echo $id; 
-                      ?>">
-                    <button class="like-btn">
-                        <i class="fa fa-heart"></i>
-                        <span><?php echo $result['likes'] ?></span>
-                    </button>
+                     listing-details.php?likes=<?php echo $result['likes']?>&id=<?php echo $result['id']?>&by=<?php echo $_SESSION['id']?>">
+                        <button class="like-btn">
+                            <i class="fa fa-heart" <?php
+                                                        $unitID=$result['id'];
+                                                        $by = $_SESSION['id'];
+                                                        $stmt=mysqli_query($conn,"SELECT likedBy FROM units where id='$unitID'");
+                                                        $row  = mysqli_fetch_array($stmt);
+                                                        //if sql query is executed...
+                                                        if(is_array($row))
+                                                        {
+                                                        $likedBy = explode('*', $row['likedBy']);
+                                                        if(in_array($by, $likedBy)){
+                                                            echo 'style="color: #c89364"';
+                                                        }
+                                                    }
+                                                        ?>>
+                            </i>
+                            <span><?php echo $result['likes']?></span>
+                        </button>
+                    </a>
                 </a>
                 </div>
                     <div>
@@ -165,7 +160,8 @@ session_start();
                     </a>
                     </div>
                     <p>Ksh <?php echo $result['cost']?></p>
-                    <p><i class="fa fa-location-dot"></i> <?php echo $result['location']?>&nbsp;&nbsp;<i class="fa fa-ellipsis"onclick="showDetails(<?php echo $result['id']?>)" ></i>
+                    <p><i class="fa fa-location-dot"></i> <?php echo $result['location']?>&nbsp;&nbsp;
+                        <i class="fa fa-ellipsis"onclick="showDetails(<?php echo $result['id']?>)"></i>
             </div>
             <?php
             $i++;
@@ -289,29 +285,26 @@ session_start();
                         <?php
                     }else{
                     ?>
-                 #" class="like-link" data-likes="<?php echo $result['likes'] ?>" data-id="<?php echo $result['id'] ?>" data-by="<?php 
-                        $id = $_SESSION['id'];
-                        $sql=mysqli_query($conn,"SELECT likedBy FROM units where id='$id'");
-                        $row  = mysqli_fetch_array($sql);
-                        //if sql query is executed...
-                        if(is_array($row))
-                        {
-                        $likedBy = explode('*', $row['likedBy']);
-                        if(in_array($by, $likedBy)){
-                            echo '
-                            <style>
-                                .like-btn .fa-heart{
-                                    color: #c89364;
-                                }
-                            </style>
-                            ';
-                        }}
-                        echo $id;                  }?>">
-                    <button class="like-btn">
-                        <i class="fa fa-heart"></i>
-                        <span><?php echo $result['likes'] ?></span>
-                    </button>
-                </a>
+                listing-details.php?likes=<?php echo $result['likes']?>&id=<?php echo $result['id']?>&by=<?php echo $_SESSION['id']?>">
+                        <button class="like-btn">
+                            <i class="fa fa-heart" <?php
+                                                        $unitID=$result['id'];
+                                                        $by = $_SESSION['id'];
+                                                        $stmt=mysqli_query($conn,"SELECT likedBy FROM units where id='$unitID'");
+                                                        $row  = mysqli_fetch_array($stmt);
+                                                        //if sql query is executed...
+                                                        if(is_array($row))
+                                                        {
+                                                        $likedBy = explode('*', $row['likedBy']);
+                                                        if(in_array($by, $likedBy)){
+                                                            echo 'style="color: #c89364"';
+                                                        }
+                                                    }
+                                                        ?>>
+                            </i>
+                            <span><?php echo $result['likes'];}?></span>
+                        </button>
+                    </a>
 
                 </div>
                     <div>
@@ -378,31 +371,26 @@ session_start();
                         <?php
                     }else if(isset($_SESSION['id'])){
                     ?>
-                        #" 
-                     class="like-link" 
-                     data-likes="<?php echo $result['likes'] ?>" data-id="<?php echo $result['id'] ?>" data-by="<?php 
-                        $id = $_SESSION['id'];
-                        $sql=mysqli_query($conn,"SELECT likedBy FROM units where id='$id'");
-                        $row  = mysqli_fetch_array($sql);
-                        //if sql query is executed...
-                        if(is_array($row))
-                        {
-                        $likedBy = explode('*', $row['likedBy']);
-                        if(in_array($by, $likedBy)){
-                            echo '
-                            <style>
-                                .like-btn .fa-heart{
-                                    color: #c89364;
-                                }
-                            </style>
-                            ';
-                        }}
-                        echo $id;                      }?>">
-                    <button class="like-btn">
-                        <i class="fa fa-heart"></i>
-                        <span><?php echo $result['likes'] ?></span>
-                    </button>
-                </a>
+                    listing-details.php?likes=<?php echo $result['likes']?>&id=<?php echo $result['id']?>&by=<?php echo $_SESSION['id']?>">
+                        <button class="like-btn">
+                            <i class="fa fa-heart" <?php
+                                                        $unitID=$result['id'];
+                                                        $by = $_SESSION['id'];
+                                                        $stmt=mysqli_query($conn,"SELECT likedBy FROM units where id='$unitID'");
+                                                        $row  = mysqli_fetch_array($stmt);
+                                                        //if sql query is executed...
+                                                        if(is_array($row))
+                                                        {
+                                                        $likedBy = explode('*', $row['likedBy']);
+                                                        if(in_array($by, $likedBy)){
+                                                            echo 'style="color: #c89364"';
+                                                        }
+                                                    }
+                                                        ?>>
+                            </i>
+                            <span><?php echo $result['likes'];}?></span>
+                        </button>
+                    </a>
                 </div>
                     <div>
                         <p><?php echo $result['bedroomNo']?> bedroom house</p>

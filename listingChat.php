@@ -89,9 +89,9 @@
             }
             $to = '';
             $subjectUnit;
-            if(!empty($_GET) && isset($_GET['inView'])){
-                $subjectUnit = $_GET['inView'];
-            $id = $_GET['inView'];
+            if(!empty($_GET) && isset($_GET['inV'])){
+                $subjectUnit = $_GET['inV'];
+            $id = $_GET['inV'];
             }else if(!empty($_GET) && isset($_GET['id'])){
                 $id = $_GET['id']; 
             }
@@ -130,7 +130,7 @@
          <div class="payPrompt"  id="payPrompt1">
             <div>
                 <p>To continue, top up your credits</p>
-                <a href="paymentSection.php?userID=<?php echo $_SESSION['id']?>&id=<?php echo $_GET['inView']?>&from=listingChat.php?with=<?php echo $_SESSION['recipientID']?>&inView=<?php echo $_GET['inView']?>">here</a>
+                <a href="paymentSection.php?userID=<?php echo $_SESSION['id']?>&id=<?php echo $_GET['inV']?>&from=listingChat.php?w=<?php echo $_SESSION['recipientID']?>&inV=<?php echo $_GET['inV']?>">here</a>
             </div>
         </div>
         <div class="cards">
@@ -158,17 +158,30 @@
                         <?php
                         }
                         ?>
-                     <a href="#" 
-                     class="like-link" data-likes="<?php echo $result['likes'] ?>" data-id="<?php echo $result['id'] ?>" data-by="<?php echo $_SESSION['id'] ?>">
-                    <button class="like-btn">
-                        <i class="fa fa-heart"></i>
-                        <span><?php echo $result['likes'] ?></span>
-                    </button>
-                </a>
+                    <a href="listingChat.php?l=<?php echo $result['likes']?>&inV=<?php echo $result['id']?>&by=<?php echo $_SESSION['id']?>">
+                        <button class="like-btn">
+                            <i class="fa fa-heart" <?php
+                                                        $unitID=$result['id'];
+                                                        $by = $_SESSION['id'];
+                                                        $stmt=mysqli_query($conn,"SELECT likedBy FROM units where id='$unitID'");
+                                                        $row  = mysqli_fetch_array($stmt);
+                                                        //if sql query is executed...
+                                                        if(is_array($row))
+                                                        {
+                                                        $likedBy = explode('*', $row['likedBy']);
+                                                        if(in_array($by, $likedBy)){
+                                                            echo 'style="color: #c89364"';
+                                                        }
+                                                    }
+                                                        ?>>
+                            </i>
+                            <span><?php echo $result['likes']?></span>
+                        </button>
+                    </a>
                 </div>
                     <div>
                         <p><?php echo $result['bedroomNo']?> bedroom house</p>
-                        <a href="listingChat.php?with=<?php if(isset($_SESSION['recipientID'])){ echo $_SESSION['recipientID'];} $_SESSION['inView'] = $result['id']; ?>&inView=<?php echo  $_SESSION['inView']?>">
+                        <a href="listingChat.php?with=<?php if(isset($_SESSION['recipientID'])){ echo $_SESSION['recipientID'];} $_SESSION['inV'] = $result['id']; ?>&inV=<?php echo  $_SESSION['inV']?>">
                             <span id="card<?php echo $result['id']?>">
                                 <i class="fa-solid fa-message"></i>
                             </span>
@@ -215,7 +228,7 @@
 
             if ($detailsResult->num_rows > 0) {
                 $record = $detailsResult->fetch_assoc();
-                $to = 'listingChat.php?action=chat&with=' . $record['id'].'&inView=' . $_GET['inView'];
+                $to = 'listingChat.php?action=chat&w=' . $record['id'].'&inV=' . $_GET['inV'];
                 ?>
                 <div class="singleMessage">
                     <a href="<?php echo $to; ?>">
@@ -244,8 +257,8 @@
     }else {
         ?>
             <div class="singleMessage">
-                <a href="listingChat.php?action=chat&with=<?php echo $_SESSION['recipientID'];?>
-                    &inView=<?php echo $_GET['inView']?>">
+                <a href="listingChat.php?action=chat&w=<?php echo $_SESSION['recipientID'];?>
+                    &inV=<?php echo $_GET['inV']?>">
                     <div class="intro">
                         <h5>Hhs admin</h5>
                     </div>
@@ -283,7 +296,7 @@
             ?>
              <div class="<?php if($row['senderID']==$userID){ echo 'chatBubble1'; } else if($row['receipientID']==$userID){ echo 'chatBubble2'; }?>">
                 <p><?php
-               $length = 35;
+               $length = 55;
                if (strlen($row['message']) < $length) {
                    echo $row['message'];
                } else {
@@ -310,7 +323,7 @@
                         <input type="hidden" name="subjectUnit" value="<?php echo  $subjectUnit?>" />
                         <input type="hidden" name="to" value="<?php
                         if($to == ''){
-                            $to = 'listingChat.php?with='. $recipientID.'&inView='.$_GET['inView'];
+                            $to = 'listingChat.php?w='. $recipientID.'&inV='.$_GET['inV'];
                         }
                          echo  $to;
                          ?>" />
@@ -319,49 +332,50 @@
             </div>
     </div>
         <?php
-                                          if(isset($_GET['likes'])){
-                             $by = $_GET['by'];
-                             $id = $_GET['id'];
-                             $sql=mysqli_query($conn,"SELECT likedBy FROM units where id='$id'");
-                             $row  = mysqli_fetch_array($sql);
-                             //if sql query is executed...
-                             if(is_array($row))
-                             {
-                             $likedBy = explode('*', $row['likedBy']);
-                             if(in_array($by, $likedBy)){
-                                 $likes = $_GET['likes'] + 1;
-                                 $likedBy =str_replace($row['likedBy'], '*'.$by, '');
-                                 $sql2 = "UPDATE units SET likes ='$likes', likedBy='$likedBy' where id = '$id'";
-                         
-                             //if sql query is executed...
-                             if (mysqli_query($conn, $sql2)) {
-                              
-                                    } else {	
-                                        //show error
-                                echo "Error: " . $sql2 . "
-                         " . mysqli_error($conn);
-                             }
-                             //close connection
-                             mysqli_close($conn);
-                     
-                             }else{
-                                 $likes = $_GET['likes'] - 1;
-                                 $sql2 = "UPDATE units SET likes ='$likes', likedBy=concat(likedBy,'*','$by') where id = '$id'";
-                         
-                             //if sql query is executed...
-                             if (mysqli_query($conn, $sql2)) {
-                               
-                             } else {	
-                                        //show error
-                                echo "Error: " . $sql2 . "
-                         " . mysqli_error($conn);
-                             }
-                             //close connection
-                             mysqli_close($conn);
-                             }
-                             }
-                             
-                         }
+                        if(isset($_GET['l'])){
+                            $by = $_GET['by'];
+                            $id = $_GET['inV'];
+                            $sql=mysqli_query($conn,"SELECT likedBy FROM units where id='$id'");
+                            $row  = mysqli_fetch_array($sql);
+                            //if sql query is executed...
+                            if(is_array($row))
+                            {
+                            $likedBy = explode('*', $row['likedBy']);
+                            if(in_array($by, $likedBy)){
+                                $likes = $_GET['l'] - 1;
+                                $likedBy =str_replace($row['likedBy'], '*'.$by, '');
+                                $sql2 = "UPDATE units SET likes ='$likes', likedBy='$likedBy' where id = '$id'";
+                        
+                            //if sql query is executed...
+                            if (mysqli_query($conn, $sql2)) {
+                                  echo '<script> window.location.href = "listingChat.php?inV='. $id. '"</script>'; 
+                                   } else {	
+                                       //show error
+                               echo "Error: " . $sql2 . "
+                        " . mysqli_error($conn);
+                            }
+                            //close connection
+                            mysqli_close($conn);
+                    
+                            }else{
+                                $likes = $_GET['l'] + 1;
+                                $sql2 = "UPDATE units SET likes ='$likes', likedBy=concat(likedBy,'*','$by') where id = '$id'";
+                        
+                            //if sql query is executed...
+                            if (mysqli_query($conn, $sql2)) {
+                                echo '<script> window.location.href = "listingChat.php?inV='. $id. '"</script>'; 
+                            } else {	
+                                       //show error
+                               echo "Error: " . $sql2 . "
+                        " . mysqli_error($conn);
+                            }
+                            //close connection
+                            mysqli_close($conn);
+                            }
+                            }
+                            
+                        }
+                    
                      ?>
         </div>
 

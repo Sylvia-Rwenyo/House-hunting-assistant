@@ -544,7 +544,7 @@ if(isset($_GET['action'])){
                 $_SESSION['credits'] = $totalCredits;
                 $sqlz = "UPDATE registration SET credits='$totalCredits' where id = '$userID' ";
                 if (mysqli_query($conn, $sqlz)){
-                echo '<script> window.location.href ="'. $from .'&id='. $id.'&inView='. $id.'"; </script>';
+                echo '<script> window.location.href ="'. $from .'&id='. $id.'&inV='. $id.'"; </script>';
                 }
             }else {	
                 //show error

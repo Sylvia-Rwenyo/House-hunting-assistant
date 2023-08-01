@@ -1,7 +1,11 @@
 <?php
-	$servername = "db4free.net";
-	$username = "househuntingsite";
-	$password = "househuntingsite385";
+	// $servername = "sql7.freemysqlhosting.net";
+	// $username = "sql7629329";
+	// $password = "uuPzKSrUBC";
+	// $database = "sql7629329";
+	$servername = "localhost";
+	$username = "root";
+	$password = "";
 	$database = "househuntingsite";
 
 	// Create a connection

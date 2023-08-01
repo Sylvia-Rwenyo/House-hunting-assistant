@@ -92,7 +92,7 @@
                 </div>
                     <div>
                         <p><?php echo $result['bedroomNo']?> bedroom house</p>
-                        <a href="listingChat.php?with=<?php echo $userID; $_SESSION['inView'] = $result['id']; ?>&inView=<?php echo  $_SESSION['inView']?>">
+                        <a href="listingChat.php?w=<?php echo $userID; $_SESSION['inView'] = $result['id']; ?>&inV=<?php echo  $_SESSION['inView']?>">
                             <span id="card<?php echo $result['id']?>">
                                 <i class="fa-solid fa-message"></i>
                             </span>
@@ -229,7 +229,9 @@ if(isset($_GET['likes'])){
         {
         $likedBy = explode('*', $row['likedBy']);
         if(in_array($by, $likedBy)){
+            if($likes >0){
             $likes = $_GET['likes'] - 1;
+            }
             $likedBy =str_replace($row['likedBy'], '*'.$by, '');
             $sql2 = "UPDATE units SET likes ='$likes', likedBy='$likedBy' where id = '$id'";
     

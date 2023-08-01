@@ -175,7 +175,7 @@ const showDetails = (id) =>{
                         <?php
                         }
                         ?>
-                    <a href="listing.php?likes=<?php echo $result['likes']?>&id=<?php echo $result['id']?>&by=<?php echo $_SESSION['id']?>">
+                    <a href="listing-details.php?likes=<?php echo $result['likes']?>&id=<?php echo $result['id']?>&by=<?php echo $_SESSION['id']?>">
                         <button class="like-btn">
                             <i class="fa fa-heart" <?php
                                                         $unitID=$result['id'];
@@ -241,7 +241,7 @@ const showDetails = (id) =>{
                         <?php
                         }
                         ?>
-                    <a href="">
+ <a href="listing-details.php?likes=<?php echo $result['likes']?>&id=<?php echo $result['id']?>&by=<?php echo $_SESSION['id']?>">
                         <button class="like-btn">
                             <i class="fa fa-heart" <?php
                                                         $unitID=$result['id'];
@@ -326,7 +326,7 @@ const showDetails = (id) =>{
                         <?php
                         }
                         ?>
-                    <a href="listing.php?likes=<?php echo $result['likes']?>&id=<?php echo $result['id']?>&by=<?php echo $_SESSION['id']?>">
+                    <a href="listing-details.php?likes=<?php echo $result['likes']?>&id=<?php echo $result['id']?>&by=<?php echo $_SESSION['id']?>">
                         <button class="like-btn">
                             <i class="fa fa-heart" <?php
                                                         $unitID=$result['id'];
