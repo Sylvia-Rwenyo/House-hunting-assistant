@@ -559,8 +559,6 @@ if(isset($_GET['action'])){
                echo "Error: " . $sqlQ . "
         " . mysqli_error($conn);
             }
-            //close connection
-            mysqli_close($conn);
         }
 
         $time = date_create(date("Y-m-d h:i:sa"));

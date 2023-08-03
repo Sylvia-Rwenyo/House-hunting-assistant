@@ -328,6 +328,10 @@ width: 90%;
     padding: 0.5em;
     padding-top: 0.75em;
 }
+.filterSection{
+    position: fixed;
+    margin-right: 85%;
+}
 
  .filterSection #openFilters2{
     width:95%;
@@ -618,6 +622,16 @@ li{
     margin-block-end: 0.5em;
 
 }
+.message .date-header{
+    width: 30%;
+    height: 1.5em;
+    background-color: rgba(169, 169, 169, 0.5);
+    box-shadow: 0 0 0 2px  rgba(169, 169, 169, 0.5);
+    border-radius: 10px;
+    margin-left: 35%;
+    margin-bottom: 1em;
+    text-align: center;
+}
 .message .chat .chatBubble1{
     margin-left: 30%;
     margin-right: 5%;
@@ -659,7 +673,7 @@ li{
 }
 .message .chat .typingArea textarea{
     background: transparent;
-    width: 75%;
+    width: 85%;
     padding: 2.5%;
     border: none;
 }

@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="style.css">
     <title>Chat with</title>
 </head>
-<body class="Listings">
+<body class="Listings" id="listingsChatPage">
     <div class="header">
         <h1>Active Listings</h1>
         <span class="menuBar" id="menuBars" onClick="showMenu()"><i class="fa-solid fa-bars"></i></span>
@@ -271,7 +271,7 @@
 </div>
 
             <div class="chat" id="chat">
-                <div class="bubbles">
+                <div class="bubbles" id="allBubbles">
                     <div class="top">
                 <div>
                     <?php
@@ -289,14 +289,32 @@
                 </div>
             </div>
             <?php
+             $prevDate = null;
             $messages = mysqli_query($conn,"SELECT * FROM  messages where (senderID='$recipientID' && receipientID ='$userID') || (senderID='$userID' && receipientID ='$recipientID')");
             if (mysqli_num_rows($messages) > 0) {
             $i=0;
-            while($row = mysqli_fetch_array($messages)) {
+            $lastMessageID = null;
+            while ($row = mysqli_fetch_array($messages)) {
+                // Get the timestamp of the current message
+                $timestamp = strtotime($row['time']);
+                // Format the time to display without seconds
+                $formattedTime = date("H:i", $timestamp);
+    
+                // Get the date of the current message
+                $date = date("j M Y", $timestamp);
+    
+                // Check if the current message's date is different from the previous message's date
+                if ($date !== $prevDate) {
+                    // Display the date header
+                    echo '<div class="date-header">' . $date . '</div>';
+        
+                    // Update the previous date
+                    $prevDate = $date;
+                }
             ?>
              <div class="<?php if($row['senderID']==$userID){ echo 'chatBubble1'; } else if($row['receipientID']==$userID){ echo 'chatBubble2'; }?>">
                 <p><?php
-               $length = 55;
+               $length = 35;
                if (strlen($row['message']) < $length) {
                    echo $row['message'];
                } else {
@@ -307,10 +325,12 @@
                
                     ?>
                 </p>
-                <span><?php echo substr($row['time'],11)?></span>
+                <span><?php echo $formattedTime; ?></span>
             </div>
             <?php
-            $i++; }}else{
+            $i++;
+            $lastMessageID = 'message_' . $row['id'];
+        }}else{
                 mysqli_query($conn, "INSERT INTO messages ( senderID, receipientID, message) VALUES ('$recipientID', '$userID', 'Hello, how can we help you?')");
 
             }
@@ -419,45 +439,48 @@ function showSlides(n){
 }
 
  // Event listener for like link
- $('.like-link').on('click', function(event) {
-    event.preventDefault();
+//  $('.like-link').on('click', function(event) {
+//     event.preventDefault();
 
-    var link = $(this);
-    var likes = parseInt(link.data('likes'));
-    var id = link.data('id');
-    var by = link.data('by');
-    var isLiked = link.hasClass('liked');
+//     var link = $(this);
+//     var likes = parseInt(link.data('likes'));
+//     var id = link.data('id');
+//     var by = link.data('by');
+//     var isLiked = link.hasClass('liked');
 
-    // Perform the AJAX request
-    $.ajax({
-      url: 'listingChat.php?likes',
-      type: 'GET',
-      data: {
-        likes: likes,
-        id: id,
-        by: by
-      },
-      success: function(response) {
-        if (isLiked) {
-          link.removeClass('liked');
-        } else {
-          link.addClass('liked');
-        }
-        fetchData();
-      },
-      error: function(xhr, status, error) {
-        console.log(error); // Handle any errors
-      }
-    });
-  });
+//     // Perform the AJAX request
+//     $.ajax({
+//       url: 'listingChat.php?likes',
+//       type: 'GET',
+//       data: {
+//         likes: likes,
+//         id: id,
+//         by: by
+//       },
+//       success: function(response) {
+//         if (isLiked) {
+//           link.removeClass('liked');
+//         } else {
+//           link.addClass('liked');
+//         }
+//         fetchData();
+//       },
+//       error: function(xhr, status, error) {
+//         console.log(error); // Handle any errors
+//       }
+//     });
+//   });
+function scrollToLastMessage() {
+    var scrollableElement = document.getElementById('allBubbles');
+  scrollableElement.scrollTop = scrollableElement.scrollHeight;
+}
   function fetchData() {
-  if (!formSubmitted) {
     $.ajax({
       url: 'listingChat.php', // Replace with your server-side script URL
       method: 'GET',
       success: function(response) {
         // Handle the response and update the HTML content
-        $('#listingsChat').html(response);
+        $('#listingsChatPage').html(response);
         console.log("all good");
       },
       error: function(xhr, status, error) {
@@ -465,8 +488,12 @@ function showSlides(n){
         console.error(error);
       }
     });
-  }
+  scrollToLastMessage();
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    scrollToLastMessage();
+});
 
 // Call the getNewData function periodically to fetch new data
 setInterval(fetchData, 60000);

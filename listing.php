@@ -35,7 +35,7 @@ session_start();
     <div class="mainListing">
         <div class="filterSection">
             <div id="openFilters" onClick="filters()">
-                <i class="fa-solid fa-filter">f</i>
+                <i class="fa-solid fa-filter"></i>
             </div>
             <div id="openFilters2" onClick="closeFilters()"><span>Filters</span><i class="fa-solid fa-angle-up"></i></div>
             <form class="filters" id="filters" method="post">
