@@ -40,10 +40,18 @@
                 <?php
                     $tour =  $_SESSION['virtualTour'];
                     for($j=0; $j < count($tour); $j++){
+                        if(strstr($tour[$j],'.mp4')){
                         ?>
+                        <video controls>
+                            <source src="Uploads/<?php echo $tour[$j]?>" type="video/mp4">
+                        </video>
+                        <?php
+                        }else{
+                            ?>
                         <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg  slide fade" id="slide<?php echo $j?>" alt="living room"/>
                         <?php
                         }
+                    }
                 ?>
                 <div class="move-slides">
                     <a class="prev" onclick ="plusSlides(-1)" >&#10094;</a>

@@ -153,7 +153,7 @@ session_start();
                         <?php
                     }else{
                     ?>
-                    listingChat.php?inView=<?php echo  $inView;}?>">
+                    listingChat.php?inV=<?php echo  $inView;}?>">
                         <span id="card<?php echo $result['id']?>">
                             <i class="fa-solid fa-message"></i>
                         </span>
@@ -317,7 +317,7 @@ session_start();
                         <?php
                     }else{
                     ?>
-                    listingChat.php?inView=<?php echo  $inView;}?>">
+                    listingChat.php?inV=<?php echo  $inView;}?>">
                         <span id="card<?php echo $result['id']?>">
                             <i class="fa-solid fa-message"></i>
                         </span>
@@ -346,12 +346,24 @@ session_start();
             $i=0;
             while($result = mysqli_fetch_array($records)) {
                 $userID = $result['userID'];
-                $tour = explode('*', $result['virtualTour']);
                 $inView = $result['id'];
                 ?>
             <div class="singleCard" id="singleCard<?php echo $result['id']?>">
-                <img src="Uploads/<?php echo $tour[0]?>" class="previewImg " alt=""/>
-                <div>
+            <?php
+            $tour = explode('*', $result['virtualTour']);
+            if(strstr($tour[0],'.mp4')){
+                        ?>
+                        <video controls>
+                            <source src="Uploads/<?php echo $tour[0]?>" type="video/mp4">
+                        </video>
+                        <?php
+                        }else if(strstr($tour[0],'.jpg') || strstr($tour[0],'.png')){
+                            ?>
+                        <img src="Uploads/<?php echo $tour[0]?>" class="previewImg" id="slide<?php echo 0?>" alt="living room"/>
+                        <?php
+                        } 
+                        ?>
+                    <div>
                     <?php
                     if($result['category'] == 'forSale'){
                     ?>
@@ -402,7 +414,7 @@ session_start();
                        
                     }else{
                     ?>
-                    listingChat.php?inView=<?php echo  $inView;}?>">
+                    listingChat.php?inV=<?php echo  $inView;}?>">
                         <span id="card<?php echo $result['id']?>">
                             <i class="fa-solid fa-message"></i>
                         </span>
@@ -478,8 +490,10 @@ if(isset($_GET['likes'])){
     document.getElementById('filters').style.display = 'block';
     document.getElementById('openFilters').style.display = 'none';
     document.getElementById('openFilters2').style.display = 'flex';
+    document.getElementById('allCards').style.marginLeft = '12.5%';
 }
 const closeFilters = () =>{
+    document.getElementById('allCards').style.marginLeft = '5%';
     document.getElementById('filters').style.display = 'none';
     document.getElementById('openFilters').style.display = 'block';
     document.getElementById('openFilters2').style.display = 'none';

@@ -351,6 +351,7 @@ width: 90%;
 }
  #openFilters{
    font-size: 1.15em;
+   top: 20;
 }
 .filterSection #openFilters2{
     display: none;
@@ -641,6 +642,10 @@ li{
     margin-bottom: 1em;
     border-bottom-right-radius: 5px;
     max-height: 50%;
+    word-wrap: break-word;
+    /* Display ellipsis (...) for overflowed text */
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .message .chat .chatBubble2{
@@ -651,11 +656,15 @@ li{
     margin-bottom: 1em;
     border-bottom-left-radius: 5px;
     max-height: 50%;
+    word-wrap: break-word;
+    /* Display ellipsis (...) for overflowed text */
+    overflow: hidden;
+    text-overflow: ellipsis;
 
 }
 .message .chat .chatBubble1 span , .message .chat .chatBubble2 span{
     color:rgb(89, 89, 87);
-    margin-left: 70%;
+    margin-left: 60%;
 }
 .message .chat .bubbles{
     height: 90%;
@@ -695,13 +704,14 @@ li{
     width: 70%;
     margin-left: 15%;
 }
-.paymentForm input{
+.paymentForm input, .paymentForm #credits-pswd{
     width: 100%;
     border: none;
     border-bottom: 2px solid black;
     padding: 1.75em;
     background: transparent;
 }
+
 .paymentArea span{
     float: right;
 }
@@ -727,12 +737,20 @@ li{
     margin-left: 80%;
     float: right;
 }
-/* #paymentArea{
-    display: none;
-} */
-/* #pay{
-    display:none;
-} */
+.paymentForm #credits-pswd{
+    display: flex;
+    flex-direction: row;
+    margin-top: 0;
+    padding: 0.75em;
+    padding-left: 1.75em;
+}
+.paymentForm #credits-pswd input{
+    width: 80%;
+    border: none;
+    padding: 0;
+}
+
+
 .testimonialsBody{
     background-color: #a69a8b;
     color: white;
@@ -1321,9 +1339,10 @@ to{opacity: 1}
     width: 100%;
     height: 90%;
 }
-.listingsChat .cards .singleCard img{
+.listingsChat .cards .singleCard img, .listingsChat .cards .singleCard video{
     height: 55%
 }
+
 .listingsChat .message{
     width: 60%;
     margin-top: 2.5%;
@@ -1426,7 +1445,7 @@ height: 60%;
 .cards .singleCard:hover{
    box-shadow: 0 2px 4px  0 darkgray;
 }
-.cards .singleCard img{
+.cards .singleCard img, .cards .singleCard video{
     height: 60%;
     width: 100%;
 }
@@ -1541,7 +1560,8 @@ height: 60%;
 .allCards{
     display: flex;
     flex-direction: column;
-    width: 90%
+    width: 90%;
+    margin-left: 5%;
 }
 .searchTitle{
     margin-left: 7.5%;
@@ -1615,7 +1635,7 @@ height: 60%;
     width: 100%;
     height: 70vh;
 }
-.all-views .cards .singleCard img{
+.all-views .cards .singleCard img, .all-views .cards .singleCard video{
     height: 55%
 }
 .previewSec{
@@ -1627,16 +1647,15 @@ height: 60%;
     display: flex;
     width: 60%;
     margin: 0;
-    height: 100%;
     background-color: white;
-    height: 90vh;
-    padding-right: 0;
+    height: fit-content;
+    padding-right: 1.5%;
 }
 .previewSec .cards .singleCard{
     width: 100%;
     height: 100%;
 }
-.previewSec .cards .singleCard img{
+.previewSec .cards .singleCard img, .previewSec .cards .singleCard video{
     width: 90%;
     height: 50%
 }

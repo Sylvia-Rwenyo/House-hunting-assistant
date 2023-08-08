@@ -33,6 +33,7 @@
     </div>
     <div class="listingsChat" id="listingsChat">
     <?php 
+      
      function assignReceipient($conn){
         // Retrieve the list of emails
         $sqlQ = mysqli_query($conn, "SELECT * FROM registration WHERE emailAddress IN ('hhs1@admin.com', 'hhs2@admin.com', 'hhs@admin.com')");
@@ -116,10 +117,9 @@
                 }
                 $i++;
             }}
-
             $userID = $_SESSION['id'];
             $uploaderID = 0;
-            $records = mysqli_query($conn,"SELECT * FROM  units where id =  '$id'");
+            $records = mysqli_query($conn,"SELECT * FROM  units where id =  '$userID'");
             if (mysqli_num_rows($records) > 0) {
             $i=0;
             while($result = mysqli_fetch_array($records)) {
@@ -192,7 +192,18 @@
             </div>
         </div> 
         <?php
-        $i++;}}
+        $i++;}}else{
+            echo '
+                <style>
+                .listingsChat .message, .creditMsg{
+                    width: 80%;
+                    margin-left: 10%;
+                }
+                .message .chat .chatBubble1 span, .message .chat .chatBubble2 span{
+                    margin-left: 80%;
+                </style>
+            ';
+            }
         ?>
 
     <div class="message" id="message">
@@ -314,14 +325,13 @@
             ?>
              <div class="<?php if($row['senderID']==$userID){ echo 'chatBubble1'; } else if($row['receipientID']==$userID){ echo 'chatBubble2'; }?>">
                 <p><?php
-               $length = 35;
-               if (strlen($row['message']) < $length) {
-                   echo $row['message'];
-               } else {
-                   for ($k = 0; $k < strlen($row['message']); $k += $length) {
-                       echo substr($row['message'], $k, $length) . '<br>';
-                   }
-               }
+            //    $length = 33;
+            //    if (strlen($row['message']) < $length) {
+            //        echo $row['message'];
+            //    } else {
+            //        for ($k = 0; $k < strlen($row['message']); $k += $length) {
+                       echo $row['message'];
+                //    }
                
                     ?>
                 </p>
@@ -331,7 +341,10 @@
             $i++;
             $lastMessageID = 'message_' . $row['id'];
         }}else{
-                mysqli_query($conn, "INSERT INTO messages ( senderID, receipientID, message) VALUES ('$recipientID', '$userID', 'Hello, how can we help you?')");
+                date_default_timezone_set("Africa/Nairobi");
+                $time = date("Y-m-d h:i:sa");
+                mysqli_query($conn, "INSERT INTO messages ( senderID, receipientID, message, time) 
+                VALUES ('$recipientID', '$userID', 'Hello, how can we help you?', '$time')");
 
             }
             ?>
@@ -395,13 +408,13 @@
                             }
                             
                         }
-                    
                      ?>
         </div>
 
 <div class="creditMsg">
             <p>You can use your credits to communicate directly with us and to view the unit's location. Each credit once in use expires after 24hours.</p>
         </div>
+        
 </body>
 </html>
 <script>

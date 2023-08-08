@@ -111,8 +111,15 @@ const showDetails = (id) =>{
                 <h4><?php echo $row['name']; ?></h4>
             </div>
             <div class="links">
-                <p><a href="listingChat.php?inView=<?php echo $_SESSION['inView'];?>" style="text-decoration: none; color: black;"><i class="fa-solid fa-message"></i></a></p>
-                <p><a href="profile.php?id=<?php echo$row['id']; ?>" style="text-decoration: none; color: black;"><i class="fa-solid fa-gears"></i></a></p>
+                <p>
+                    <a href="listingChat.php?inV=<?php if(isset($_SESSION['inView'])){echo $_SESSION['inView'];}else{echo 0;};?>" style="text-decoration: none; color: black;">
+                        <i class="fa-solid fa-message"></i>
+                    </a>
+                </p>
+                <p>
+                    <a href="profile.php?id=<?php echo$row['id']; ?>" style="text-decoration: none; color: black;">
+                    <i class="fa-solid fa-gears"></i></a>
+                </p>
             </div>
         </div>
         <div class="contactInfo">
@@ -159,10 +166,22 @@ const showDetails = (id) =>{
                     $i=0;
                     while($result = mysqli_fetch_array($fullQ)) {
                         $userID = $result['userID'];
-                        $tour = explode('*', $result['virtualTour']);
                 ?>
             <div class="singleCard" id="singleCard<?php echo $result['id']?>">
-                <img src="Uploads/<?php echo $tour[0]?>" class="previewImg " alt=""/>
+            <?php
+            $tour = explode('*', $records['virtualTour']);
+                 if (strstr($tour[0], '.mp4')) {
+                     ?>
+                     <video controls>
+                         <source src="Uploads/<?php echo $tour[0] ?>" type="video/mp4">
+                     </video>
+                 <?php
+                 } else {
+                     ?>
+                     <img src="Uploads/<?php echo $tour[0] ?>" class="previewImg " id="slide<?php echo $records['id'] ?>" alt="living room"/>
+                 <?php
+                 }
+                 ?>
                 <div>
                     <?php
                     if($result['category'] == 'forSale'){
@@ -219,16 +238,34 @@ const showDetails = (id) =>{
         ?>
         <div class="cards" >
             <?php
-        $sql = "SELECT * FROM units where userID = '$userID' ORDER BY likes DESC";
+        // Make sure to initialize $conn and $userID variables before using them
+        $sql = "SELECT * FROM units WHERE userID = '$userID' ORDER BY likes DESC";
         $records = mysqli_query($conn, $sql);
+        
+        if (!$records) {
+            die("Query failed: " . mysqli_error($conn));
+        }
+        
         if (mysqli_num_rows($records) > 0) {
-            $i=0;
-            while($result = mysqli_fetch_array($records)) {
-                $tour = explode('*', $result['virtualTour']);
-
+            $i = 0;
+            while ($result = mysqli_fetch_array($records)) {
                 ?>
-            <div class="singleCard" id="singleCard<?php echo $result['id']?>">
-                <img src="Uploads/<?php echo $tour[0]?>" class="previewImg " alt=""/>
+                <div class="singleCard" id="singleCard<?php echo $result['id'] ?>">
+                    <?php
+                    $tour = explode('*', $result['virtualTour']);
+                    if (strstr($tour[0], '.mp4')) {
+                        ?>
+                        <video controls>
+                            <source src="Uploads/<?php echo $tour[0] ?>" type="video/mp4">
+                        </video>
+                    <?php
+                    } else {
+                        ?>
+                        <img src="Uploads/<?php echo $tour[0] ?>" class="previewImg" id="slide<?php echo $i ?>" alt="living room"/>
+                    <?php
+                    }
+                    ?>
+                   
                 <div>
                     <?php
                     if($result['category'] == 'forSale'){
@@ -281,7 +318,11 @@ const showDetails = (id) =>{
             </div>
             <?php
             $i++;
-            }}
+            }}else{
+                ?>
+                <p>No uploads yet. Add a listing <a href="addUnit.php">here <i class="fa fa-arrow-right"></i></a></p>
+                <?php
+            }
             ?>
         </div>
     </div><?php
@@ -309,27 +350,39 @@ const showDetails = (id) =>{
                             $history = mysqli_query($conn,"SELECT * FROM  units where  id ='$subject'");
                             if (mysqli_num_rows($history) > 0) {
                                 $i=0;
-                                while($result = mysqli_fetch_array($history)) {
-                                    $tour = explode('*', $result['virtualTour']);
+                                while($records = mysqli_fetch_array($history)) {
                                    ?>
-                             <div class="singleCard" id="singleCard<?php echo $result['id']?>" onclick="showDetails(<?php echo $result['id']?>)">
-                <img src="Uploads/<?php echo $tour[0]?>" class="previewImg " alt=""/>
+                             <div class="singleCard" id="singleCard<?php echo $records['id']?>" onclick="showDetails(<?php echo $records['id']?>)">
+                <?php
+                 $tour = explode('*', $records['virtualTour']);
+                 if (strstr($tour[0], '.mp4')) {
+                     ?>
+                     <video controls>
+                         <source src="Uploads/<?php echo $tour[0] ?>" type="video/mp4">
+                     </video>
+                 <?php
+                 } else {
+                     ?>
+                     <img src="Uploads/<?php echo $tour[0] ?>" class="previewImg " id="slide<?php echo $records['id'] ?>" alt="living room"/>
+                 <?php
+                 }
+                 ?>
                 <div>
                     <?php
-                    if($result['category'] == 'forSale'){
+                    if($records['category'] == 'forSale'){
                     ?>
                     <p class="category">For sale</p>
                     <?php
-                    }elseif($result['category'] == 'rental'){
+                    }elseif($records['category'] == 'rental'){
                     ?>
                         <p class="category">Rental</p>
                         <?php
                         }
                         ?>
-                    <a href="listing-details.php?likes=<?php echo $result['likes']?>&id=<?php echo $result['id']?>&by=<?php echo $_SESSION['id']?>">
+                    <a href="listing-details.php?likes=<?php echo $records['likes']?>&id=<?php echo $records['id']?>&by=<?php echo $_SESSION['id']?>">
                         <button class="like-btn">
                             <i class="fa fa-heart" <?php
-                                                        $unitID=$result['id'];
+                                                        $unitID=$records['id'];
                                                         $by = $_SESSION['id'];
                                                         $stmt=mysqli_query($conn,"SELECT likedBy FROM units where id='$unitID'");
                                                         $row  = mysqli_fetch_array($stmt);
@@ -343,20 +396,20 @@ const showDetails = (id) =>{
                                                     }
                                                         ?>>
                             </i>
-                            <span><?php echo $result['likes']?></span>
+                            <span><?php echo $records['likes']?></span>
                         </button>
                     </a>
                 </div>
                     <div>
-                        <p><?php echo $result['bedroomNo']?> bedroom house</p>
-                    <a href="listingChat.php?with=<?php echo $userID; $_SESSION['inView'] = $result['id']; ?>&inView=<?php echo  $_SESSION['inView']?>">
-                        <span id="card<?php echo $result['id']?>">
+                        <p><?php echo $records['bedroomNo']?> bedroom house</p>
+                    <a href="listingChat.php?with=<?php echo $userID; $_SESSION['inView'] = $records['id']; ?>&inView=<?php echo  $_SESSION['inView']?>">
+                        <span id="card<?php echo $records['id']?>">
                             <i class="fa-solid fa-message"></i>
                         </span>
                     </a>
                     </div>
-                    <p>Ksh <?php echo $result['cost']?></p>
-                    <p><i class="fa fa-location-dot"></i> <?php echo $result['location']?>&nbsp;&nbsp;<i class="fa fa-ellipsis"onclick="showDetails(<?php echo $result['id']?>)" ></i>
+                    <p>Ksh <?php echo $records['cost']?></p>
+                    <p><i class="fa fa-location-dot"></i> <?php echo $records['location']?>&nbsp;&nbsp;<i class="fa fa-ellipsis"onclick="showDetails(<?php echo $records['id']?>)" ></i>
             </div>
                        <?php
                        $i++;}}}

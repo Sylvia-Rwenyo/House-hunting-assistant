@@ -63,7 +63,10 @@
         <form class="paymentForm" id="mpesa" method="POST" action="processing.php">
             <input type="number" placeholder="phone number" name="phoneNumber"/>
             <input type="number" placeholder="amount" name="amount" id="amount" />
-            <input type="password" placeholder='password' name="password" />
+            <div id="credits-pswd">
+                <input type="password" id="pswd" placeholder='password' name="password" />
+                &nbsp;<p onclick="pswdDisplay()" id="showPswd">Show</p>
+            </div>
             <?php if(isset($_GET)){ ?>
             <input type="hidden" name="id" value="<?php echo $_GET['id']?>"/>
             <input type="hidden" name="userID" value="<?php echo $_GET['userID']?>"/>
@@ -91,58 +94,47 @@ const closeMenu = () =>{
     document.getElementById('menuBars').style.display = 'block';
     document.getElementById('menu').style.display = 'none';
 }
-let slideIndex = 1;
-showSlides(slideIndex);
 
-function plusSlides(n){
-    showSlides(slideIndex += n)
-}
-function currentSlide(n){
-    showSlides(slideIndex = n)
-}
-function showSlides(n){
-    let i;
-    let slides = document.getElementsByClassName('slide');
-    if( n > slides.length){
-        slideIndex = 1
+// let selectCreditCard = document.getElementById('creditCard');
+// let selectMpesa = document.getElementById('mpesa');
+// let payMethodC = document.getElementById('payMethodC');
+// let payMethodM = document.getElementById('payMethodM');
+
+// if(selectMpesa.style.display == 'block'){
+//     payMethodC.checked =  false;
+//     payMethodM.checked =  true;
+// }
+// payMethodC.oninput = () =>{
+//     payMethodC.checked =  true;
+//     payMethodM.checked =  false;
+//     selectCreditCard.style.display = 'block';
+//     selectMpesa.style.display = 'none';
+// }
+// payMethodM.oninput = () =>{
+//     payMethodC.checked =  false;
+//     payMethodM.checked =  true;
+//     selectCreditCard.style.display = 'none';
+//     selectMpesa.style.display = 'block';
+// }
+// let amount = document.getElementById('amount');
+// amount.oninput = () =>{
+//     console.log(amount.value);
+//     let credits = amount.value/50;
+//     document.getElementById('bill').innerHTML = "Purchasing " + credits + " credits" ;
+//     console.log(document.getElementById('bill').value = "Bill of Ksh" + amount.value);
+// }
+
+function pswdDisplay(){
+    let showPswd = document.getElementById('showPswd');
+    let pswd = document.getElementById("pswd");
+    if(pswd.type == "text"){
+        pswd.type = "password";
+        showPswd.innerHTML = "Show";
+    }else{
+        pswd.type = "text";
+        showPswd.textContent = "Hide";
+        pswd.style.border = "none";
     }
-    if(n < 1){slideIndex = slides.length}
-    for (i = 0; i< slides.length; i++){
-        slides[i].style.display = "none";
-    }
-    slides[slideIndex - 1].style.display = "block";
 }
 
-function showImgs(){
-    document.getElementById('firstSlide').style.display = "none";
-    document.getElementById('secondSlide').style.display = "block";
-}
-let selectCreditCard = document.getElementById('creditCard');
-let selectMpesa = document.getElementById('mpesa');
-let payMethodC = document.getElementById('payMethodC');
-let payMethodM = document.getElementById('payMethodM');
-
-if(selectMpesa.style.display == 'block'){
-    payMethodC.checked =  false;
-    payMethodM.checked =  true;
-}
-payMethodC.oninput = () =>{
-    payMethodC.checked =  true;
-    payMethodM.checked =  false;
-    selectCreditCard.style.display = 'block';
-    selectMpesa.style.display = 'none';
-}
-payMethodM.oninput = () =>{
-    payMethodC.checked =  false;
-    payMethodM.checked =  true;
-    selectCreditCard.style.display = 'none';
-    selectMpesa.style.display = 'block';
-}
-let amount = document.getElementById('amount');
-amount.oninput = () =>{
-    console.log(amount.value);
-    let credits = amount.value/50;
-    document.getElementById('bill').innerHTML = "Purchasing " + credits + " credits" ;
-    console.log(document.getElementById('bill').value = "Bill of Ksh" + amount.value);
-}
 </script>
