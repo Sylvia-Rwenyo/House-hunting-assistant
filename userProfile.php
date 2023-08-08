@@ -169,7 +169,7 @@ const showDetails = (id) =>{
                 ?>
             <div class="singleCard" id="singleCard<?php echo $result['id']?>">
             <?php
-            $tour = explode('*', $records['virtualTour']);
+            $tour = explode('*', $result['virtualTour']);
                  if (strstr($tour[0], '.mp4')) {
                      ?>
                      <video controls>
@@ -178,7 +178,7 @@ const showDetails = (id) =>{
                  <?php
                  } else {
                      ?>
-                     <img src="Uploads/<?php echo $tour[0] ?>" class="previewImg " id="slide<?php echo $records['id'] ?>" alt="living room"/>
+                     <img src="Uploads/<?php echo $tour[0] ?>" class="previewImg " id="slide<?php echo $result['id'] ?>" alt="living room"/>
                  <?php
                  }
                  ?>
