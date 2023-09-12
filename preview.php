@@ -48,7 +48,7 @@
                         <?php
                         }else{
                             ?>
-                        <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg  slide fade" id="slide<?php echo $j?>" alt="living room"/>
+                        <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg " id="slide<?php echo $j?>" alt="living room"/>
                         <?php
                         }
                     }
@@ -57,7 +57,7 @@
                     <a class="prev" onclick ="plusSlides(-1)" >&#10094;</a>
                     <a class="next" onclick ="plusSlides(1)" >&#10095;</a>  
                 </div>  
-                <div>
+                <!-- <div> -->
                     <?php
                     if($_SESSION['unitCategory'] == 'forSale'){
                     ?>
@@ -69,10 +69,8 @@
                         <?php
                         }
                         ?>
-                </div>
-                    <div>
+                <!-- </div> -->
                         <p><?php echo $_SESSION['bedroomNo']?> bedroom house</p>
-                    </div>
                     <p><?php echo $_SESSION['bathroomNo']?> bathrooms<?php
                    $details = $_SESSION['amenities'];for($j=0; $j < count($details); $j++){ echo strtolower(', '. $details[$j]);}?> available
                     </p>

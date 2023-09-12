@@ -599,5 +599,100 @@ if(isset($_GET['action'])){
             }
         }
           }}
-        
+
+//post a question to the forum
+// check that the question is not null
+if(isset($_POST['postToForum']))
+{	
+    
+    //store values submitted in the form in a variable
+	 $question = $_POST['question_text'];
+
+     //statement to enter values into the registration table in the database
+	 $sql = "INSERT INTO forum_questions (question_text)
+	 VALUES ('$question')";
+
+     //if sql query is executed...
+	 if (mysqli_query($conn, $sql)) {
+            echo'
+                <script>
+                    window.location.href = "forum.php";
+                </script>
+            ';
+		} else {	
+                //show error
+		echo "Error: " . $sql . " " . mysqli_error($conn);
+	 }
+        //close connection
+        mysqli_close($conn);
+
+    }
+
+    //post a question to the forum
+// check that the question is not null
+if(isset($_POST['editFQ']))
+{	
+    
+    //store values submitted in the form in a variable
+    $answer_id = $_POST['answer_id'];
+	 $answer = $_POST['answer_text'];
+
+     $sql = "UPDATE forum_answers SET answer_text='$answer' WHERE answer_id=$answer_id";
+     //if sql query is executed...
+	 if (mysqli_query($conn, $sql)) {
+            echo'
+                <script>
+                    window.location.href = "userProfile.php";
+                </script>
+            ';
+		} else {	
+                // show error
+		echo "Error: " . $sql . " " . mysqli_error($conn);
+	 }
+        //close connection
+        mysqli_close($conn);
+
+    }
+    if (isset($_POST['answerFQ'])) {
+        // Store values submitted in the form in variables
+        $answer = $_POST['answer_text'];
+        $questionID = $_POST['question_id'];
+    
+        $sql = "INSERT INTO forum_answers (answer_text, question_id) VALUES (?, ?)";
+        $stmt = $conn->prepare($sql);
+    
+        if ($stmt) {
+            // Bind parameters to the statement
+            $stmt->bind_param("ss", $answer, $questionID);
+    
+            // Execute the prepared statement
+            if ($stmt->execute()) {
+                // Redirect to another page upon successful insertion
+                header("Location: userProfile.php");
+                exit();
+            } else {
+                // Show an error message
+                echo "Error: " . $stmt->error;
+            }
+    
+            // Close the statement
+            $stmt->close();
+        } else {
+            // Show an error message if the statement preparation fails
+            echo "Error: " . $conn->error;
+        }
+    
+        // Close the database connection
+        mysqli_close($conn);
+    }
+    
+    if(isset($_POST['cancelFQ']))
+    {	
+                echo'
+                    <script>
+                        window.location.href = "userProfile.php";
+                    </script>
+                ';
+    
+        }
 ?>

@@ -11,7 +11,7 @@
         ?>
         <li><a href="listing.php" class="<?php echo isActive('listing.php'); ?>">Active Listings</a></li>
         <li><a href="userProfile.php" class="<?php echo isActive('userProfile.php'); ?>">Profile</i></a></li>
-        <li><a href="" class="<?php echo isActive(''); ?>">Help</a></li>
+        <li><a href="forum.php" class="<?php echo isActive('forum.php'); ?>">Help</a></li>
     </ul>
 </div> 
 

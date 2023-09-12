@@ -33,7 +33,6 @@
     </div>
     <div class="listingsChat" id="listingsChat">
     <?php 
-      
      function assignReceipient($conn){
         // Retrieve the list of emails
         $sqlQ = mysqli_query($conn, "SELECT * FROM registration WHERE emailAddress IN ('hhs1@admin.com', 'hhs2@admin.com', 'hhs@admin.com')");
@@ -60,11 +59,11 @@
               // Modify this code to suit your specific storage method
               
               // Assuming a MySQLi connection object named $conn is available
-              $result = mysqli_query($conn, "SELECT lastReceipientID FROM admin_receipient ORDER BY id DESC LIMIT 1");
+              $result = mysqli_query($conn, "SELECT lastReceipient FROM admin_receipient ORDER BY id DESC LIMIT 1");
               
               if ($result && mysqli_num_rows($result) > 0) {
                   $row = mysqli_fetch_assoc($result);
-                  return $row['lastReceipientID'];
+                  return $row['lastReceipient'];
               }
               
               return null;
@@ -79,7 +78,7 @@
               date_default_timezone_set("Africa/Nairobi");
               $time = date("Y-m-d h:i:sa");
               $recipientID =$_SESSION['recipientID'];
-              mysqli_query($conn, "INSERT INTO admin_receipient (lastReceipientID, senderID, time) VALUES ('$recipientID', '$userID', '$time')");
+              mysqli_query($conn, "INSERT INTO admin_receipient (lastReceipient, senderID, time) VALUES ('$recipientID', '$userID', '$time')");
           }
         
 
@@ -119,7 +118,12 @@
             }}
             $userID = $_SESSION['id'];
             $uploaderID = 0;
-            $records = mysqli_query($conn,"SELECT * FROM  units where id =  '$userID'");
+            if(isset($_GET['inV'])){
+            $unitID = $_GET['inV'];
+            }else{
+                $unitID = 0;
+            }
+            $records = mysqli_query($conn,"SELECT * FROM  units where id =  '$unitID'");
             if (mysqli_num_rows($records) > 0) {
             $i=0;
             while($result = mysqli_fetch_array($records)) {
@@ -136,12 +140,18 @@
         <div class="cards">
         <div class="singleCard" id="singleCard<?php echo $result['id']?>" >
         <?php
-                for($j=0; $j < count($tour); $j++){
-                    ?>
-                    <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg  slide fade" id="slide<?php echo $j?>" alt="living room"/>
-                    <?php
-                    }
-                ?>
+                  if(strstr($tour[0],'.mp4')){
+                              ?>
+                              <video controls>
+                                  <source src="Uploads/<?php echo $tour[0]?>" type="video/mp4">
+                              </video>
+                              <?php
+                              }else if(strstr($tour[0],'.jpg') || strstr($tour[0],'.png')){
+                                  ?>
+                              <img src="Uploads/<?php echo $tour[0]?>" class="previewImg" id="slide<?php echo 0?>" alt="living room"/>
+                              <?php
+                              } 
+                              ?>
                 <div class="move-slides">
                     <a class="prev" onclick ="plusSlides(-1)" >&#10094;</a>
                     <a class="next" onclick ="plusSlides(1)" >&#10095;</a>  
@@ -239,7 +249,11 @@
 
             if ($detailsResult->num_rows > 0) {
                 $record = $detailsResult->fetch_assoc();
-                $to = 'listingChat.php?action=chat&w=' . $record['id'].'&inV=' . $_GET['inV'];
+                
+                If(isset($_GET['inV'])){$inV = $_GET['inV'];}else{
+                    $inV = 0;
+                }
+                $to = 'listingChat.php?action=chat&w=' . $record['id'].'&inV=' . $inV;
                 ?>
                 <div class="singleMessage">
                     <a href="<?php echo $to; ?>">
@@ -248,8 +262,8 @@
                         </div>
                         <?php
                         $rec = $record['id'];
-                        $msg = $conn->prepare("SELECT * FROM messages WHERE receipientID = ? AND senderID = ? ORDER BY `time` DESC LIMIT 1");
-                        $msg->bind_param("ss", $rec, $userID);
+                        $msg = $conn->prepare("SELECT * FROM messages WHERE (receipientID = ? AND senderID = ?) ||  (senderID = ? AND receipientID = ?)  ORDER BY `time` DESC LIMIT 1");
+                        $msg->bind_param("ssss", $rec, $userID,  $rec, $userID);
                         $msg->execute();
                         $msgResult = $msg->get_result();
 
@@ -286,7 +300,13 @@
                     <div class="top">
                 <div>
                     <?php
-                    $recipientID = $_SESSION['recipientID'];
+                    if(stristr($_SESSION['email'], '@admin.com')){
+                        if(isset($_GET['w'])){
+                        $recipientID = $_GET['w'];
+                        }
+                    }else{
+                        $recipientID = $_SESSION['recipientID'];
+                    }
                     $records = mysqli_query($conn,"SELECT name, id FROM  registration where emailAddress='$recipientID' ||  id='$recipientID'");
                     if (mysqli_num_rows($records) > 0) {
                     $i=0;

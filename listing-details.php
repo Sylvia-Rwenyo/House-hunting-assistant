@@ -48,9 +48,17 @@
             <div class="singleCard" id="singleCard<?php echo $result['id']?>" style="padding-bottom:10%;">
                 <?php
                     for($j=0; $j < count($tour); $j++){
-                        ?>
-                        <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg  slide fade" id="slide<?php echo $j?>" alt="living room"/>
-                        <?php
+                        if(strstr($tour[$j],'.mp4')){
+                            ?>
+                            <video controls>
+                                <source src="Uploads/<?php echo $tour[$j]?>" type="video/mp4">
+                            </video>
+                            <?php
+                            }else if(strstr($tour[$j],'.jpg') || strstr($tour[$j],'.png')){
+                                ?>
+                            <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg" id="slide<?php echo $j?>" alt="living room"/>
+                            <?php
+                            } 
                         }
                 ?>
                 <div class="move-slides">
@@ -136,7 +144,19 @@
 
             ?>
                 <div class="view-card"  onclick="showDetails(<?php echo $result['id']?>)">
-                    <img src="Uploads/<?php echo $tour[0]?>" alt=''/>
+                <?php
+                  if(strstr($tour[0],'.mp4')){
+                              ?>
+                              <video controls>
+                                  <source src="Uploads/<?php echo $tour[0]?>" type="video/mp4">
+                              </video>
+                              <?php
+                              }else if(strstr($tour[0],'.jpg') || strstr($tour[0],'.png')){
+                                  ?>
+                              <img src="Uploads/<?php echo $tour[0]?>" class="previewImg" id="slide<?php echo 0?>" alt="living room"/>
+                              <?php
+                              } 
+                              ?>
                     <div class="details">
                         <div class="sub-details">
                         <?php

@@ -249,7 +249,9 @@ session_start();
             document.getElementById('filters').style.display = 'block';
             document.getElementById('openFilters').style.display = 'none';
             document.getElementById('openFilters2').style.display = 'flex';
+            document.getElementById('allCards').style.marginLeft = '12.5%';
             </script>
+
             ";
             ?>
                         <h4 class="searchTitle" id="filterResult">From your filter search</h4>

@@ -13,7 +13,7 @@
 </head>
 <body class="homePage">
 <div class="header">
-    <h6>HOUSE HUNTING SITE</h6>
+    <h6>VIEW NYUMBA</h6>
 </div>
 <div class="CTA">
     <h5>looking for a house?</h5>

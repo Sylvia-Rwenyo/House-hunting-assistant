@@ -17,7 +17,7 @@ $inView = 0;
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- <script src="script.js"  ></script> -->
     <link rel="stylesheet" href="style.css">
-    <title>Active Listings</title>
+    <title>Frequently asked questions</title>
 </head>
 <body class="Listings" id="forum">
     <div class="header" id="listing-header">
@@ -33,11 +33,11 @@ $inView = 0;
             include_once 'menu.php';
         ?>
     </div>
-    <div class="cards">
     <?php
     if (isset($_POST['search']) || isset($_GET['search']) || isset($_POST['postToForum'])) {
         ob_start();
         ?>
+        <div class="cards">
         <h4 class="searchTitle">From your search</h4>
         <div class="cards" id="searchResults">
         <?php
@@ -68,20 +68,13 @@ $inView = 0;
         }
         ?>
         </div>
+        </div>
         <?php
         $searchResultsHTML = ob_get_clean();
         echo $searchResultsHTML;
     }
     ?>
-    </div>
     <div class="cards">
-        <div class="singleCard">
-            <h5>Ask a question</h5>
-            <form method="POST">
-                <textarea name="question_text"></textarea>
-                <button type="submit" name="postToForum" class="btn lg signUp"></button>
-            </form>
-        </div>
         <?php
         $sql = "SELECT fq.question_id, fq.question_text, fa.answer_text
                 FROM forum_questions fq
@@ -99,7 +92,7 @@ $inView = 0;
                 $questionID = $result['question_id'];
                 ?>
                 <div class="singleCard">
-                    <h5><?php echo $result['question_text']; ?></h5>
+                    <h3><?php echo $result['question_text']; ?></h3>
                     <div>
                         <p><?php echo $result['answer_text']; ?></p>
                     </div>
@@ -108,18 +101,17 @@ $inView = 0;
             }
         }
         ?>
+         <div class="singleCard">
+            <h3>Ask a question</h3>
+            <form method="POST" action="processing.php">
+                <textarea name="question_text"></textarea>
+                <button type="submit" name="postToForum" class="btn lg logIn">Send</button>
+            </form>
+        </div>
     </div>
 </body>
 </html>
-<?php
-if (isset($_SESSION['category'])) {
-    if ($_SESSION['category'] == 'showing') {
-        echo '<script> 
-            window.location.href = "userProfile.php";
-            </script>';
-    }
-}
-?>
+
 
 <script>
     // JavaScript code here

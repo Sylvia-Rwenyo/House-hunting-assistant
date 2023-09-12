@@ -69,13 +69,17 @@ const showDetails = (id) =>{
             .showing{background-color: rgba(98, 150, 67, 0.3);}
             </style>';
         }
+        if ($_SESSION['category'] == 'showing' && !stristr( $_SESSION['email'], '@admin.com')){
+
         ?>
 
         <div class="switchMode">
             <a href="userProfile.php?mode=showing" class="showing"><button class="btn">Show</button></a>
             <a href="userProfile.php?mode=viewing" class="viewing"><button class="btn">View</button></a>
         </div>
-
+        <?php
+        }
+        ?>
         <span class="menuBar" id="menuBars" onClick="showMenu()"><i class="fa-solid fa-bars"></i></span>
         <?php
             include_once 'menu.php';
@@ -130,7 +134,7 @@ const showDetails = (id) =>{
         }
     }
 
-    if ($_SESSION['category'] == 'showing' && !stristr('hhs@admin.com', $_SESSION['mail'])) {
+    if ($_SESSION['category'] == 'showing' && !stristr( $_SESSION['email'], '@admin.com')) {
         echo '<style>
         .showing{background-color: rgb(98, 150, 67);}
         .viewing{background-color: rgba(98, 150, 67, 0.5);}
@@ -326,14 +330,51 @@ const showDetails = (id) =>{
             ?>
         </div>
     </div><?php
-    }else if(stristr('hhs@admin.com', $_SESSION['mail']) && $_SESSION['category'] == 'showing'){
-        $userID = $_SESSION['id'];
-        echo '
-        <script>
-        window.location.href = "";
-        </script>
-        ';
-             }else if($_SESSION['category'] == 'looking'){
+    }else if(stristr($_SESSION['email'], '@admin.com') && $_SESSION['category'] == 'showing'){
+        ?>
+      <div class="uploads admin" id="uploads">
+    <h4 class="uploadsHeader">User Queries</h4>
+    <?php
+    $sql = "SELECT fq.question_id, fq.question_text, fa.answer_text, fa.answer_id
+            FROM forum_questions fq
+            LEFT JOIN forum_answers fa ON fq.question_id = fa.question_id
+            ORDER BY fq.question_id DESC";
+    $records = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($records) > 0) {
+        while ($result = mysqli_fetch_array($records)) {
+            $questionID = $result['question_id'];
+    ?>
+    <div class="singleCard" id="fq<?php echo $result['question_id']; ?>"
+         data-question-id="<?php echo $result['question_id']; ?>"
+         data-answer-id="<?php echo $result['answer_id']; ?>"
+         data-question-text="<?php echo $result['question_text']; ?>"
+         data-answer-text="<?php echo $result['answer_text']; ?>">
+        <h3><?php echo $result['question_text']; ?></h3>
+        <div>
+            <?php
+            if ($result['answer_id'] !== null) {
+                // Display existing answer if available
+                echo "<p>{$result['answer_text']}</p>";
+            } else {
+                // Display a form to add an answer
+                echo '<form method="POST" action="processing.php">';
+                echo '<textarea name="answer_text" placeholder="Add an answer..."></textarea>';
+                echo '<input type="hidden" name="question_id" value="' . $result['question_id'] . '">';
+                echo '<button type="submit" name="answerFQ" class="btn lg logIn">Submit</button>';
+                echo '</form>';
+            }
+            ?>
+        </div>
+    </div>
+    <?php
+        }
+    }
+    ?>
+</div>
+
+                <?php
+                }
+                if($_SESSION['category'] == 'looking'){
             ?>
             <div class="uploads" id="uploads">
                 <h4 class="uploadsHeader">History</h4>
@@ -428,8 +469,26 @@ const showDetails = (id) =>{
                        }
    ?> 
 </body>
-
-</html>
 <?php
 }
 ?>
+<script>
+   function editFQ(button) {
+    const parentDiv = button.parentElement;
+    const questionID = parentDiv.getAttribute('data-question-id');
+    const answerID = parentDiv.getAttribute('data-answer-id');
+    const questionText = parentDiv.getAttribute('data-question-text');
+    const answerText = parentDiv.getAttribute('data-answer-text');
+
+    const divID = 'fq' + questionID;
+    const targetDiv = document.getElementById(divID);
+
+    targetDiv.innerHTML = '';
+    targetDiv.innerHTML = '<h3>' + questionText + '</h3> <form method="POST" action="processing.php">' +
+        '<textarea name="answer_text">' + answerText + '</textarea><input type="hidden" name="answer_id" value="' + answerID + '"' +
+        '<div><button type="submit" name="editFQ" class="btn lg logIn">Send</button>' +
+        '<button class="btn lg logIn cancelFQ" name="cancelFQ">Back</button></div></form>';
+}
+
+</script>
+</html>

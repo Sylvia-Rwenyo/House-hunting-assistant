@@ -38,7 +38,7 @@
     font-size: 4em;
     width: 80%;
 }
-.homePage .buttons button, .homePage form button, .addUnit a button{
+.homePage .buttons button, .homePage form button, .addUnit a button,  #forum .logIn,  .admin .logIn{
     width: 6em;
     height: 2.5em;
     /* border-radius: 5px; */
@@ -46,7 +46,7 @@
     margin-right: 5%;
     font-size: 1em;
 }
-.homePage .buttons .logIn, .homePage form button{
+.homePage .buttons .logIn, .homePage form button, #forum .logIn,  .admin .logIn{
     background-color: #83a46f;
     color: white;
 }
@@ -61,7 +61,7 @@
     margin-left: 25%;
     margin-top: 2.5%;
 }
-.homePage .mainCTA h4{
+.homePage .mainCTA h4, .homePage .mainCTA2 h4{
     margin-left: 2.5%;
 }
 @keyframes slide-in {
@@ -1314,8 +1314,8 @@ to{opacity: 1}
     display: flex;
     flex-direction: column;
     width: 40%;
-    /* overflow-y: scroll;
-    overflow-x: hidden; */
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 .loginPswd #password{
     margin-bottom: 0;
@@ -1420,6 +1420,10 @@ height: 60%;
     /* row-gap: 3%; */
     height: 100%;
 }
+#forum .cards, .uploads.admin .singleCard{
+    grid-template-columns: auto;
+    background: transparent;
+}
 #Listings .cards{
     width: 90%;
     margin-left: 2%;
@@ -1454,6 +1458,53 @@ height: 60%;
 }
 .cards .singleCard .category, .listing-details .category{
     color: rgb(98, 160, 57);
+}
+#forum .cards .singleCard, .uploads.admin .singleCard{
+    width: 90%;
+    padding: 1.5em;
+    height: auto;
+    box-shadow: 0 2px 4px  0 darkgray;
+}
+.uploads.admin .singleCard{
+    display: flex;
+    flex-direction: column;
+}
+#forum .cards .singleCard h3, #forum .cards .singleCard p{
+    margin-left: 0;
+   font-size: 1.25em;
+}
+#forum .singleCard form, .admin .singleCard form{
+    width: 100%;
+    height: 6em;
+    display: flex;
+    flex-direction: row;
+}
+#forum .logIn{
+    margin-left: 2.5%;
+    margin-top: 2%;
+}
+.admin .singleCard form div{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: auto;
+    margin-left: 2.5%;
+    padding-top: 1.5%;
+    padding-bottom: 1.5%;
+}
+.admin .singleCard form button{
+    height: 40%;
+}
+.admin .logIn.cancelFQ{
+    background-color: transparent;
+    border: 2px solid black;
+    color: #000000;
+}
+
+#forum .singleCard form textarea, .admin .singleCard form textarea{
+    width: 80%;
+    height: 80%;
+    padding: 0.25em;
 }
 .view-card a{
     text-decoration: none;
@@ -1656,7 +1707,7 @@ height: 60%;
     height: 100%;
 }
 .previewSec .cards .singleCard img, .previewSec .cards .singleCard video{
-    width: 90%;
+    width: 100%;
     height: 50%
 }
 .sideBar{
