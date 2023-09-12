@@ -1,12 +1,8 @@
 <?php
 	$servername = "localhost";
-	$username = "konstrae_vnAdmin";
-	$password = "viewnyumbaAdminpw";
-	$database = "konstrae_viewnyumbaDB";
-	// $servername = "localhost";
-	// $username = "root";
-	// $password = "";
-	// $database = "househuntingsite";
+	$username = "root";
+	$password = "";
+	$database = "househuntingsite";
 
 	// Create a connection
 	$conn = mysqli_connect($servername,
