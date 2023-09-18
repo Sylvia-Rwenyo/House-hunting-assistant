@@ -148,7 +148,7 @@
                               <?php
                               }else if(strstr($tour[0],'.jpg') || strstr($tour[0],'.png')){
                                   ?>
-                              <img src="Uploads/<?php echo $tour[0]?>" class="previewImg" id="slide<?php echo 0?>" alt="living room"/>
+                              <img src="Uploads/<?php echo $tour[0]?>" class="previewImg slide" id="slide<?php echo 0?>" alt="living room"/>
                               <?php
                               } 
                               ?>

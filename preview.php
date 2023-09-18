@@ -1,7 +1,8 @@
 <?php 
-        include_once 'conn.php';
-        session_start();
-    ?>
+    include_once 'conn.php';
+    session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/2751fbc624.js" crossorigin="anonymous"></script>
-    <script src="script.js" ></script>
+    <script src="script.js"></script>
     <link rel="stylesheet" href="style.css">
     <title>New Unit Preview</title>
 </head>
@@ -33,76 +34,88 @@
         ?>
         <h1>New Unit</h1>
     </div>
-    </div>
     <div class="previewSec">
         <div class="cards">
             <div class="singleCard" id="singleCard<?php echo $_SESSION['id']?>">
-                <?php
-                    $tour =  $_SESSION['virtualTour'];
-                    for($j=0; $j < count($tour); $j++){
-                        if(strstr($tour[$j],'.mp4')){
-                        ?>
-                        <video controls>
-                            <source src="Uploads/<?php echo $tour[$j]?>" type="video/mp4">
-                        </video>
-                        <?php
-                        }else{
-                            ?>
-                        <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg " id="slide<?php echo $j?>" alt="living room"/>
-                        <?php
-                        }
-                    }
+        <?php
+        $tour = isset($_SESSION['virtualTour']) ? $_SESSION['virtualTour'] : array(); // Check if the array is set
+        foreach ($tour as $j => $item) {
+            if (strstr($item, '.mp4')) {
                 ?>
+                <video controls class="previewImg slide">
+                    <source src="Uploads/<?php echo $item; ?>" type="video/mp4">
+                </video>
+                <?php
+            } elseif (strstr($item, '.jpg') || strstr($item, '.png')) {
+                ?>
+                <img src="Uploads/<?php echo $item; ?>" class="previewImg slide" id="slide<?php echo $j; ?>" alt="living room"/>
+                <?php
+            }
+        }
+        ?>
+    
                 <div class="move-slides">
-                    <a class="prev" onclick ="plusSlides(-1)" >&#10094;</a>
-                    <a class="next" onclick ="plusSlides(1)" >&#10095;</a>  
+                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                    <a class="next" onclick="plusSlides(1)">&#10095;</a>  
                 </div>  
-                <!-- <div> -->
-                    <?php
-                    if($_SESSION['unitCategory'] == 'forSale'){
-                    ?>
-                    <p class="category">For sale</p>
-                    <?php
-                    }elseif($_SESSION['unitCategory'] == 'rental'){
-                    ?>
-                        <p class="category">Rental</p>
-                        <?php
-                        }
-                        ?>
-                <!-- </div> -->
-                        <p><?php echo $_SESSION['bedroomNo']?> bedroom house</p>
-                    <p><?php echo $_SESSION['bathroomNo']?> bathrooms<?php
-                   $details = $_SESSION['amenities'];for($j=0; $j < count($details); $j++){ echo strtolower(', '. $details[$j]);}?> available
-                    </p>
-                    <p>There is a 
-                        <?php $details = $_SESSION['accessibility'];for($j=0; $j < count($details); $j++){ echo strtolower($details[$j]. ', ');}?>
-                        and <?php $details =  $_SESSION['others'];for($j=0; $j < count($details); $j++){ echo strtolower($details[$j]. ', ');}?>
-                    </p>
-                    <p>Ksh <?php echo $_SESSION['cost']?></p>
-                    <p><i class="fa fa-location-dot"></i> <?php echo $_SESSION['location']?>&nbsp;&nbsp;</p>            </div>
+                <?php
+                if($_SESSION['unitCategory'] == 'forSale'){
+                ?>
+                <p class="category">For sale</p>
+                <?php
+                }elseif($_SESSION['unitCategory'] == 'rental'){
+                ?>
+                <p class="category">Rental</p>
+                <?php
+                }
+                ?>
+                <p><?php echo $_SESSION['bedroomNo']?> bedroom house</p>
+                <p><?php echo $_SESSION['bathroomNo']?> bathrooms<?php
+                $details = $_SESSION['amenities'];
+                for($j=0; $j < count($details); $j++){ 
+                    echo strtolower(', '. $details[$j]);
+                }?> available
+                </p>
+                <p>There is a 
+                    <?php 
+                    $details = $_SESSION['accessibility'];
+                    for($j=0; $j < count($details); $j++){ 
+                        echo strtolower($details[$j]. ', ');
+                    }?>
+                    and <?php 
+                    $details =  $_SESSION['others'];
+                    for($j=0; $j < count($details); $j++){ 
+                        echo strtolower($details[$j]. ', ');
+                    }?>
+                </p>
+                <p>Ksh <?php echo $_SESSION['cost']?></p>
+                <p><i class="fa fa-location-dot"></i> <?php echo $_SESSION['location']?>&nbsp;&nbsp;</p>
+            </div>
         </div>
-    <div class="cardBtns">
-        <?php
-        if(isset($_GET['state'])){
-            if($_GET['state'] == 'edited'){ 
-        ?>
-        <a href="processing.php?action=editUnit&id=<?php echo $_GET['id']?>"><button class="btn upload">Upload</button></a>
-        <?php
-            }}else{
-        ?>
-        <a href="processing.php?action=uploadUnit"><button class="btn upload">Upload</button></a>
-        <?php } ?>
-        <a href="addUnit.php?action=edit"><button class="btn edit">Edit</button></a>
-        <a href="preview.php?action=deletePreview"><button class="btn delete">Delete</button></a>
+        <div class="cardBtns">
+            <?php
+            if(isset($_GET['state'])){
+                if($_GET['state'] == 'edited'){ 
+            ?>
+            <a href="processing.php?action=editUnit&id=<?php echo $_GET['id']?>"><button class="btn upload">Upload</button></a>
+            <?php
+                }}else{
+            ?>
+            <a href="processing.php?action=uploadUnit"><button class="btn upload">Upload</button></a>
+            <?php } ?>
+            <a href="addUnit.php?action=edit"><button class="btn edit">Edit</button></a>
+            <a href="preview.php?action=deletePreview"><button class="btn delete">Delete</button></a>
+        </div>
     </div>
-    </div>
-    </div>
+</div>
 </body>
 </html>
+
 <?php
-    if(isset($_GET['action'])){ if($_GET['action'] == 'deletePreview'){
+if(isset($_GET['action'])){ 
+    if($_GET['action'] == 'deletePreview'){
         unset($_SESSION["category"]);
-        unset($_SESSION["cost"]) ;
+        unset($_SESSION["cost"]);
         unset($_SESSION["size"]);
         unset($_SESSION["bedroomNo"]);
         unset($_SESSION["location"]);
@@ -111,34 +124,38 @@
         unset($_SESSION["accessibility"]);
         unset($_SESSION["condition"]);
         unset($_SESSION["others"]);
-        echo ' <script> 
-        window.location.href = "addUnit.php";
-        </script>
-        ';
-    }};
-    
+        echo '<script>window.location.href = "addUnit.php";</script>';
+    }
+}
 ?>
-<script>
+ <script>
+document.addEventListener("DOMContentLoaded", function() {
     let slideIndex = 1;
-showSlides(slideIndex);
+    showSlides(slideIndex);
 
-function plusSlides(n){
-    showSlides(slideIndex += n)
-}
-function currentSlide(n){
-    showSlides(slideIndex = n)
-}
-function showSlides(n){
-    let i;
-    let slides = document.getElementsByClassName('slide');
-    if( n > slides.length){
-        slideIndex = 1
+    function plusSlides(n){
+        showSlides(slideIndex += n);
     }
-    if(n < 1){slideIndex = slides.length}
-    for (i = 0; i< slides.length; i++){
-        slides[i].style.display = "none";
+
+    function currentSlide(n){
+        showSlides(slideIndex = n);
     }
-    slides[slideIndex - 1].style.display = "block";
-} 
+
+    function showSlides(n){
+        let i;
+        let slides = document.getElementsByClassName('slide');
+        if (n > slides.length) {
+            slideIndex = 1;
+        }
+        if (n < 1) {
+            slideIndex = slides.length;
+        }
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        slides[slideIndex - 1].style.display = "block";
+    }
+});
 </script>
 
+</html>

@@ -56,7 +56,7 @@
                             <?php
                             }else if(strstr($tour[$j],'.jpg') || strstr($tour[$j],'.png')){
                                 ?>
-                            <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg" id="slide<?php echo $j?>" alt="living room"/>
+                            <img src="Uploads/<?php echo $tour[$j]?>" class="previewImg slide" id="slide<?php echo $j?>" alt="living room"/>
                             <?php
                             } 
                         }

@@ -124,11 +124,12 @@
                         </select> 
                         <div class="others">  
                             <label>Select the accessible features available on this unit</label>     
-                            <select name="accessibility[]" multiple size="3"required>
+                            <select name="accessibility[]" id="accessibility" multiple size="3" required>
                                 <option value="ramp">Ramp</option>
                                 <option value="elevator">Elevator</option>
-                                <option value="single storey building">Single storey building </option>
+                                <option value="single storey building">Single storey building</option>
                             </select>
+
                         </div>
                         <button class="btn lg logIn" type="submit" name="next2-1">Next</button>
                 </form>
@@ -204,7 +205,7 @@
                     </div>
                     <div class="others">
                         <label>Select the accessible features available on this unit</label>
-                        <select name="accessibility[]" multiple required size="3">
+                        <select name="accessibility[]" id="accessibility"multiple required size="3">
                             <?php
                             echo (implode(' ',  $_SESSION['accessibility']));
                                 $selectedAccessibility = $_SESSION['accessibility'];
@@ -331,6 +332,7 @@
                     <input type="file" id="prevTour2" name="virtualTour[]"  multiple accept=".jpg, .jpeg, .mp4, .png " />
                     </div>
                 </div>
+                
                     <button class="btn lg logIn" type="submit" name="preview">Preview</button>
             </form>
             <?php
@@ -394,7 +396,7 @@
                     </div>
                     <div class="others">
                         <label>Select the accessible features available on this unit</label>
-                        <select name="accessibility[]" multiple required size="3">
+                        <select name="accessibility[]" id="accessibility"multiple required size="3">
                             <?php
                             echo (implode(' ',  $_SESSION['accessibility']));
                                 $selectedAccessibility = $_SESSION['accessibility'];
@@ -576,7 +578,7 @@
                     </div>
                     <div class="others">
                         <label>Select the accessible features available on this unit</label>
-                        <select name="accessibility[]" multiple required size="3">
+                        <select name="accessibility[]" id="accessibility"multiple required size="3">
                             <?php
                                 $selectedAccessibility =explode('*',  $result['accessibility']);
                                 $availableAccessibility = array(
@@ -706,6 +708,7 @@
                             <input type="file" id="prevTour2" name="virtualTour[]"  multiple accept=".jpg, .jpeg, .mp4, .png " />
                             </div>
                         </div>
+                        
                     <input type="hidden" name="editUpload" value="<?php echo $_GET['id']?>"/>
                     <button class="btn lg logIn" type="submit" name="preview">Preview</button>
                 </form>
@@ -725,7 +728,27 @@ const closeMenu = () =>{
     document.getElementById('menuBars').style.display = 'block';
     document.getElementById('menu').style.display = 'none';
 }
-document.getElementById("saleOpt").onclick = () =>{
-    document.getElementById('payPlan').style.display = 'block';
-}
+// document.getElementById("saleOpt").onclick = () =>{
+//     document.getElementById('payPlan').style.display = 'block';
+// }
+
+// Get the multi-select dropdown
+// const accessibility = document.getElementById('accessibility');
+// accessibility.value = []; // Initialize as an empty array
+
+// // Function to update the selected options array
+// function updateAccessibilityValue() {
+//     const selectedOptions = Array.from(accessibility.selectedOptions).map((option) => option.value);
+//     // Set the value of the accessibility array to the selected options array
+//     accessibility.value = selectedOptions; // Assign the array directly
+//     console.log(accessibility.value);
+// }
+
+// // Add a change event listener to the select element
+// accessibility.addEventListener('change', () => {
+//     // Call the function to update the selected options array
+//     updateAccessibilityValue();
+// });
+
+
  </script>
