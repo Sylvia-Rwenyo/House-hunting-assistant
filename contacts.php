@@ -13,7 +13,7 @@
 </head>
 <body class="contacts">
     <div class="header">
-        <h6>HOUSE HUNTING SITE</h6>
+        <h6>View Nyumba</h6>
     </div>
                 <span class="menuBar" id="menuBars" onClick=showMenu() ><FaBars/></span>
                 <?php

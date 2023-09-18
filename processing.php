@@ -113,7 +113,7 @@ function login($conn){
           $loginStatus = $_SESSION["loggedIN"];
           if($_SESSION['category'] == 'looking'){
               echo ' <script> 
-          window.location.href = "listing.php"
+          window.location.href = "index.php"
           </script>
           '; 
           }else if($_SESSION['category'] == 'showing'){
@@ -213,7 +213,7 @@ if(isset($_GET['action'])){
             </script>';
          }else{
          echo ' <script> 
-            window.location.href = "addUnit.php?&a=3" ;
+            window.location.href = "addUnit.php?a=3" ;
             </script>';
         }
     }if(isset($_POST['next2']))
@@ -240,7 +240,7 @@ if(isset($_GET['action'])){
             </script>';
         }else{
          echo ' <script> 
-            window.location.href = "addUnit.php?&a=9" ;
+            window.location.href = "addUnit.php?a=9" ;
             </script>';
         }
     }

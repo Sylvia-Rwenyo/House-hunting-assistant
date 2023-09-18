@@ -2,10 +2,10 @@
     include_once 'conn.php';
     session_start();
     $user = $_SESSION["username"];
-    if($_SESSION["loggedIN"] == false){
+    if(!isset($_SESSION["loggedIN"])){
         echo ' <script> 
-        window.location.href = "index.php";
-        </script>';
+        window.location.href = "index.php?action=logIn"
+                </script>';
         }else{
             ?>
 <!DOCTYPE html>
@@ -24,7 +24,7 @@
 </head>
 <body class="Listings" id="listingsChatPage">
     <div class="header">
-        <h1>Active Listings</h1>
+        <h1>Listing Chat</h1>
         <span class="menuBar" id="menuBars" onClick="showMenu()"><i class="fa-solid fa-bars"></i></span>
         <?php
             include_once 'menu.php';
@@ -330,9 +330,19 @@
                 $timestamp = strtotime($row['time']);
                 // Format the time to display without seconds
                 $formattedTime = date("H:i", $timestamp);
+                 // Your input date
+
+            // // Convert the input date to a DateTime object
+            // $dateObj = DateTime::createFromFormat('d M ', $date);
+
+            // // Format the date as "d M Y"
+            // $formattedDate = $dateObj->format('d M Y');
+
+            // echo $formattedDate; // Output: 18 Sep 2023
+
     
                 // Get the date of the current message
-                $date = date("j M Y", $timestamp);
+                $date = date("j M ", $timestamp);
     
                 // Check if the current message's date is different from the previous message's date
                 if ($date !== $prevDate) {

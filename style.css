@@ -38,7 +38,11 @@
     font-size: 4em;
     width: 80%;
 }
-.homePage .buttons button, .homePage form button, .addUnit a button,  #forum .logIn,  .admin .logIn{
+.homePage form a{
+    text-decoration: none;
+    color: white;
+}
+.homePage .buttons button, .homePage form .btn, .addUnit a button,  #forum .logIn,  .admin .logIn{
     width: 6em;
     height: 2.5em;
     /* border-radius: 5px; */
@@ -46,13 +50,24 @@
     margin-right: 5%;
     font-size: 1em;
 }
-.homePage .buttons .logIn, .homePage form button, #forum .logIn,  .admin .logIn{
+.homePage .buttons .logIn, .homePage form .btn, #forum .logIn,  .admin .logIn{
     background-color: #83a46f;
     color: white;
 }
 .homePage .buttons .signUp{
     background-color: #e7e1dd;
     color: #a69a8b;
+}
+.homePage #regForm, .homePage #logInForm{
+    position: fixed;
+    width: 60%; 
+    margin-top: 5%;
+    margin-left: 20%;
+    z-index: 999;
+    background-color: white;
+    height: auto;
+    padding-bottom: 2.5%;
+    /* opacity: 0.8;  */
 }
 
 .homePage .mainCTA, .homePage .mainCTA2{
@@ -64,16 +79,21 @@
 .homePage .mainCTA h4, .homePage .mainCTA2 h4{
     margin-left: 2.5%;
 }
-@keyframes slide-in {
-    0% {
-      opacity: 0;
-      transform: translateX(0);
-    }
-    100% {
-      opacity: 1;
-      transform: translateX(2.5%);
-    }
-  }
+.pop-up {
+    display: none;
+    position: absolute;
+    background-color: rgba(51, 51, 51, 0.75);
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    width: 200px;
+    height: fit-content;
+    top: 75%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
 .homePage .mainCTA a{
     text-decoration: none;
     color: white;
@@ -82,10 +102,9 @@
 .registerForm{
     margin-top: 2.5%;
     width: 100%;
-    background-color: #ede9e2;
-    opacity: 0.8;
+    background: transparent;
     color: black;
-    height: 70%;
+    height: fit-content;
     border-radius: 5px;
     padding: 1em;
 }
@@ -124,9 +143,8 @@
     background: transparent;
     border: none;
     border-bottom: 2px solid black;
-    width: 85%;
-    margin-left: 5%;
-    margin-right: 5%;
+    width: 70%;
+    margin-left: 10%;
     text-align: center;
 }
 .loginPswd input[type="text"], .loginPswd input[type="password"]{
@@ -144,7 +162,8 @@
     display: flex;
     flex-direction: row;
     padding:0;
-    width: 90%;
+    width: 76.5%;
+    margin-left: 10%;
     margin-bottom: 3em;
 }
 
@@ -161,16 +180,63 @@
     margin-left: 40%;
     margin-top: 0.25em;
     color: black;
+    display: inline-block;
+    cursor: pointer;
 }
-.homePage form button{
+.homePage form .btn
+{
     border-radius: 0;
-    margin-top: 5%;
+    margin-top: 2.5%;
     margin-left: 40%;
     width: 10em;
+}
+.homePage form a{
+    padding: 0.5em;
 }
 .homePage .mainCTA2{
     margin-left: 20%;
 }
+.homePage span .fa-solid{
+    color: black;
+    float: right;
+    margin-top: 2.5%;
+    margin-right: 2.5%;
+    font-size: 1.25em;
+}
+
+
+#signUpOption {
+    position: relative;
+    display: inline-block;
+    padding: 0 10px; /* Adjust padding to control the spacing between text and lines */
+    color: #000;
+    width: 15%;
+    margin-left: 42.5%;
+    margin-top: 2.5%;
+    text-align: center;
+    background-color: #fff; /* Adjust the background color of the text container */
+    z-index: 1; /* Ensure the text is above the lines */
+    
+}
+
+#signUpOption span{
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 30%; /* Adjust the width of the lines as needed */
+    height: 1px; /* Adjust the height of the lines */
+    background-color: #000; /* Adjust the line color */
+}
+
+#signUpOption::before {
+    left: 0;
+}
+
+#signUpOption::after {
+    right: 0;
+}
+
+
 
 .addUnit, .Listings, .profileBody{
     background-color: rgb(237, 233, 227);
@@ -331,6 +397,7 @@ width: 90%;
 .filterSection{
     position: fixed;
     margin-right: 85%;
+    margin-top: 3.5%;
 }
 
  .filterSection #openFilters2{
@@ -339,7 +406,7 @@ width: 90%;
     margin-right: 5%;
     background: transparent;
     border: none;
-    margin-top:20%;
+    margin-top:3.5%;
     padding: 0.25em;
     display: flex;
     flex-direction: row;
@@ -351,7 +418,7 @@ width: 90%;
 }
  #openFilters{
    font-size: 1.15em;
-   top: 20;
+   margin-top: 15%;
 }
 .filterSection #openFilters2{
     display: none;
@@ -439,7 +506,7 @@ width: 90%;
     justify-content: space-evenly;
     background-color: #ede9e2;
     color: #323232;
-    font-size: 1.1em;
+    font-size: 1.25em;
     position: fixed;
     margin-left: 80%;
     width: 30%;
@@ -693,16 +760,17 @@ li{
     font-size: 1.5em;
 }
 .paymentArea{
-    width: 65%;
-    height: 63vh;
+    width: 70%;
+    height:fit-content;
     border: 2px solid black;
     padding: 5%;
-    margin-left: 15%;
+    margin-left: 10%;
+    margin-right: 15%;
     margin-top: 2%;
 }
 .paymentForm{
     width: 70%;
-    margin-left: 15%;
+    margin-left: 10%;
 }
 .paymentForm input, .paymentForm #credits-pswd{
     width: 100%;
@@ -1796,6 +1864,142 @@ height: 60%;
 }
 
 .payArea .creditMsg{
-    margin-left: 15%;
+    margin-left: 10%;
     width: 70%;
+}
+
+@media screen and (max-width: 1100px){
+    .switchMode .btn{
+       font-size: 0.6em;
+       
+    }
+    .cards{
+        display: grid;
+        grid-template-columns: auto;
+        width: 85%;
+        margin-left: 7.5%;
+        background-color: white;
+        padding-left: 2.5%;
+        padding-top: 1.5%;
+        margin-top: 5%;
+        /* row-gap: 3%; */
+        height: 100%;
+    }
+    .search {
+        width: 40%;
+    }
+}
+@media screen and (max-width: 900px){
+    .switchMode{
+        width: 15%;
+       
+    }
+    #listingsChat .cards{
+        display: none;
+    }
+    #listingsChat .message, .creditMsg{
+        width: 90%;
+        margin-left: 5%;
+    }
+    #listingsChat .message{
+       
+        margin-top: 5%;
+    }
+    /* #signUpOption {
+        margin-left: 45%;
+    } */
+    .homePage form .btn{
+        margin-left: 35%;
+    }
+}
+@media screen and (max-width: 750px){
+    .switchMode{
+        width: 17.5%;
+       
+    }
+    
+    .search form{
+        width: 100%;
+    }
+    .search form input{
+        width: 80%;
+    }
+    .addUnitForm{
+        width: 80%;
+        margin-left: 10%;
+    }
+    /* #signUpOption {
+        margin-left: 47.5%;
+    } */
+    .homePage form .btn{
+        margin-left: 30%;
+    }
+    .homePage form input[type="text"]{
+        width: 60%;
+        margin-left: 5%;
+    }
+    .loginPswd{
+        margin-left: 5%;
+        margin-bottom: 1.5em;
+    }
+    .homePage form .category{
+        
+        margin-left: 7.5%;
+        margin-right: 15%;
+        margin-top: 1.5%;
+    }
+    #passwordChecker{
+        margin-left: 0;
+        grid-template-columns: auto;
+    }
+
+    
+}
+@media screen and (max-width: 600px){
+    .switchMode{
+        width: 20%;
+       
+    }
+    .message .chat .typingArea textarea{
+        width: 70%;
+}
+.addUnitForm form button{
+    margin-left: 70%;
+}
+.homePage form .btn{
+    margin-left: 25%;
+}
+   
+}
+@media screen and (max-width: 500px){
+    .switchMode{
+        width: 25%;
+       
+    }
+    #bill{
+        width: 35%;
+        margin-left: 60%;
+    }
+    .message .chat .top div {
+        margin-left: 25%;
+    }
+    .addUnitForm form button{
+        margin-left: 60%;
+    }
+    .homePage form .btn{
+        margin-left: 20%;
+    }
+}
+@media screen and (max-width: 400px){
+    .switchMode{
+        width: 25%;
+       
+    }
+    .search form input{
+        width: 60%;
+    }
+    .homePage form .btn{
+        margin-left: 15%;
+    }
+    
 }

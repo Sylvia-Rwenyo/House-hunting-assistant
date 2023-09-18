@@ -14,7 +14,7 @@
 </head>
 <body class="Listings">
     <div class="header">
-        <h1>Active Listings</h1>
+        <h1>Top Up</h1>
         <span class="menuBar" id="menuBars" onClick="showMenu()"><i class="fa-solid fa-bars"></i></span>
         <?php
             include_once 'menu.php';

@@ -1,9 +1,9 @@
 <?php 
     include_once 'conn.php';
     session_start();
-    if(!isset($_SESSION["loggedIN"]) || $_SESSION["loggedIN"] == false){
+    if(!isset($_SESSION["loggedIN"])){
         echo ' <script> 
-        window.location.href = "index.php";
+        window.location.href = "index.php?action=logIn";
         </script>';
         }else{
         $user = $_SESSION["username"];

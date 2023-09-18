@@ -21,7 +21,7 @@ $inView = 0;
 </head>
 <body class="Listings" id="forum">
     <div class="header" id="listing-header">
-        <h1>Active Listings</h1>
+        <h1>Forum</h1>
         <div class="search" id="listing-search">
             <form id="searchForm" method="POST">
                 <input name="searchQ" type="text"/>

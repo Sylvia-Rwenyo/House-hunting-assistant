@@ -58,7 +58,7 @@
                             <option value="mortgage">Mortgage</option>
                             <option value="opt2">Opt 2</option>
                         </select>
-                        <input type="hidden" value='<?php echo $_SESSION['userID']?>'   name="userID" />
+                        <input type="hidden" value='<?php echo $_SESSION['id']?>'   name="userID" />
                         <input type="text" placeholder="Cost"   name="cost" required/>
                         <input type="text" placeholder="location"  name="location" required/>
                         <input type="text" placeholder="Size in sqft"  name="size" required/>
@@ -124,7 +124,7 @@
                         </select> 
                         <div class="others">  
                             <label>Select the accessible features available on this unit</label>     
-                            <select name="accessibility[]" multiple required>
+                            <select name="accessibility[]" multiple size="3"required>
                                 <option value="ramp">Ramp</option>
                                 <option value="elevator">Elevator</option>
                                 <option value="single storey building">Single storey building </option>
@@ -147,7 +147,7 @@
                     <a href="addUnit.php?a=5">Back</a>
                     <div class="others">  
                         <label>Select the available amenities</label>
-                        <select name="amenities[]" multiple required>
+                        <select name="amenities[]" multiple required size="8">
                             <option value="Running water">Running water</option>
                             <option value="Gym">Gym </option>
                             <option value="Storage area">Storage Area </option>
@@ -160,7 +160,7 @@
                     </div>
                     <div class="others"> 
                         <label>Select other perks</label> 
-                        <select name="others[]" multiple required>
+                        <select name="others[]" multiple required size="4">
                             <option value="fireplace">Fireplace</option>
                             <option value="pets allowed">Pets allowed</option>
                             <option value="Swimming pool">Swimming pool</option>
@@ -204,7 +204,7 @@
                     </div>
                     <div class="others">
                         <label>Select the accessible features available on this unit</label>
-                        <select name="accessibility[]" multiple required>
+                        <select name="accessibility[]" multiple required size="3">
                             <?php
                             echo (implode(' ',  $_SESSION['accessibility']));
                                 $selectedAccessibility = $_SESSION['accessibility'];
@@ -240,7 +240,7 @@
                 <a href="addUnit.php?a=5">Back</a>
                     <div class="others">
                         <label>Select the available amenities</label>
-                        <select name="amenities[]" multiple required>
+                        <select name="amenities[]" multiple required size="8">
                             <?php
                                 $selectedAmenities = $_SESSION['amenities'];
                                 $availableAmenities = array(
@@ -263,7 +263,7 @@
                     </div>
                     <div class="others">
                         <label>Select other perks</label>
-                        <select name="others[]" multiple required>
+                        <select name="others[]" multiple required size="8">
                             <?php
                                 $selectedPerks = $_SESSION['others'];
                                 $availablePerks = array(
@@ -394,7 +394,7 @@
                     </div>
                     <div class="others">
                         <label>Select the accessible features available on this unit</label>
-                        <select name="accessibility[]" multiple required>
+                        <select name="accessibility[]" multiple required size="3">
                             <?php
                             echo (implode(' ',  $_SESSION['accessibility']));
                                 $selectedAccessibility = $_SESSION['accessibility'];
@@ -422,7 +422,7 @@
                 <a href="addUnit.php?action=edit&a=2">Back</a>
                     <div class="others">
                         <label>Select the available amenities</label>
-                        <select name="amenities[]" multiple required>
+                        <select name="amenities[]" multiple required size="8">
                             <?php
                                 $selectedAmenities = $_SESSION['amenities'];
                                 $availableAmenities = array(
@@ -445,7 +445,7 @@
                     </div>
                     <div class="others">
                         <label>Select other perks</label>
-                        <select name="others[]" multiple required>
+                        <select name="others[]" multiple required size="4">
                             <?php
                                 $selectedPerks = $_SESSION['others'];
                                 $availablePerks = array(
@@ -576,7 +576,7 @@
                     </div>
                     <div class="others">
                         <label>Select the accessible features available on this unit</label>
-                        <select name="accessibility[]" multiple required>
+                        <select name="accessibility[]" multiple required size="3">
                             <?php
                                 $selectedAccessibility =explode('*',  $result['accessibility']);
                                 $availableAccessibility = array(
@@ -609,7 +609,7 @@
                 <a href="addUnit.php?action=editUpload&id=<?php echo $_GET['id']?>&a=2">Back</a>
                     <div class="others">
                         <label>Select the available amenities</label>
-                        <select name="amenities[]" multiple required>
+                        <select name="amenities[]" multiple required size="8">
                             <?php
                                 $selectedAmenities = explode('*', $result['amenities']);
                                 $availableAmenities = array(
@@ -632,7 +632,7 @@
                     </div>
                     <div class="others">
                         <label>Select other perks</label>
-                        <select name="others[]" multiple required>
+                        <select name="others[]" multiple required size="4">
                             <?php
                                 $selectedPerks = explode('*',$result['others']);
                                 $availablePerks = array(

@@ -10,7 +10,7 @@ if (session_status() === PHP_SESSION_NONE) {
 // Check if the user is logged in
 if (!isset($_SESSION["loggedIN"]) || $_SESSION["loggedIN"] !== true) {
     echo '<script> 
-        window.location.href = "index.php";
+        window.location.href = "index.php?action=logIn";
         </script>';
     exit; // Add an exit statement after the redirect
 }
@@ -49,12 +49,12 @@ const showDetails = (id) =>{
 </script> 
     <div class="header">
         <h1>Profile</h1>
-        <div class="search">
-            <form id="searchForm" action="listing.php" method="POST">
+        <!-- <div class="search">
+            <form id="searchForm" action="userProfile.php" method="POST">
                 <input name="searchQ" type="text"/>
                 <button type="submit" name="search"><i class="fa-solid fa-search"></i></button>
             </form>
-         </div> 
+         </div>  -->
         <?php
         if (isset($_GET['mode'])) {
             if ($_GET['mode'] == "showing") {
@@ -69,7 +69,10 @@ const showDetails = (id) =>{
             .showing{background-color: rgba(98, 150, 67, 0.3);}
             </style>';
         }
-        if ($_SESSION['category'] == 'showing' && !stristr( $_SESSION['email'], '@admin.com')){
+        if($_SESSION['category'] == 'showing'){
+            $_SESSION['default'] = 1;
+        }
+        if (($_SESSION['category'] == 'showing' || isset($_SESSION['default'])) && !stristr( $_SESSION['email'], '@admin.com')){
 
         ?>
 
@@ -459,9 +462,9 @@ const showDetails = (id) =>{
                 <?php
                 }else{
                         ?>
-            <div class="list" id="list">
+            <div class="list" id="list" style="height: auto;">
             <h4>Your hunt history is empty</h4>
-            <a href="listing.php">
+            <a href="index.php">
                 See new listings here <i class="fa fa-arrow-right"></i>
             </a>
         </div>
