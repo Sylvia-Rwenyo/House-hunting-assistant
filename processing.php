@@ -43,7 +43,7 @@ if(isset($_POST['signUp']))
 		echo "Error: " . $sql . " " . mysqli_error($conn);
 	 }
         //close connection
-        mysqli_close($conn);
+        // mysqli_close($conn);
 
     }
 if(isset($_POST['editProfile']))
@@ -76,14 +76,14 @@ if(isset($_POST['editProfile']))
         $_SESSION["username"]=$name;
         $_SESSION["mail"]=$emailAddress;
         echo ' <script> 
-        window.location.href = "userProfile.php";
+        window.location.href = "profile.php";
         </script>
         ';
     } else {	
     echo "Error: " . $sql . "
 " . mysqli_error($conn);
     }
-    mysqli_close($conn);
+    // mysqli_close($conn);
 }
 if(isset($_POST['logIn']))
 {
@@ -118,7 +118,7 @@ function login($conn){
           '; 
           }else if($_SESSION['category'] == 'showing'){
               echo ' <script> 
-          window.location.href = "userProfile.php"
+          window.location.href = "posts.php"
           </script>
           '; 
           }
@@ -216,16 +216,19 @@ if(isset($_GET['action'])){
             window.location.href = "addUnit.php?a=3" ;
             </script>';
         }
-    }if(isset($_POST['next2']))
+    }
+    if(isset($_POST['next2']))
     {	 
         session_start();
         unset($_SESSION["others"]);
         unset($_SESSION["amenities"]);
         for($i=0; $i < count($_POST['amenities']); $i++){
         $_SESSION['amenities'][] = $_POST['amenities'][$i];
+
             }
          for($i=0; $i < count($_POST['others']); $i++){
         $_SESSION['others'][] = $_POST['others'][$i];
+
          }
          $_SESSION["next2"] = true;
 
@@ -244,57 +247,7 @@ if(isset($_GET['action'])){
             </script>';
         }
     }
-   
-    if(isset($_POST['preview']))
-{	 
-    session_start();
-    if(!isset($_SESSION['virtualTour'])){
-        $_SESSION['virtualTour'];
-   
-    $files = array_filter($_FILES['virtualTour']['name']);
-        //count the no of uploaded files
-    $fileCount = count($_FILES['virtualTour']['name']);
-    for($i=0; $i < $fileCount; $i++){
-        //obtain temp file
-        $tmpFilePath = $_FILES['virtualTour']['tmp_name'][$i];
-        //make sure a file is present
-        if($tmpFilePath != ""){
-            //set up new file path
-            $newFilePath = "Uploads/".$_FILES['virtualTour']['name'][$i];
-            $_SESSION['virtualTour'][] = $_FILES['virtualTour']['name'][$i];
-            //upload file to temp dir
-            move_uploaded_file($tmpFilePath, $newFilePath);
-        }
-    }
-    }else{
-        $files = array_filter($_FILES['virtualTour']['name']);
-        //count the no of uploaded files
-    $fileCount = count($_FILES['virtualTour']['name']);
-    for($i=0; $i < $fileCount; $i++){
-        //obtain temp file
-        $tmpFilePath = $_FILES['virtualTour']['tmp_name'][$i];
-        //make sure a file is present
-        if($tmpFilePath != ""){
-            //set up new file path
-            $newFilePath = "Uploads/".$_FILES['virtualTour']['name'][$i];
-            $_SESSION['virtualTour'][] = $_FILES['virtualTour']['name'][$i];
-            //upload file to temp dir
-            move_uploaded_file($tmpFilePath, $newFilePath);
-        }
-    }
-    }
-    if(isset($_POST['editUpload'])){
-        echo ' <script> 
-        window.location.href = "preview.php?state=edited&id='. $_POST['editUpload'].'" ;
-        </script>';
-    }else{
-     echo ' <script> 
-        window.location.href = "preview.php" ;
-        </script>';
-    }
-
-}
-
+    
 if(isset($_GET['action'])){
     // log out if the user selects "Log Out" on the menu bar
         if($_GET['action']== "logOut"){
@@ -322,17 +275,17 @@ if(isset($_GET['action'])){
                 echo "Error: " . $sql . "
         " . mysqli_error($conn);
              }
-             mysqli_close($conn);
+            //  mysqli_close($conn);
         }
-        if ($_GET['action'] == "deleteUpload") {
+        if ($_GET['action'] == "archiveUpload") {
             $id = $_GET['id'];
         
-            $stmt = $conn->prepare("DELETE FROM units WHERE id = ?");
+            $stmt = $conn->prepare("UPDATE units SET archived = true WHERE id = ?");
             $stmt->bind_param("i", $id);
         
             if ($stmt->execute()) {
                 echo '<script>
-                         window.location.href = "userProfile.php";
+                         window.location.href = "posts.php";
                       </script>';
             } else {
                 echo "Error: " . $stmt->error;
@@ -340,8 +293,9 @@ if(isset($_GET['action'])){
         
             $stmt->close();
             $conn->close();
-        }
-        
+        } 
+
+
         if($_GET['action']== "uploadUnit"){
             session_start();
             $cost = $_SESSION["cost"];
@@ -351,7 +305,34 @@ if(isset($_GET['action'])){
             $accessibility = implode('*', $_SESSION["accessibility"]);
             $amenities = implode("*", $_SESSION['amenities']);
             $others = implode('*', $_SESSION["others"]);
-            $virtualTour = implode("*", $_SESSION['virtualTour']);
+
+            $previewFolder = 'Preview'; // Folder containing the files to be moved
+            $uploadsFolder = 'Uploads'; // Destination folder
+
+            // Get a list of files in the preview folder
+            $files = scandir($previewFolder);
+
+            // Initialize an array to store file names
+            $fileNames = [];
+
+            // Loop through the files
+            foreach ($files as $file) {
+                // Check if the file is a regular file (not a directory)
+                if (is_file($previewFolder . '/' . $file)) {
+                    // Create the full path to the source and destination files
+                    $sourcePath = $previewFolder . '/' . $file;
+                    $destinationPath = $uploadsFolder . '/' . $file;
+
+                    // Move the file to the uploads folder
+                    if (rename($sourcePath, $destinationPath)) {
+                        // Add the file name to the array
+                        $fileNames[] = $file;
+                    } 
+                }
+            }
+
+            // Convert the array of file names to a delimited string
+            $virtualTour = implode('*', $fileNames);
             $size = $_SESSION["size"];
             $userID = $_SESSION['id'];
             $bedroomNo = $_SESSION["bedroomNo"];
@@ -367,14 +348,13 @@ if(isset($_GET['action'])){
                 unset($_SESSION["size"]);
                 unset($_SESSION["bedroomNo"]);
                 unset($_SESSION["location"]);
-                unset($_SESSION["virtualTour"]);
                 unset($_SESSION["others"]);
                 unset($_SESSION["condition"]);
                 unset($_SESSION["bathroomNo"]);
                 unset($_SESSION["amenities"]);
                 unset($_SESSION["accessibility"]);
                 echo ' <script> 
-        window.location.href = "userProfile.php";
+        window.location.href = "posts.php";
         </script>
         '; 
                     } else {	
@@ -382,7 +362,7 @@ if(isset($_GET['action'])){
                 echo "Error: " . $sql . " " . mysqli_error($conn);
             }
             //close connection
-            mysqli_close($conn);
+            // mysqli_close($conn);
 
         }
         if($_GET['action']== "editUnit"){
@@ -394,12 +374,24 @@ if(isset($_GET['action'])){
             $accessibility = implode('*', $_SESSION["accessibility"]);
             $amenities = implode("*", $_SESSION['amenities']);
             $others = implode('*', $_SESSION["others"]);
-            $virtualTour = implode("*", $_SESSION['virtualTour']);
+            $id = $_GET['id'];
+
+            $uploadsFolder = 'Uploads'; // Path to the "uploads" folder
+            $files = scandir($uploadsFolder);
+
+            $unitFiles = array();
+            foreach ($files as $file) {
+                if (strpos($file, $id) !== false) {
+                    $unitFiles[] = $file;
+                }
+            }
+
+            // $filenamesWith27 now contains an array of filenames with '27' in their name
+            $virtualTour = implode("*", $unitFiles);
             $size = $_SESSION["size"];
             $userID = $_SESSION['id'];
             $bedroomNo = $_SESSION["bedroomNo"];
             $bathroomNo = $_SESSION["bathroomNo"];
-            $id = $_GET['id'];
             //    statement to enter values into the registration table in the database
             $sql = "UPDATE units SET cost = '$cost', size = '$size', bedroomNo = '$bedroomNo',bathroomNo = '$bathroomNo', category = '$category', location = '$location',
                                              virtualTour = '$virtualTour', others = '$others', accessibility = '$accessibility', unitCondition = '$condition',
@@ -419,15 +411,15 @@ if(isset($_GET['action'])){
                 unset($_SESSION["amenities"]);
                 unset($_SESSION["accessibility"]);
                 echo ' <script> 
-        window.location.href = "userProfile.php";
-        </script>
-        '; 
+                        window.location.href = "posts.php";
+                    </script>
+                    '; 
                     } else {	
                         //show error
                 echo "Error: " . $sql . " " . mysqli_error($conn);
             }
             //close connection
-            mysqli_close($conn);
+            // mysqli_close($conn);
 
         }
         }
@@ -453,7 +445,7 @@ if(isset($_GET['action'])){
         " . mysqli_error($conn);
             }
             //close connection
-            mysqli_close($conn);
+            // mysqli_close($conn);
         }
         function assignReceipient($conn){
             // Retrieve the list of emails
@@ -624,7 +616,7 @@ if(isset($_POST['postToForum']))
 		echo "Error: " . $sql . " " . mysqli_error($conn);
 	 }
         //close connection
-        mysqli_close($conn);
+        // mysqli_close($conn);
 
     }
 
@@ -642,7 +634,7 @@ if(isset($_POST['editFQ']))
 	 if (mysqli_query($conn, $sql)) {
             echo'
                 <script>
-                    window.location.href = "userProfile.php";
+                    window.location.href = "posts.php";
                 </script>
             ';
 		} else {	
@@ -650,7 +642,7 @@ if(isset($_POST['editFQ']))
 		echo "Error: " . $sql . " " . mysqli_error($conn);
 	 }
         //close connection
-        mysqli_close($conn);
+        // mysqli_close($conn);
 
     }
     if (isset($_POST['answerFQ'])) {
@@ -668,7 +660,7 @@ if(isset($_POST['editFQ']))
             // Execute the prepared statement
             if ($stmt->execute()) {
                 // Redirect to another page upon successful insertion
-                header("Location: userProfile.php");
+                header("Location: posts.php");
                 exit();
             } else {
                 // Show an error message
@@ -683,14 +675,14 @@ if(isset($_POST['editFQ']))
         }
     
         // Close the database connection
-        mysqli_close($conn);
+        // mysqli_close($conn);
     }
     
     if(isset($_POST['cancelFQ']))
     {	
                 echo'
                     <script>
-                        window.location.href = "userProfile.php";
+                        window.location.href = "profile.php";
                     </script>
                 ';
     

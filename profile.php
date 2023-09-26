@@ -25,11 +25,40 @@
     </head>
     <body class="profileBody" id="editProfileSection">
         <div class="header">
-            <h1><?php 
-            echo ucwords($user);
-            ?></h1>
-        <div class="search">
-            </div> 
+            <h1>Profile</h1>
+        <?php
+        if (isset($_GET['mode'])) {
+            if ($_GET['mode'] == "showing") {
+                $_SESSION['category'] = 'showing';
+            } else if ($_GET['mode'] == "viewing") {
+                $_SESSION['category'] = 'looking';
+            }
+        }
+        if ($_SESSION['category'] == 'looking') {
+            echo '<style>
+            .viewing{background-color: rgb(98, 150, 67);}
+            .showing{background-color: rgba(98, 150, 67, 0.3);}
+            </style>';
+        }else{
+            echo '<style>
+            .showing{background-color: rgb(98, 150, 67);}
+            .viewing{background-color: rgba(98, 150, 67, 0.3);}
+            </style>';
+        }
+        if($_SESSION['category'] == 'showing'){
+            $_SESSION['default'] = 1;
+        }
+        if (($_SESSION['category'] == 'showing' || isset($_SESSION['default'])) && !stristr( $_SESSION['email'], '@admin.com')){
+
+        ?>
+
+        <div class="switchMode">
+            <a href="profile.php?mode=showing" class="showing"><button class="btn">Show</button></a>
+            <a href="profile.php?mode=viewing" class="viewing"><button class="btn">View</button></a>
+        </div>
+        <?php
+        }
+        ?>
             <span class="menuBar" id="menuBars" onClick="showMenu()"><i class="fa-solid fa-bars"></i></span>
             <?php
             include_once 'menu.php';
@@ -60,12 +89,12 @@
                 <p><a href='mailto:<?php echo $result['emailAddress']?>'><i class="fa-solid fa-envelope"></i>&nbsp;&nbsp;&nbsp;<?php echo $result['emailAddress']?></a></p>
                 <p><a href='tel:<?php if($result['phoneNumber'] == 0){
                     echo '';} else{ echo $result['phoneNumber'];}?>'>
-                    <i class="fa-solid fa-phone"></i>&nbsp;&nbsp;&nbsp;
+                    <i class="fa-solid fa-phone"></i>&nbsp;&nbsp;&nbsp;Add your phone number
                     <?php if($result['phoneNumber'] == 0){
                      echo 'Add phone number';} else{ echo $result['phoneNumber'];}
                      $i++;
                      }}?></a></p>
-                <p onclick="editProfile()"><i class="fa-solid fa-pencil"></i></p>
+                <p onclick="editProfile()"><i class="fa-solid fa-pencil"></i>&nbsp;&nbsp;&nbsp;Edit</p>
             </div>
             </div>
                 <?php 
@@ -100,7 +129,7 @@
                         echo '<input type="text" placeholder="phoneNumber" name="phoneNumber" id="phoneNumber" />';
                     }else{
                         ?>
-                    <input type="number" name="phoneNumber" value="<?php echo $result['phoneNumber']; } $i++ ;}} ?>" />
+                    <input type="text" name="phoneNumber" placeholder="phoneNumber" value="<?php echo $result['phoneNumber']; } $i++ ;}} ?>" />
                     </div>
                     <div><input type="submit" class="btn editBtn"  name="editProfile" value="Update" /></a></div>
                 </div>
@@ -120,6 +149,15 @@
     </body>
     </html>
     <script>
+    const showMenu = () =>{
+    document.getElementById('menuBars').style.display = 'none';
+    document.getElementById('menu').style.display = 'block';
+    }
+    const closeMenu = () =>{
+        document.getElementById('menuBars').style.display = 'block';
+        document.getElementById('menu').style.display = 'none';
+    }
+
         var deleteQ = document.getElementById('deleteQ');
         var confirmDelete = document.getElementById('confirmDelete');
         deleteQ.style.display = "none";
@@ -142,11 +180,13 @@
         let pswd = document.getElementById("password");
         if(pswd.type == "text"){
             pswd.type = "password";
+            // pswd.style.border = '1px solid darkgray';
             showPswd.innerHTML = "Show";
         }else{
             pswd.type = "text";
             showPswd.textContent = "Hide";
             pswd.style.border = "none";
+            // pswd.style.border = '1px solid darkgray';
         }
     }
     let profilePhoto = document.getElementById('profilePhoto');
@@ -166,14 +206,6 @@
         phoneNo.onclick = () =>{
         phoneNo.type = "number";
     }
-    const showMenu = () =>{
-    document.getElementById('menuBars').style.display = 'none';
-    document.getElementById('menu').style.display = 'block';
-}
-const closeMenu = () =>{
-    document.getElementById('menuBars').style.display = 'block';
-    document.getElementById('menu').style.display = 'none';
-}
 
     </script>
     <?php

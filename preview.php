@@ -43,7 +43,7 @@
             if (strstr($item, '.mp4')) {
                 ?>
                 <video controls class="previewImg slide">
-                    <source src="Uploads/<?php echo $item; ?>" type="video/mp4">
+                    <source src="Preview/<?php echo $item; ?>" type="video/mp4">
                 </video>
                 <?php
             } elseif (strstr($item, '.jpg') || strstr($item, '.png')) {

@@ -58,7 +58,7 @@
     background-color: #e7e1dd;
     color: #a69a8b;
 }
-.homePage #regForm, .homePage #logInForm{
+.homePage form{
     position: fixed;
     width: 60%; 
     margin-top: 5%;
@@ -199,8 +199,8 @@
 .homePage span .fa-solid{
     color: black;
     float: right;
-    margin-top: 2.5%;
-    margin-right: 2.5%;
+    margin-top: 3.5%;
+    margin-right: 3.5%;
     font-size: 1.25em;
 }
 
@@ -290,12 +290,12 @@
     flex-direction: row;
     justify-content: space-evenly; */
 }
-.addUnit form{
+/* .addUnit form{
     height:45%;
     margin-right: 5% ;
     width:100%;
     padding: 1em;
-}
+} */
 .addUnit .search form input{
     margin: 0;
     padding: 0;
@@ -316,31 +316,72 @@
     flex-direction: column;
 }
 
-
-#virtualTour{
+  
+.select-prompt{
+    background-color: rgba(255, 255, 255, 0.75);
+    color: #000;
+}
+.virtualTour{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     width: 84%;
     margin-left: 7%;
     margin-right: 7%;
+    border-bottom: 2px solid white;
+    padding: 1em;
+    height: 7.5em;
 }
-#virtualTour .main{
+.virtualTour .main{
     display: grid;
-    grid-template-columns:33% 33% 33%;
+    grid-template-columns:25% 25% 25% 25%;
     grid-row-gap:5%;
-    width: 70%;
+    width: 85%;
 
 }
-#virtualTour input, #virtualTour .main div{
+.virtualTour input, .virtualTour .main div{
     width: 95%;
     border: none;
 }
-#virtualTour label{
-    width: 30%;
+.virtualTour label{
+    width: 15%;
     margin-block-start: 0;
     margin-block-end: 1em;
 }
+.single-file-input{  
+      /* padding: 0 0 0.5em 0; */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 7.5em;
+}
+.single-file-input i{
+    font-size: 1.5em;
+    margin-left: 42.5%;
+    margin-top: 17.5%;
+    margin-bottom: 22.5%;
+}
+.single-file-input span{
+    margin-top: 0.5em;
+    text-align: center;
+}
+.custom-file-input, .prevTour{
+    display: inline-block;
+    border: 1px solid #ccc;
+    /* padding: 8px 12px; */
+    cursor: pointer;
+    background-color: #f8f4f4;
+    color: #000;
+    border-radius: 5px;
+    height: 80%;
+    width: 100%;
+  }
+  
+  .custom-file-input input[type="file"] {
+    display: none; /* Hide the original file input */
+  }
+  
+
 .addUnit .card h4{
     font-size: 1.25em;
     text-align: center;
@@ -362,7 +403,7 @@
 }
 .search{
     width: 30%;
-    height: 2em;
+    height: 2.5em;
     background-color: white;
     border: 2px solid black;
     border-radius: 5px;
@@ -371,10 +412,10 @@
     flex-direction: row;
 }
 .search form{
-width: 90%;
+width: 100%;
 }
 .search input{
-    width: 92%;
+    width: 90%;
     height: 90%;
     background: transparent;
     border: none;
@@ -418,7 +459,8 @@ width: 90%;
 }
  #openFilters{
    font-size: 1.15em;
-   margin-top: 15%;
+   margin-top: 3.5%;
+   position: fixed;
 }
 .filterSection #openFilters2{
     display: none;
@@ -507,11 +549,10 @@ width: 90%;
     background-color: #ede9e2;
     color: #323232;
     font-size: 1.25em;
-    position: fixed;
-    margin-left: 80%;
-    width: 30%;
+    width: 10%;
     height: fit-content;
 }
+
 #menu{
     display: none;
 }
@@ -521,13 +562,16 @@ width: 90%;
     padding: 0.5em;
 }
 .menu ul{
+    position: fixed; 
     list-style-type: none;
     margin-right: 10%;
     padding: 0;
-    padding-left: 10%;
+    padding-left: 2.5%;
+    width: 100%;
     margin-top: 0;
-    height: 30%;
-
+    height: fit-content;
+    background-color: #ede9e2;
+    color: #323232;
 }
 .header .menu span{
     font-size: 1em;
@@ -599,11 +643,10 @@ li{
     width: 100%;
     height: 100%;
     font-size: 1em;
-    padding: 0.5em;
+    padding: 0.75em;
     border:none;
 }
 .filters .submit{
-    padding: 0;
     background-color: #83a46f;
     border:none;
 
@@ -1016,11 +1059,16 @@ li{
 .profileBody .details a, .cards a{
     text-decoration: none;
     color: black;
-    margin-top: 5%;
+    margin-top: 2.5%;
+}
+.fa-ellipsis-vertical{
+    margin-bottom: 0.5em;
 }
 .profileBody .uploads{
     margin-top: 5%;
-    margin-left: 10%;
+    width: 90%;
+    margin-left: 5%;
+    /* margin-left: 5%; */
 }
 .profileBody .header{
     color: black;
@@ -1087,16 +1135,39 @@ li{
 #closeCard{
     display: none;
 }
-.addUnitForm form button{
+.singleCard .card-actions{
+    display: grid;
+    grid-template-rows: 50% 50%;
+    background-color: white;
+    position: fixed;
+    top: 45%;
+    height: 3.5em;
+    padding-bottom: 1em;
+    float: right;
+    display: none;
+}
+.card-actions span{
+    padding: 0.5em;
+}
+.addUnitForm form .btn, .mediaForm .btn{
     width: 6em;
     height: 2em;
     background-color: #c89364;
+    text-decoration: none;
+    color: #000;
     float: right;
-    margin-left: 82.5%;
+    margin-left: 80%;
     margin-top: 5%;
     border: none;
     margin-right: 5%;
     font-size: 1em;
+    margin-bottom: 1em;
+}
+.mediaForm .btn{
+    text-align: center;
+    padding: 0.75em;
+    height: auto;
+    margin-bottom: 5%;
 }
 .addUnit, .Listings{
     background-color: #ede9e2;
@@ -1121,12 +1192,12 @@ li{
     flex-direction: column;
     justify-content: space-between; */
 }
-.addUnit form{
+/* .addUnit form{
     margin-right: 5% ;
     width: 45%;
     padding: 1em;
     font-size: 1.15em;
-}
+} */
 .addUnit form input, .addUnit form select{
     padding: 1.5em;
     height: 14.25%;
@@ -1142,6 +1213,10 @@ li{
 .addUnit form select{
     width: 84%;
 }
+.addUnitForm h5{
+    margin-top: 1em;
+    margin-left: 2em;
+}
 .others{
     margin-left: 7%;
     margin-right: 7%;
@@ -1151,6 +1226,15 @@ li{
     height: 14.25%;
     padding: 1.5em;
     border-bottom: 2px solid white;
+}
+.others div{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+.others div input{
+    width: 1em;
+    margin-right: 2.5%;
 }
 .addUnit form .others select{
     width: 100%;
@@ -1166,6 +1250,10 @@ li{
     background: white;
     color: #000000;
 }
+.addUnitForm .link-back{
+    padding-top: 1em;
+    padding-left: 1em;
+}
 
 .addUnitForm .mainAddForm .category{
     display: flex;
@@ -1176,8 +1264,9 @@ li{
     height: 14.25%;
     /* font-size: 1.25em; */
 }
-.addUnitForm input[type='radio']{
+.addUnitForm input[type='radio'], .addUnitForm input[type='checkbox']{
     height: 50%;
+    width: 1em;
 }
 .addUnitForm .card{
     width:100%;
@@ -1189,7 +1278,6 @@ li{
 }
 
 .addUnit form input[type='file']{
-    border: 2px soid white;
 }
 .addUnit .card h4{
     font-size: 1.25em;
@@ -1480,9 +1568,10 @@ height: 60%;
     display: grid;
     grid-template-columns: auto auto auto;
     width: 85%;
-    margin-left: 7.5%;
+    margin-left: 2.5%;
     background-color: white;
-    padding-left: 2.5%;
+    padding-left: 1%;
+    padding-right: 1%;
     padding-top: 1.5%;
     margin-top: 5%;
     /* row-gap: 3%; */
@@ -1494,9 +1583,8 @@ height: 60%;
 }
 #Listings .cards{
     width: 90%;
-    margin-left: 2%;
-    padding-right: 4%;
-    padding-left: 2.5%;
+    /* padding-right: 4%; */
+    /* padding-left: 2.5%; */
   
 }
 #listingsChat .cards{
@@ -1511,8 +1599,11 @@ height: 60%;
 }
 .cards .singleCard{
     width: 90%;
-    padding: 1.5em;
-    height: 50vh;
+    padding: 1em;
+    height: 57vh;
+}
+.cards .singleCard p{
+    margin-bottom: 0;
 }
 .cards .singleCard:hover{
    box-shadow: 0 2px 4px  0 darkgray;
@@ -1680,7 +1771,7 @@ height: 60%;
     display: flex;
     flex-direction: column;
     width: 90%;
-    margin-left: 5%;
+    margin-left: 7.5%;
 }
 .searchTitle{
     margin-left: 7.5%;
@@ -1824,15 +1915,16 @@ height: 60%;
     box-shadow:none;
 
 }
-#prevTour{
+/* .prevTour{
     width:95%;
-    height: 7.5em;
+    height: 8em;
     border-radius: 5px;
     border-color: rgb(240, 248, 255);
     background-blend-mode: multiply;
-}
+    background-position: center; background-size: cover;
+} */
 
-#section-two, #section-three, #section-one-back, #virtualTour .vt{
+#section-two, #section-three, #section-one-back, .virtualTour .vt{
     display: none;
 }
 #editUpload2 a, #editUpload1 a, #editUpload3 a, #section-two a, #section-three a, #section-two-one a{
@@ -1867,24 +1959,15 @@ height: 60%;
     margin-left: 10%;
     width: 70%;
 }
-
+.message .chat .chatBubble1 span, .message .chat .chatBubble2 span {
+    margin-left: 80%;
+}
 @media screen and (max-width: 1100px){
     .switchMode .btn{
        font-size: 0.6em;
        
     }
-    .cards{
-        display: grid;
-        grid-template-columns: auto;
-        width: 85%;
-        margin-left: 7.5%;
-        background-color: white;
-        padding-left: 2.5%;
-        padding-top: 1.5%;
-        margin-top: 5%;
-        /* row-gap: 3%; */
-        height: 100%;
-    }
+    
     .search {
         width: 40%;
     }
@@ -1905,9 +1988,9 @@ height: 60%;
        
         margin-top: 5%;
     }
-    /* #signUpOption {
-        margin-left: 45%;
-    } */
+    .select-prompt{
+        display: none;
+    }
     .homePage form .btn{
         margin-left: 35%;
     }
@@ -1917,12 +2000,26 @@ height: 60%;
         width: 17.5%;
        
     }
-    
+    .cards{
+        display: grid;
+        grid-template-columns: auto;
+        width: 100%;
+        /* margin-left: 7.5%; */
+        background-color: white;
+        padding-left: 0%;
+        padding-top: 1.5%;
+        margin-top: 5%;
+        /* row-gap: 3%; */
+        height: 100%;
+    }
     .search form{
         width: 100%;
     }
     .search form input{
-        width: 80%;
+        width: 75%;
+    }
+    .search form button i{
+        margin-right: 1.5%;
     }
     .addUnitForm{
         width: 80%;
@@ -1952,8 +2049,35 @@ height: 60%;
         margin-left: 0;
         grid-template-columns: auto;
     }
-
-    
+    .homePage form{
+        margin-left: 16.5%;
+    }
+    .addUnit form input{
+        width: 70%;
+        margin-left: 7%;
+        margin-right: 7%;
+        color: white;
+        font-size: 1em;
+    }
+    .addUnit form select{
+        width: 83.5%;
+        margin-left: 7%;
+        margin-right: 7%;
+    }
+    .addUnitForm form .btn, .mediaForm .btn{
+        margin-left: 65%;
+    }
+    .all-views{
+        flex-direction: column;
+    }
+    .all-views .cards{
+        width: 100%;
+    }
+    .all-views .sideBar{
+        width: 100%;
+        margin-top: 5%;
+        overflow-y: auto;
+    }
 }
 @media screen and (max-width: 600px){
     .switchMode{
@@ -1963,18 +2087,44 @@ height: 60%;
     .message .chat .typingArea textarea{
         width: 70%;
 }
+
 .addUnitForm form button{
     margin-left: 70%;
 }
 .homePage form .btn{
     margin-left: 25%;
 }
-   
+.filterSection{
+    position: static;
+    width: 70%;
+    margin-left: 0;
+    margin-top: 3.5%;
+}
+.mainListing{
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    width: 100%;
+    justify-content: space-around;
+    height: fit-content;
+}  
+.Listings .header h1{
+    font-size: 1.75em;
+  
+} 
+#openFilters{
+    font-size: 1.15em;
+    margin-top: 15%;
+    position: fixed;
+ }
+ .menu{
+    width: 20%;
+ }
 }
 @media screen and (max-width: 500px){
     .switchMode{
         width: 25%;
-       
+        height: 2em;
     }
     #bill{
         width: 35%;
@@ -1989,6 +2139,56 @@ height: 60%;
     .homePage form .btn{
         margin-left: 20%;
     }
+    .message .chat .chatBubble1 span, .message .chat .chatBubble2 span {
+        margin-left: 60%;
+    }
+    
+#signUpOption {
+    margin-left: 37.5%;
+}
+#editingProfile .contactInfo, #editProfileSection .profile .contactInfo {
+    flex-direction: column;
+}
+#editProfileSection .profile{
+    margin-top:5%;
+    margin-left: 7.5%;
+}
+.profileBody .rating input{
+    width: 7em;
+}
+/* .addUnit . */
+.addUnit .header h1, .profileBody .header h1{
+    font-size: 2em;
+    word-spacing: 0.5em;
+    margin-top: 0;
+}
+.uploads .cards{
+    /* background: transparent; */
+    width: fit-content;
+}
+.uploads .cards .singleCard{
+    margin-left: 5%;
+}
+.singleCard .card-actions{
+    top: 20%;
+}
+.virtualTour{
+  height:  18em; 
+  flex-direction: column; 
+}
+.virtualTour .main{
+    display: grid;
+    grid-template-columns: 47.5% 47.5%;
+}
+.mediaForm{
+    height: fit-content;
+}
+.mediaForm .btn{
+    margin-left: 50%;
+}
+.search form button{
+    height: 1.75em;
+}
 }
 @media screen and (max-width: 400px){
     .switchMode{

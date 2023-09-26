@@ -6,7 +6,7 @@ session_start();
         if($_SESSION['category'] == 'showing'){
             echo '
             <script>
-                window.location.href = "userProfile.php";
+                window.location.href = "profile.php";
             </script>
             ';
         }
@@ -44,9 +44,9 @@ session_start();
                 <form action="processing.php" method="post" id="logInForm">
                 <span  onClick="back()"><i class="fa-solid fa-x"></i></span>
                     <div class="registerForm" >
-                        <input type="text" placeholder="enter your email address" name="emailAddress">
+                        <input type="text" placeholder="email address" name="emailAddress">
                         <div class="loginPswd" id="loginPwsd" tabindex="0">
-                            <input type="password" id="password" placeholder="enter your password" name="password">&nbsp;<p onclick="pswdDisplay()" id="showPswd" >Show</p>
+                            <input type="password" id="password" placeholder="password" name="password">&nbsp;<p onclick="pswdDisplay()" id="showPswd" >Show</p>
                         </div>
                     </div>
                     <button class="btn lg logIn" type="submit" name="logIn" style="margin-top:0;">Log In</button>
@@ -63,10 +63,10 @@ session_start();
 <form action="processing.php" method="post" id="regForm">
 <span  onClick="back()"><i class="fa-solid fa-x"></i></span>
     <div class="registerForm">
-        <input type="text" placeholder="enter your name" name="name" required>
-        <input type="text" placeholder="enter your email address" name="emailAddress" required>
+        <input type="text" placeholder="full name" name="name" required>
+        <input type="text" placeholder="email address" name="emailAddress" required>
         <div class="loginPswd">
-            <input type="password" id="password" placeholder="enter your password" name="password">&nbsp;<p onclick="pswdDisplay()" id="showPswd" >Show</p>
+            <input type="password" id="password" placeholder="password" name="password">&nbsp;<p onclick="pswdDisplay()" id="showPswd" >Show</p>
         </div>
         <div id="passwordChecker">
             <label class="pswd-warning"><i class="fa fa-check"></i> 8 -20 characters long</label>
@@ -246,9 +246,9 @@ function isPasswordStrong(password) {
         }
     ?>
     <div class="mainListing">
-        <div class="filterSection">
-            <div id="openFilters" onClick="filters()">
-                <i class="fa-solid fa-filter"></i>
+        <div class="filterSection" id="filterSection">
+            <div id="openFilters" >
+                <i class="fa-solid fa-filter" onClick="filters()"></i>
             </div>
             <div id="openFilters2" onClick="closeFilters()"><span>Filters</span><i class="fa-solid fa-angle-up"></i></div>
             <form class="filters" id="filters" method="post">
@@ -446,10 +446,18 @@ function isPasswordStrong(password) {
 
             echo "
             <script>
+            if (screenWidth > 750) {
+                document.getElementById('allCards').style.marginLeft = '12.5%';
+                document.getElementById('filterSection').style.marginLeft = '5%';
+        
+            }else{
+                document.getElementById('allCards').style.marginLeft = '7.5%';
+                document.getElementById('filterSection').style.marginLeft = '15%';
+            }
+        
             document.getElementById('filters').style.display = 'block';
             document.getElementById('openFilters').style.display = 'none';
             document.getElementById('openFilters2').style.display = 'flex';
-            document.getElementById('allCards').style.marginLeft = '12.5%';
             </script>
 
             ";
@@ -669,7 +677,7 @@ if(isset($_GET['likes'])){
     if(isset($_SESSION['category'])){
         if($_SESSION['category'] == 'showing'){
         echo '<script> 
-            window.location.href = "userProfile.php";
+            window.location.href = "profile.php";
             </script>';
     }}
 ?>
@@ -687,15 +695,33 @@ if(isset($_GET['likes'])){
     function signUp(){
         window.location.href = "index.php?action=signUp";
     }
-    const filters = () =>{
+
+    const filters = () => {
+    const screenWidth = window.innerWidth;
+
+    // // Check if the screen width is larger than 750px
+    if (screenWidth > 750) {
+        document.getElementById('allCards').style.marginLeft = '12.5%';
+        document.getElementById('filterSection').style.marginLeft = '5%';
+
+    }else{
+        document.getElementById('allCards').style.marginLeft = '7.5%';
+        document.getElementById('filterSection').style.marginLeft = '15%';
+    }
+
     document.getElementById('filters').style.display = 'block';
     document.getElementById('openFilters').style.display = 'none';
     document.getElementById('openFilters2').style.display = 'flex';
-    document.getElementById('allCards').style.marginLeft = '12.5%';
+    window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
 }
+
 const closeFilters = () =>{
-    document.getElementById('allCards').style.marginLeft = '5%';
+    document.getElementById('allCards').style.marginLeft = '7.5%';
     document.getElementById('filters').style.display = 'none';
+    document.getElementById('filterSection').style.marginLeft = '0';
     document.getElementById('openFilters').style.display = 'block';
     document.getElementById('openFilters2').style.display = 'none';
     document.getElementById('filterResults').style.display = 'none';
@@ -705,16 +731,16 @@ const closeFilters = () =>{
 const showMenu = () =>{
     document.getElementById('menuBars').style.display = 'none';
     document.getElementById('menu').style.display = 'block';
-    document.getElementById('listing-header').style.width = '80%';
-    let screenWidth = window.innerWidth ;
-    document.getElementById('listing-search').style.width = screenWidth * 0.28 + "px";
-    console.log( document.getElementById('listing-search').style.width);
+    // document.getElementById('listing-header').style.width = '80%';
+    // let screenWidth = window.innerWidth ;
+    // document.getElementById('listing-search').style.width = screenWidth * 0.28 + "px";
+    // console.log( document.getElementById('listing-search').style.width);
 }
 const closeMenu = () =>{
     document.getElementById('menuBars').style.display = 'block';
     document.getElementById('menu').style.display = 'none';
-    document.getElementById('listing-header').style.width = '100%';
-    document.getElementById('listing-search').style.width = '30%';
+    // document.getElementById('listing-header').style.width = '100%';
+    // document.getElementById('listing-search').style.width = '30%';
 }
 const showDetails = (id) =>{
     window.location.href = "listing-details.php?id=" + id;

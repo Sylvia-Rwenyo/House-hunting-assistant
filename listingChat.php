@@ -20,11 +20,11 @@
     <script src="https://kit.fontawesome.com/2751fbc624.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="style.css">
-    <title>Chat with</title>
+    <title>Chats</title>
 </head>
 <body class="Listings" id="listingsChatPage">
     <div class="header">
-        <h1>Listing Chat</h1>
+        <h1>Chats</h1>
         <span class="menuBar" id="menuBars" onClick="showMenu()"><i class="fa-solid fa-bars"></i></span>
         <?php
             include_once 'menu.php';
@@ -209,8 +209,6 @@
                     width: 80%;
                     margin-left: 10%;
                 }
-                .message .chat .chatBubble1 span, .message .chat .chatBubble2 span{
-                    margin-left: 80%;
                 </style>
             ';
             }
@@ -314,7 +312,7 @@
                         $recipientID = $result['id'];
                         $_SESSION['recipientID'] = $recipientID;
                     ?>
-                    <a href="userProfile.php?id=<?php echo $recipientID;?>"><h4><?php echo $result['name']?></h4>
+                    <a href=""><h4><?php echo $result['name']?></h4>
                     <?php $i++; }} ?></a>
                     <p>direct message</p>
                 </div>
